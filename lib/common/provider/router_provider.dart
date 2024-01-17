@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safetyedu/common/view/root_tab.dart';
 import 'package:safetyedu/common/view/splash_screen.dart';
 import 'package:safetyedu/user/provider/auth_provider.dart';
 
@@ -15,6 +16,11 @@ final routerProvider = Provider<GoRouter>((ref) {
 });
 
 List<GoRoute> _routes = [
+  GoRoute(
+    path: '/',
+    name: TabView.routeName,
+    builder: (_, __) => const TabView(),
+  ),
   GoRoute(
     path: '/splash',
     name: SplashPage.routeName,

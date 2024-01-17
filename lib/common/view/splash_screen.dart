@@ -36,7 +36,7 @@ class SplashPage extends StatelessWidget {
               ),
             ),
             const Text(
-              'Lingo Simple',
+              'Resque Me',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,

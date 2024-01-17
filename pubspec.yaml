@@ -92,6 +92,17 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+  fonts:
+    - family: Cabin
+      fonts:
+        - asset: asset/fonts/Cabin/static/Cabin-Regular.ttf
+          weight: 400
+        - asset: asset/fonts/Cabin/static/Cabin-Medium.ttf
+          weight: 500
+        - asset: asset/fonts/Cabin/static/Cabin-SemiBold.ttf
+          weight: 600
+        - asset: asset/fonts/Cabin/static/Cabin-Bold.ttf
+          weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

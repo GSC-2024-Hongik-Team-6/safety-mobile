@@ -31,7 +31,7 @@ class CurrentUserStateNotifier extends StateNotifier<UserState?> {
   Future<void> loadCurrentUser() async {
     // 현재 로그인 기능이 구현되어 있지 않아서, 임시로 하드 코딩된 토큰을 사용함
     // TODO: 로그인 기능 구현 후 토큰 저장 기능 사용할 것, 혹은 firebase auth 사용함
-    const token = isLogined;
+    final token = isLogined;
 
     if (token == false) {
       state = null;
@@ -41,5 +41,11 @@ class CurrentUserStateNotifier extends StateNotifier<UserState?> {
     final response = await currentUserRepository.getCurrentUser();
 
     state = response;
+  }
+
+  Future<void> logout() async {
+    state = null;
+
+    isLogined = false;
   }
 }

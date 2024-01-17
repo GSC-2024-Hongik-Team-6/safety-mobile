@@ -48,4 +48,23 @@ class CurrentUserStateNotifier extends StateNotifier<UserState?> {
 
     isLogined = false;
   }
+
+  Future<UserState> login() async {
+    try {
+      state = UserLoading();
+
+      // 토큰 true로 변경
+      isLogined = true;
+
+      final userResponse = await currentUserRepository.getCurrentUser();
+
+      state = userResponse;
+
+      return userResponse;
+    } catch (e) {
+      state = UserError(message: '로그인 실패: $e');
+
+      return Future.value(state);
+    }
+  }
 }

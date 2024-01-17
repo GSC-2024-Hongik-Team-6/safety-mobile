@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/user/provider/current_user_provider.dart';
 
-class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({super.key});
+class LoginScreen extends ConsumerWidget {
+  static const routeName = '/login';
+
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -12,9 +14,9 @@ class ProfileScreen extends ConsumerWidget {
       child: Center(
         child: ElevatedButton(
           onPressed: () {
-            ref.read(currentUserProvider.notifier).logout();
+            ref.read(currentUserProvider.notifier).login();
           },
-          child: const Text('로그아웃'),
+          child: const Text('로그인'),
         ),
       ),
     );

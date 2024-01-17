@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safetyedu/common/const/colors.dart';
+import 'package:safetyedu/user/view/profile_screen.dart';
 
 class TabView extends StatefulWidget {
   static const routeName = 'root_tab';
@@ -65,7 +66,7 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
         controller: _tabController,
         children: const [
           Center(child: Text('홈페이지')),
-          Center(child: Text('My')),
+          ProfileScreen(),
         ],
       ),
     );

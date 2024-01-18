@@ -4,6 +4,7 @@ import 'package:safetyedu/common/component/custom_text_form_field.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
+import 'package:safetyedu/user/model/user_model.dart';
 import 'package:safetyedu/user/provider/current_user_provider.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
@@ -22,6 +23,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUserState = ref.watch(currentUserProvider);
+
     return DefaultLayout(
         child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -53,24 +56,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 12.0),
                 ElevatedButton(
-                  onPressed: () {
-                    ref.read(currentUserProvider.notifier).login();
-                  },
+                  onPressed: currentUserState is UserLoading
+                      ? null
+                      : () {
+                          ref.read(currentUserProvider.notifier).login();
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text(
-                      'LOGIN',
-                      style: CustomTextStyle(
-                        textFontWeight: FontWeight.w600,
-                        textFontSize: 18,
-                        textColor: Colors.white,
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        currentUserState is UserLoading
+                            ? const Text('Wait for a second...',
+                                style: CustomTextStyle(
+                                  textFontWeight: FontWeight.w600,
+                                  textFontSize: 18,
+                                  textColor: Colors.white,
+                                ))
+                            : const Text(
+                                'LOGIN',
+                                style: CustomTextStyle(
+                                  textFontWeight: FontWeight.w600,
+                                  textFontSize: 18,
+                                  textColor: Colors.white,
+                                ),
+                              ),
+                      ],
                     ),
                   ),
                 ),

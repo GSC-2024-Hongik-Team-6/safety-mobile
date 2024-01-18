@@ -5,7 +5,7 @@ import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/user/provider/current_user_provider.dart';
-import 'package:sign_in_button/sign_in_button.dart';
+import 'package:social_login_buttons/social_login_buttons.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   static const routeName = '/login';
@@ -79,16 +79,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
           Column(
             children: [
-              SignInButton(
-                Buttons.google,
+              SocialLoginButton(
+                buttonType: SocialLoginButtonType.google,
                 onPressed: () {},
-              )
+                fontSize: 18,
+                borderRadius: 12.0,
+              ),
+              const SizedBox(height: 12.0),
+              SocialLoginButton(
+                buttonType: SocialLoginButtonType.github,
+                onPressed: () {},
+                fontSize: 18.0,
+                borderRadius: 12.0,
+              ),
+              const SizedBox(height: 12.0),
+              SocialLoginButton(
+                buttonType: SocialLoginButtonType.apple,
+                onPressed: () {},
+                fontSize: 18.0,
+                borderRadius: 12.0,
+              ),
             ],
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
             child: Text(
-              'By signing into our service, you agree to our Terms and Privacy Policy',
+              'By signing into our service, '
+              'you agree to our Terms and Privacy Policy',
               textAlign: TextAlign.center,
               style: CustomTextStyle(
                 textFontSize: 16,

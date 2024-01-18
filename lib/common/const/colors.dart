@@ -13,3 +13,6 @@ const inputHintTextColor = Color(0xFFB4B4B4);
 
 /// 비활성화된 버튼의 배경 색상
 const disabledButtonBackgroundColor = Color(0xFFE5E5E5);
+
+/// title text color(검은색)
+const titleTextColor = Color(0xFF484848);

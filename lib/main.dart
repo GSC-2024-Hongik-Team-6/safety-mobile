@@ -27,8 +27,6 @@ class MyApp extends ConsumerWidget {
       title: 'Resque Me',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
-        useMaterial3: true,
         fontFamily: 'Cabin',
       ),
       routerConfig: router,

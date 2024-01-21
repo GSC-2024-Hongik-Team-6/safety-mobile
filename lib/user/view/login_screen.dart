@@ -1,11 +1,14 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safetyedu/common/component/custom_text_form_field.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/user/model/user_model.dart';
 import 'package:safetyedu/user/provider/current_user_provider.dart';
+import 'package:safetyedu/user/view/signup_screen.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -36,7 +39,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               children: [
                 const SizedBox(height: 100.0),
                 const Text(
-                  '로그인',
+                  'LOGIN',
                   style: CustomTextStyle(
                     textFontSize: 24,
                     textFontWeight: FontWeight.w700,
@@ -45,12 +48,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 20.0),
                 CustomTextFormField(
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    email = value;
+                  },
                   hintText: 'Email',
                 ),
                 const SizedBox(height: 12.0),
                 CustomTextFormField(
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    password = value;
+                  },
                   hintText: 'Password',
                   obscureText: true,
                 ),
@@ -121,15 +128,34 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
-            child: Text(
-              'By signing into our service, '
-              'you agree to our Terms and Privacy Policy',
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+            child: RichText(
               textAlign: TextAlign.center,
-              style: CustomTextStyle(
-                textFontSize: 16,
-                textColor: inputHintTextColor,
+              text: TextSpan(
+                style: const CustomTextStyle(
+                  textFontSize: 16,
+                  textColor: inputHintTextColor,
+                ),
+                children: [
+                  const TextSpan(
+                    text: 'If not yet a member, ',
+                  ),
+                  TextSpan(
+                    text: 'Sign Up',
+                    style: const TextStyle(
+                      color: primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        context.pushNamed(
+                          SignUpScreen.routeName,
+                        );
+                      },
+                  ),
+                ],
               ),
             ),
           ),

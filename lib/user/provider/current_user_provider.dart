@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:safetyedu/user/const/token.dart';
+
 import 'package:safetyedu/user/model/user_model.dart';
 import 'package:safetyedu/user/repository/auth_repository.dart';
 import 'package:safetyedu/user/repository/current_user_repository.dart';
@@ -40,9 +40,9 @@ class CurrentUserStateNotifier extends StateNotifier<UserState?> {
   }
 
   Future<void> logout() async {
-    state = null;
+    await authRepository.signOut();
 
-    isLogined = false;
+    state = null;
   }
 
   Future<UserState> login({
@@ -68,6 +68,45 @@ class CurrentUserStateNotifier extends StateNotifier<UserState?> {
       return userResponse;
     } catch (e) {
       state = UserError(message: 'Login Failed: $e');
+
+      return Future.value(state);
+    }
+  }
+
+  Future<UserState> signUp({
+    required String username,
+    required String email,
+    required String password,
+    required String passwordConfirm,
+  }) async {
+    if (password != passwordConfirm) {
+      state = UserError(message: 'Password does not match');
+
+      return Future.value(state);
+    }
+
+    try {
+      state = UserLoading();
+
+      final userCredential =
+          await authRepository.createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+
+      if (userCredential.user == null) {
+        throw Exception('Something went wrong');
+      }
+
+      await userCredential.user!.updateDisplayName(username);
+
+      final userResponse = UserModel.fromFirebaseUser(userCredential.user!);
+
+      state = userResponse;
+
+      return userResponse;
+    } catch (e) {
+      state = UserError(message: 'Sign Up Failed: $e');
 
       return Future.value(state);
     }

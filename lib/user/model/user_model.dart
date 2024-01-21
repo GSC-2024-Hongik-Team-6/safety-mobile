@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_model.freezed.dart';
@@ -27,4 +28,9 @@ class UserModel extends UserState with _$UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
+
+  factory UserModel.fromFirebaseUser(User user) => UserModel(
+        id: user.uid,
+        username: user.displayName ?? user.email!,
+      );
 }

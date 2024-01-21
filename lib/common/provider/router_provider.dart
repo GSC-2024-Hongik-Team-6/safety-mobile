@@ -4,6 +4,7 @@ import 'package:safetyedu/common/view/root_tab.dart';
 import 'package:safetyedu/common/view/splash_screen.dart';
 import 'package:safetyedu/user/provider/auth_provider.dart';
 import 'package:safetyedu/user/view/login_screen.dart';
+import 'package:safetyedu/user/view/signup_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final provider = ref.read(authProvider);
@@ -31,5 +32,10 @@ List<GoRoute> _routes = [
     path: '/login',
     name: LoginScreen.routeName,
     builder: (_, __) => const LoginScreen(),
+  ),
+  GoRoute(
+    path: '/sign-up',
+    name: SignUpScreen.routeName,
+    builder: (_, __) => const SignUpScreen(),
   ),
 ];

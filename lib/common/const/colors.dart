@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const primaryColor = Color(0xFF6740F6);
+const primaryColor = Color(0xFF2F6D42);
 
 /// 텍스트 필드의 배경 색상
 const inputBackgroundColor = Color(0xFFF7F7F7);

@@ -1,17 +1,37 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:safetyedu/user/model/user_model.dart';
 
-final currentUserRepositoryProvider = Provider(
-  (ref) => CurrentUserRepository(),
+import 'package:safetyedu/user/model/user_model.dart';
+import 'package:safetyedu/user/provider/firebase_auth_provider.dart';
+
+final currentUserRepositoryProvider = Provider<CurrentUserRepository>(
+  (ref) {
+    final firebaseAuth = ref.watch(firebaseAuthProvider);
+
+    return CurrentUserRepository(
+      firebaseAuth: firebaseAuth,
+    );
+  },
 );
 
 class CurrentUserRepository {
-  Future<UserModel> getCurrentUser() async {
-    // 2초 간 기다린 후, 현재 로그인된 사용자 정보 반환
-    await Future.delayed(const Duration(seconds: 2));
-    return const UserModel(
-      id: 'test',
-      username: 'nx006',
+  final FirebaseAuth firebaseAuth;
+
+  CurrentUserRepository({
+    required this.firebaseAuth,
+  });
+
+  UserModel? getCurrentUser() {
+    final user = firebaseAuth.currentUser;
+
+    if (user == null) {
+      return null;
+    }
+
+    return UserModel(
+      id: user.uid,
+      username: user.displayName ?? user.email!,
     );
   }
 }

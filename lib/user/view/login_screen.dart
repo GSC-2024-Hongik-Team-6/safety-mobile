@@ -59,7 +59,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   onPressed: currentUserState is UserLoading
                       ? null
                       : () {
-                          ref.read(currentUserProvider.notifier).login();
+                          ref.read(currentUserProvider.notifier).login(
+                                email: email,
+                                password: password,
+                              );
                         },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,

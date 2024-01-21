@@ -55,6 +55,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 12.0),
+                // 로그인 버튼
                 ElevatedButton(
                   onPressed: currentUserState is UserLoading
                       ? null
@@ -72,28 +73,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        currentUserState is UserLoading
-                            ? const Text('Wait for a second...',
-                                style: CustomTextStyle(
-                                  textFontWeight: FontWeight.w600,
-                                  textFontSize: 18,
-                                  textColor: Colors.white,
-                                ))
-                            : const Text(
-                                'LOGIN',
-                                style: CustomTextStyle(
-                                  textFontWeight: FontWeight.w600,
-                                  textFontSize: 18,
-                                  textColor: Colors.white,
-                                ),
-                              ),
-                      ],
+                    child: Text(
+                      currentUserState is UserLoading
+                          ? 'Wait for a second...'
+                          : 'LOGIN',
+                      style: const CustomTextStyle(
+                        textFontWeight: FontWeight.w600,
+                        textFontSize: 18,
+                        textColor: Colors.white,
+                      ),
                     ),
                   ),
                 ),
+                const SizedBox(height: 12.0),
+                if (currentUserState is UserError)
+                  Text(
+                    currentUserState.message,
+                    style: const CustomTextStyle(
+                      textFontSize: 16,
+                      textColor: Colors.red,
+                    ),
+                  ),
               ],
             ),
           ),

@@ -34,6 +34,13 @@ class AuthNotifier extends ChangeNotifier {
 
     final logginIn = goState.fullPath == '/login';
 
+    final signUpIn = goState.fullPath == '/sign-up';
+
+    /// 회원 가입 중이라면 그대로 두기
+    if (signUpIn) {
+      return null;
+    }
+
     /// 현재 위치가 로그인 페이지라면 그대로 두고, 아니라면 로그인 페이지로 이동시키는 로직
     ///
     /// Refresh되는 것을 방지하기 위해 해당 로직을 사용합니다

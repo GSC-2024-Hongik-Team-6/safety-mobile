@@ -5,7 +5,7 @@ part 'category_model.freezed.dart';
 part 'category_model.g.dart';
 
 @freezed
-class CategoryModel with _$CategoryModel implements ModelWithId {
+class CategoryModel with _$CategoryModel implements IModelWithId {
   const factory CategoryModel({
     // 카테고리 id
     required Id id,
@@ -17,7 +17,7 @@ class CategoryModel with _$CategoryModel implements ModelWithId {
     required String description,
 
     // 카테고리 이미지
-    required String image,
+    required String imageUrl,
 
     // 사용자가 푼 퀴즈 수
     required int solvedQuizCount,

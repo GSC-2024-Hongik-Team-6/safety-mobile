@@ -1,18 +1,31 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:safetyedu/common/model/model_list_meta.dart';
 
-part 'model_list.freezed.dart';
 part 'model_list.g.dart';
 
 /// ModelListState Base class
 sealed class ModelListState {}
 
-@Freezed(genericArgumentFactories: true)
-class ModelList<T> extends ModelListState with _$ModelList<T> {
-  const factory ModelList({
-    required List<T> items,
-    required ModelListMeta meta,
-  }) = _ModelList<T>;
+@JsonSerializable(genericArgumentFactories: true)
+class ModelList<T> extends ModelListState {
+  final List<T> items;
+  final ModelListMeta meta;
+
+  ModelList({
+    required this.items,
+    required this.meta,
+  });
+
+  /// copyWith
+  ModelList<T> copyWith({
+    List<T>? items,
+    ModelListMeta? meta,
+  }) {
+    return ModelList<T>(
+      items: items ?? this.items,
+      meta: meta ?? this.meta,
+    );
+  }
 
   factory ModelList.fromJson(
     Map<String, dynamic> json,
@@ -35,17 +48,9 @@ class ModelListLoading extends ModelListState {}
 
 /// 새로고침 or 재요청 시
 /// 이때 이미 데이터가 들어있다고 가정함
-@Freezed(genericArgumentFactories: true)
-class ModelListRefetching<T> extends ModelListState
-    with _$ModelListRefetching<T> {
-  const factory ModelListRefetching({
-    required List<T> items,
-    required ModelListMeta meta,
-  }) = _ModelListRefetching<T>;
-
-  factory ModelListRefetching.fromJson(
-    Map<String, dynamic> json,
-    T Function(Object? json) fromJsonT,
-  ) =>
-      _$ModelListRefetchingFromJson(json, fromJsonT);
+class ModelListRefetching<T> extends ModelList<T> {
+  ModelListRefetching({
+    required super.items,
+    required super.meta,
+  });
 }

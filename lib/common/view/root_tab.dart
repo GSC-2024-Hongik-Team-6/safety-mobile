@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safetyedu/category/view/home_screen.dart';
 import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/user/view/profile_screen.dart';
 
@@ -65,7 +66,7 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
         physics: const NeverScrollableScrollPhysics(),
         controller: _tabController,
         children: const [
-          Center(child: Text('홈페이지')),
+          HomeScreen(),
           ProfileScreen(),
         ],
       ),

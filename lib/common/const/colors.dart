@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 const primaryColor = Color(0xFF2F6D42);
 
+const secondPrimaryColor = Color(0xFF77C93C);
+
 const hilightColor = Color(0xFFF8CB46);
 
 /// 텍스트 필드의 배경 색상

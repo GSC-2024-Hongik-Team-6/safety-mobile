@@ -16,7 +16,7 @@ class CategoryRepository implements IModelListRepository<CategoryModel> {
 
     final List<CategoryModel> items = [
       const CategoryModel(
-        id: 1,
+        id: "1",
         title: 'Earthquake',
         description: 'What should we do when Earthquake happens?',
         imageUrl: 'images/earthquake.png',
@@ -24,7 +24,7 @@ class CategoryRepository implements IModelListRepository<CategoryModel> {
         totalQuizCount: 20,
       ),
       const CategoryModel(
-        id: 2,
+        id: "2",
         title: 'Tsunami',
         description: 'What should we do when Tsunami comes?',
         imageUrl: 'images/tsunami.png',

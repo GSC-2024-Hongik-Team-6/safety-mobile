@@ -12,15 +12,11 @@ class CategoryCard extends StatelessWidget {
   /// 이미지
   final Widget image;
 
-  /// 예상 시간(분)
-  final int estimatedTime;
-
   const CategoryCard({
     super.key,
     required this.title,
     required this.description,
     required this.image,
-    required this.estimatedTime,
   });
 
   @override
@@ -73,25 +69,6 @@ class CategoryCard extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 8),
-
-                  // estimated time
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.watch_later_outlined,
-                        color: hilightColor,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '$estimatedTime MINUTES',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                          color: hilightColor,
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             )

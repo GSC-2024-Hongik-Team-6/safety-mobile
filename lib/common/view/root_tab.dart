@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safetyedu/category/view/home_screen.dart';
 import 'package:safetyedu/common/const/colors.dart';
+import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/user/view/profile_screen.dart';
 
 class TabView extends StatefulWidget {
@@ -38,7 +39,8 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultLayout(
+      title: "Home",
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: primaryColor,
         selectedLabelStyle: const TextStyle(
@@ -62,7 +64,7 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
           );
         }).toList(),
       ),
-      body: TabBarView(
+      child: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _tabController,
         children: const [

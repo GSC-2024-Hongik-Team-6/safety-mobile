@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safetyedu/category/component/category_card.dart';
 import 'package:safetyedu/category/model/category_model.dart';
 import 'package:safetyedu/category/provider/category_provider.dart';
+import 'package:safetyedu/category/view/category_detail_screen.dart';
 import 'package:safetyedu/common/model/model_list.dart';
 
 /// [CategoryCard]의 리스트를 보여주는 ListView 위젯
@@ -11,7 +13,7 @@ class CategoryListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoryList = ref.watch(categoryListProvider);
+    final categoryList = ref.watch(categoryProvider);
 
     // 첫 로딩 시 로딩 바
     if (categoryList is ModelListLoading) {
@@ -34,7 +36,7 @@ class CategoryListView extends ConsumerWidget {
           const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
-              ref.read(categoryListProvider.notifier).fetch(
+              ref.read(categoryProvider.notifier).fetch(
                   // forceRefetch: true, TODO: force Refetch 구현 필요
                   );
             },
@@ -53,12 +55,20 @@ class CategoryListView extends ConsumerWidget {
       itemBuilder: (context, index) {
         final category = listState.items[index];
 
-        return CategoryCard(
-          title: category.title,
-          description: category.description,
+        return GestureDetector(
+          onTap: () => context.goNamed(
+            CategoryDetailScreen.routeName,
+            pathParameters: {
+              'cid': category.id,
+            },
+          ),
+          child: CategoryCard(
+            title: category.title,
+            description: category.description,
 
-          /// TODO: Implement Image showing
-          image: const Icon(Icons.warning),
+            /// TODO: Implement Image showing
+            image: const Icon(Icons.warning),
+          ),
         );
       },
       separatorBuilder: (_, __) => const SizedBox(

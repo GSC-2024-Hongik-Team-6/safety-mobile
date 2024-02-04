@@ -13,7 +13,7 @@ class CategoryListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoryList = ref.watch(categoryListProvider);
+    final categoryList = ref.watch(categoryProvider);
 
     // 첫 로딩 시 로딩 바
     if (categoryList is ModelListLoading) {
@@ -36,7 +36,7 @@ class CategoryListView extends ConsumerWidget {
           const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
-              ref.read(categoryListProvider.notifier).fetch(
+              ref.read(categoryProvider.notifier).fetch(
                   // forceRefetch: true, TODO: force Refetch 구현 필요
                   );
             },

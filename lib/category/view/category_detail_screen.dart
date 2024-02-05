@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:safetyedu/category/model/category_detail_model.dart';
 import 'package:safetyedu/category/provider/category_provider.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
@@ -12,7 +13,16 @@ class CategoryDetailScreen extends ConsumerWidget {
 
   final Id cid;
 
-  const CategoryDetailScreen({
+  final List<IconData> quizIcons = [
+    Icons.star,
+    Icons.star,
+    Icons.star,
+    Icons.star,
+    Icons.star,
+    // Add more icons as needed
+  ];
+
+  CategoryDetailScreen({
     super.key,
     required this.cid,
   });
@@ -31,8 +41,45 @@ class CategoryDetailScreen extends ConsumerWidget {
 
     return DefaultLayout(
       title: 'Learning by Quiz',
-      appBarBackgroundColor: primaryColor,
-      appBarBottom: PreferredSize(
+      appBar: _buildCategoryAppBar(context: context, category: category),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
+        ),
+        itemCount: quizIcons.length,
+        itemBuilder: (context, index) {
+          return Transform.translate(
+            offset: (index % 6 < 3)
+                ? const Offset(0, 0)
+                : const Offset(0, 48.0), // Adjust the offset as needed
+            child: Icon(
+              quizIcons[index],
+              size: 48.0,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  AppBar _buildCategoryAppBar({
+    required BuildContext context,
+    required CategoryDetailModel category,
+  }) {
+    return AppBar(
+      title: Text(
+        category.title,
+        style: const CustomTextStyle(
+          textFontSize: 16,
+          textFontWeight: FontWeight.w500,
+          textColor: Colors.white,
+        ),
+      ),
+      backgroundColor: primaryColor,
+      elevation: 0,
+      bottom: PreferredSize(
         preferredSize: const Size(double.infinity, 100),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
@@ -97,9 +144,6 @@ class CategoryDetailScreen extends ConsumerWidget {
             ],
           ),
         ),
-      ),
-      child: Center(
-        child: Text('CategoryDetailScreen: $cid'),
       ),
     );
   }

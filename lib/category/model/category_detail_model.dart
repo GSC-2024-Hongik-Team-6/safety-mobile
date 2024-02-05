@@ -16,7 +16,6 @@ class CategoryDetailModel extends CategoryModel {
     required super.imageUrl,
     required super.solvedQuizCount,
     required super.totalQuizCount,
-    required super.categoryDescription,
     required this.detail,
     required this.quizzes,
   });

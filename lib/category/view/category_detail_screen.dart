@@ -8,11 +8,22 @@ import 'package:safetyedu/common/layout.dart/default_layout.dart';
 
 import 'package:safetyedu/common/model/model_with_id.dart';
 
-class CategoryDetailScreen extends ConsumerWidget {
+class CategoryDetailScreen extends ConsumerStatefulWidget {
   static const routeName = '/category-detail';
 
   final Id cid;
 
+  const CategoryDetailScreen({
+    super.key,
+    required this.cid,
+  });
+
+  @override
+  ConsumerState<CategoryDetailScreen> createState() =>
+      _CategoryDetailScreenState();
+}
+
+class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
   final List<IconData> quizIcons = [
     Icons.star,
     Icons.star,
@@ -22,14 +33,16 @@ class CategoryDetailScreen extends ConsumerWidget {
     // Add more icons as needed
   ];
 
-  CategoryDetailScreen({
-    super.key,
-    required this.cid,
-  });
+  @override
+  void initState() {
+    super.initState();
+
+    ref.read(categoryProvider.notifier).getDetail(id: widget.cid);
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final category = ref.watch(categoryDetailProvider(cid));
+  Widget build(BuildContext context) {
+    final category = ref.watch(categoryDetailProvider(widget.cid));
 
     if (category == null || category is! CategoryDetailModel) {
       return const DefaultLayout(
@@ -38,6 +51,17 @@ class CategoryDetailScreen extends ConsumerWidget {
         ),
       );
     }
+
+    if (category is! CategoryDetailModel) {
+      return const DefaultLayout(
+        child: Center(
+          child: Text(
+            'Error: Is not a Detail Model',
+          ),
+        ),
+      );
+    }
+
     return DefaultLayout(
       title: 'Learning by Quiz',
       appBar: _buildCategoryAppBar(context: context, category: category),

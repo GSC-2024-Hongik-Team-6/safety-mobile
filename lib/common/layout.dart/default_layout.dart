@@ -14,11 +14,7 @@ class DefaultLayout extends StatelessWidget {
   /// SafeArea를 사용하지 않을 경우 true로 설정하세요. 기본은 false.
   final bool safeAreaDisabled;
 
-  /// appBar background color
-  final Color? appBarBackgroundColor;
-
-  /// appBar bottom widget
-  final PreferredSizeWidget? appBarBottom;
+  final AppBar? appBar;
 
   const DefaultLayout({
     super.key,
@@ -28,27 +24,26 @@ class DefaultLayout extends StatelessWidget {
     this.bottomNavigationBar,
     this.floatingActionButton,
     this.safeAreaDisabled = false,
-    this.appBarBackgroundColor,
-    this.appBarBottom,
+    this.appBar,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
-      appBar: renderAppBar(),
+      appBar: appBar ?? renderDefaultAppBar(),
       body: safeAreaDisabled ? child : SafeArea(child: child),
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
     );
   }
 
-  AppBar? renderAppBar() {
+  AppBar? renderDefaultAppBar() {
     return title == null
         ? null
         : AppBar(
-            backgroundColor: appBarBackgroundColor ?? Colors.white,
-            elevation: 0, // 앞으로 튀어나온 효과 제거, 최신 트렌드임
+            backgroundColor: Colors.white,
+            elevation: 0,
             title: Text(
               title!,
               style: const TextStyle(
@@ -56,10 +51,7 @@ class DefaultLayout extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            foregroundColor: appBarBackgroundColor == null
-                ? Colors.black
-                : Colors.white, // 글자 색상
-            bottom: appBarBottom,
+            foregroundColor: Colors.black,
           );
   }
 }

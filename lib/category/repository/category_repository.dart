@@ -19,7 +19,6 @@ class CategoryRepository implements IModelListRepository<CategoryModel> {
       imageUrl: 'images/earthquake.png',
       solvedQuizCount: 5,
       totalQuizCount: 20,
-      categoryDescription: 'This is Earthquake category.',
     ),
     const CategoryModel(
       id: "2",
@@ -28,7 +27,6 @@ class CategoryRepository implements IModelListRepository<CategoryModel> {
       imageUrl: 'images/tsunami.png',
       solvedQuizCount: 5,
       totalQuizCount: 20,
-      categoryDescription: 'This is Tsunami category.',
     ),
   ];
 
@@ -60,7 +58,6 @@ class CategoryRepository implements IModelListRepository<CategoryModel> {
         imageUrl: category.imageUrl,
         solvedQuizCount: category.solvedQuizCount,
         totalQuizCount: category.totalQuizCount,
-        categoryDescription: category.categoryDescription,
         detail: 'This is detail of ${category.title}',
         quizzes: const [],
       ),

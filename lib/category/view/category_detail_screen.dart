@@ -7,6 +7,8 @@ import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 
 import 'package:safetyedu/common/model/model_with_id.dart';
+import 'package:safetyedu/quiz/component/quiz_button.dart';
+import 'package:safetyedu/quiz/model/quiz_model.dart';
 
 class CategoryDetailScreen extends ConsumerStatefulWidget {
   static const routeName = '/category-detail';
@@ -55,8 +57,9 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
     return DefaultLayout(
       title: 'Learning by Quiz',
       appBar: _buildCategoryAppBar(context: context, category: category),
-      child: const Center(
-        child: Text('Center'),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: QuizListTile(quizList: category.quizzes),
       ),
     );
   }
@@ -147,21 +150,42 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
 }
 
 class QuizListTile extends StatelessWidget {
-  final CategoryDetailModel category;
+  final List<QuizItemModel> quizList;
 
   const QuizListTile({
     super.key,
-    required this.category,
+    required this.quizList,
   });
 
   @override
   Widget build(BuildContext context) {
-    final quizList = category.quizzes;
+    return ListView.builder(
+      itemCount: 25,
+      itemBuilder: (context, index) {
+        // final quiz = quizList[index];
 
-    return const Center(
-      child: Text(
-        'Quiz List Tile',
-      ),
+        final alignflag = index % 4;
+
+        late MainAxisAlignment align;
+
+        if (alignflag == 0) {
+          align = MainAxisAlignment.start;
+        } else if (alignflag == 1 || alignflag == 3) {
+          align = MainAxisAlignment.center;
+        } else {
+          align = MainAxisAlignment.end;
+        }
+
+        return Row(
+          mainAxisAlignment: align,
+          children: const [
+            QuizButton(
+              icon: Icons.star,
+              id: '1',
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safetyedu/category/model/category_model.dart';
-
 import 'package:safetyedu/category/repository/category_repository.dart';
 import 'package:safetyedu/common/model/model_list.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';

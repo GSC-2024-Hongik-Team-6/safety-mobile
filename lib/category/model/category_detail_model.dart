@@ -7,7 +7,7 @@ part 'category_detail_model.g.dart';
 @JsonSerializable()
 class CategoryDetailModel extends CategoryModel {
   final String detail;
-  final List<QuizModel> quizzes;
+  final List<QuizItemModel> quizzes;
 
   const CategoryDetailModel({
     required super.id,
@@ -16,7 +16,6 @@ class CategoryDetailModel extends CategoryModel {
     required super.imageUrl,
     required super.solvedQuizCount,
     required super.totalQuizCount,
-    required super.categoryDescription,
     required this.detail,
     required this.quizzes,
   });

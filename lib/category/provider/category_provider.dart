@@ -8,7 +8,7 @@ import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:collection/collection.dart';
 
 final categoryDetailProvider =
-    Provider.family<CategoryDetailModel?, Id>((ref, Id id) {
+    Provider.family<CategoryModel?, Id>((ref, Id id) {
   final state = ref.watch(categoryProvider);
 
   if (state is! ModelList) {

@@ -31,35 +31,18 @@ class CategoryDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final category = ref.watch(categoryDetailProvider(cid));
 
-    if (category == null) {
+    if (category == null || category is! CategoryDetailModel) {
       return const DefaultLayout(
         child: Center(
           child: CircularProgressIndicator(),
         ),
       );
     }
-
     return DefaultLayout(
       title: 'Learning by Quiz',
       appBar: _buildCategoryAppBar(context: context, category: category),
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-        ),
-        itemCount: quizIcons.length,
-        itemBuilder: (context, index) {
-          return Transform.translate(
-            offset: (index % 6 < 3)
-                ? const Offset(0, 0)
-                : const Offset(0, 48.0), // Adjust the offset as needed
-            child: Icon(
-              quizIcons[index],
-              size: 48.0,
-            ),
-          );
-        },
+      child: const Center(
+        child: Text('Center'),
       ),
     );
   }
@@ -144,6 +127,26 @@ class CategoryDetailScreen extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class QuizListTile extends StatelessWidget {
+  final CategoryDetailModel category;
+
+  const QuizListTile({
+    super.key,
+    required this.category,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final quizList = category.quizzes;
+
+    return const Center(
+      child: Text(
+        'Quiz List Tile',
       ),
     );
   }

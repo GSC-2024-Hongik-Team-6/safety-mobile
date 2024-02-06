@@ -119,7 +119,7 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
                         color: Colors.white,
                         child: Center(
                           child: Text(
-                            category.description,
+                            category.detail,
                           ),
                         ),
                       ));

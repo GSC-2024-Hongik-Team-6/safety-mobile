@@ -52,6 +52,16 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
       );
     }
 
+    if (category is! CategoryDetailModel) {
+      return const DefaultLayout(
+        child: Center(
+          child: Text(
+            'Error: Is not a Detail Model',
+          ),
+        ),
+      );
+    }
+
     return DefaultLayout(
       title: 'Learning by Quiz',
       appBar: _buildCategoryAppBar(context: context, category: category),

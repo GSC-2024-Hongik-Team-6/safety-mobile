@@ -1,63 +1,74 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
-import 'package:safetyedu/quiz/model/quiz_meta_model.dart';
 
 part 'quiz_model.freezed.dart';
 part 'quiz_model.g.dart';
 
-/// ### 퀴즈 + 메타 모델
+enum QuizType {
+  @JsonValue('MULTIPLE_CHOICE')
+  multipleChoice,
+
+  @JsonValue('ORDERING')
+  order,
+}
+
+/// ### 퀴즈 모델
+///
+/// - [id] 퀴즈의 ID
+/// - [type] 퀴즈의 타입
+///   - [QuizType.multipleChoice] 객관식 퀴즈
+///   - [QuizType.order] 순서 맞추기 퀴즈
+/// - [item] 퀴즈의 내용
 ///
 /// 예시:
 /// ```json
 /// {
-/// 	"meta": {
-/// 		"type": "MULTIPLE_CHOICE"
-/// 	},
-/// 	"item": {
-/// 	  "id": 1,
-/// 	  "description": "지진 대피소 표시로 올바른 것을 고르세요",
-/// 	  "answer": 1,
-/// 	  "options": [
-/// 	    {
-/// 				"id": "0",
-/// 	      "description": "지진 대피소 표시 1"
-/// 	    },
-/// 	    {
-/// 				"id": "1",
-/// 	      "description": "지진 대피소 표시 2",
-/// 	      "imageUrl": "images/2.jpg"
-/// 	    },
-/// 	    {
-/// 				"id": "2",
-/// 	      "description": "지진 대피소 표시 3",
-/// 	      "imageUrl": "images/3.jpg"
-/// 	    },
-/// 	    {
+///   "id": 1,
+///   "type": "MULTIPLE_CHOICE", // "ORDERING" or "MULTIPLE_CHOICE"
+///   "item": {
+///     "description": "지진 대피소 표시로 올바른 것을 고르세요",
+///     "answer": 1,
+///     "options": [
+///       {
+///         "id": "0",
+///         "description": "지진 대피소 표시 1"
+///       },
+///       {
+///         "id": "1",
+///         "description": "지진 대피소 표시 2",
+///         "imageUrl": "images/2.jpg"
+///       },
+///       {
+///         "id": "2",
+///         "description": "지진 대피소 표시 3",
+///         "imageUrl": "images/3.jpg"
+///       },
+///       {
 ///         "id": "3",
-/// 	      "description": "지진 대피소 표시 4",
-/// 	      "imageUrl": "images/4.jpg"
-/// 	    }
-/// 	  ]
-/// 	}
+///         "description": "지진 대피소 표시 4",
+///         "imageUrl": "images/4.jpg"
+///       }
+///     ]
+///   }
 /// }
 /// ```
-@JsonSerializable()
-class QuizModel {
-  final QuizItemModel item;
-  final QuizMetaModel meta;
-
-  const QuizModel({
-    required this.item,
-    required this.meta,
-  });
+@freezed
+class QuizModel with _$QuizModel implements IModelWithId {
+  const factory QuizModel({
+    required Id id,
+    required QuizType type,
+    required QuizItemModel item,
+  }) = _QuizModelWithMeta;
 
   factory QuizModel.fromJson(Map<String, dynamic> json) =>
       _$QuizModelFromJson(json);
 }
 
-/// 퀴즈 데이터 모델
+/// 퀴즈 아이템 모델
+///
+/// [QuizItemModel.ordering]과 [QuizItemModel.multipleChoice] 두 가지가 존재함
 @freezed
-class QuizItemModel with _$QuizItemModel implements IModelWithId {
+class QuizItemModel with _$QuizItemModel {
   /// 순서 맞추기 퀴즈 타입\
   /// 이때 options.id가 그대로 순서가 된다
   ///
@@ -66,7 +77,6 @@ class QuizItemModel with _$QuizItemModel implements IModelWithId {
   /// 예시:
   /// ```json
   /// {
-  ///   "id": 1,
   ///   "description": "지진 대피소 표시로 올바른 것을 고르세요",
   ///   "options": [
   ///     {
@@ -92,7 +102,6 @@ class QuizItemModel with _$QuizItemModel implements IModelWithId {
   /// }
   /// ```
   const factory QuizItemModel.ordering({
-    required Id id,
     required String description,
     required List<Option> options,
   }) = _QuizModel;
@@ -102,7 +111,6 @@ class QuizItemModel with _$QuizItemModel implements IModelWithId {
   /// 예시:
   /// ```json
   /// {
-  ///   "id": 1,
   ///   "description": "지진 대피소 표시로 올바른 것을 고르세요",
   ///   "answer": 1,
   ///   "options": [
@@ -129,7 +137,6 @@ class QuizItemModel with _$QuizItemModel implements IModelWithId {
   /// }
   /// ```
   const factory QuizItemModel.multipleChoice({
-    required Id id,
     required String description,
     required List<Option> options,
     required int answer,

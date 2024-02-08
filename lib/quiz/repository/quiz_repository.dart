@@ -2,14 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:safetyedu/common/model/model_list.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
+import 'package:safetyedu/common/repository/model_list_repository_interface.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
 
 final quizRepositoryProvider = Provider<QuizRepository>(
   (ref) => QuizRepository(),
 );
 
-class QuizRepository {
+class QuizRepository implements IModelListRepository {
   Future<QuizDetailModel> getDetail({required Id id}) async {
     const filepath = 'asset/files/quiz/quiz_data.json';
     final jsonString = await rootBundle.loadString(filepath);
@@ -57,5 +59,10 @@ class QuizRepository {
     final quiz = quizList.firstWhere((element) => element.id == id);
 
     return quiz;
+  }
+
+  @override
+  Future<ModelList<IModelWithId<Id>>> fetch() {
+    throw UnimplementedError();
   }
 }

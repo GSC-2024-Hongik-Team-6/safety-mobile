@@ -12,16 +12,6 @@ enum QuizType {
   order,
 }
 
-sealed class QuizState {}
-
-class QuizError implements QuizState {
-  final String message;
-
-  QuizError({required this.message});
-}
-
-class QuizLoading implements QuizState {}
-
 /// ### 퀴즈 모델
 ///
 /// - [id] 퀴즈의 ID
@@ -63,9 +53,7 @@ class QuizLoading implements QuizState {}
 /// }
 /// ```
 @freezed
-class QuizDetailModel
-    with _$QuizDetailModel
-    implements IModelWithId, QuizState {
+class QuizDetailModel with _$QuizDetailModel implements IModelWithId {
   const factory QuizDetailModel({
     required Id id,
     required QuizType type,

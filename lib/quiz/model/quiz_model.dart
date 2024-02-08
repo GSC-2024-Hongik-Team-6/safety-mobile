@@ -53,15 +53,15 @@ enum QuizType {
 /// }
 /// ```
 @freezed
-class QuizModel with _$QuizModel implements IModelWithId {
-  const factory QuizModel({
+class QuizDetailModel with _$QuizDetailModel implements IModelWithId {
+  const factory QuizDetailModel({
     required Id id,
     required QuizType type,
     required QuizItemModel item,
   }) = _QuizModelWithMeta;
 
-  factory QuizModel.fromJson(Map<String, dynamic> json) =>
-      _$QuizModelFromJson(json);
+  factory QuizDetailModel.fromJson(Map<String, dynamic> json) =>
+      _$QuizDetailModelFromJson(json);
 }
 
 /// 퀴즈 아이템 모델
@@ -103,7 +103,7 @@ class QuizItemModel with _$QuizItemModel {
   /// ```
   const factory QuizItemModel.ordering({
     required String description,
-    required List<Option> options,
+    required List<QuizOption> options,
   }) = QuizItemOrdering;
 
   /// 객관식 퀴즈 타입
@@ -138,7 +138,7 @@ class QuizItemModel with _$QuizItemModel {
   /// ```
   const factory QuizItemModel.multipleChoice({
     required String description,
-    required List<Option> options,
+    required List<QuizOption> options,
     required int answer,
   }) = QuizItemMultipleChoice;
 
@@ -155,12 +155,13 @@ class QuizItemModel with _$QuizItemModel {
 ///
 /// **둘 중 하나는 있어야 함**
 @freezed
-class Option with _$Option {
-  const factory Option({
+class QuizOption with _$QuizOption {
+  const factory QuizOption({
     required int id,
     String? description,
     String? imageUrl,
-  }) = _Option;
+  }) = _QuizOption;
 
-  factory Option.fromJson(Map<String, dynamic> json) => _$OptionFromJson(json);
+  factory QuizOption.fromJson(Map<String, dynamic> json) =>
+      _$QuizOptionFromJson(json);
 }

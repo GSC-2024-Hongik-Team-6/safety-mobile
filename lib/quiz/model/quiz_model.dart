@@ -104,7 +104,7 @@ class QuizItemModel with _$QuizItemModel {
   const factory QuizItemModel.ordering({
     required String description,
     required List<Option> options,
-  }) = _QuizModel;
+  }) = QuizItemOrdering;
 
   /// 객관식 퀴즈 타입
   ///
@@ -140,7 +140,7 @@ class QuizItemModel with _$QuizItemModel {
     required String description,
     required List<Option> options,
     required int answer,
-  }) = _MultipleChoice;
+  }) = QuizItemMultipleChoice;
 
   factory QuizItemModel.fromJson(Map<String, dynamic> json) =>
       _$QuizItemModelFromJson(json);

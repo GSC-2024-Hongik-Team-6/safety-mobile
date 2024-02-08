@@ -1,12 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safetyedu/common/model/model_list.dart';
 import 'package:safetyedu/common/model/model_list_meta.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/common/repository/model_list_repository_interface.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
 import 'package:safetyedu/quiz/model/quiz_status_model.dart';
+
+final quizRepositoryProvider = Provider<QuizRepository>(
+  (ref) => QuizRepository(),
+);
 
 class QuizRepository implements IModelListRepository {
   final List<QuizStatusModel> items = [

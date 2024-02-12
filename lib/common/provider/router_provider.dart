@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safetyedu/category/view/category_detail_screen.dart';
+import 'package:safetyedu/education/view/education_detail_screen.dart';
 import 'package:safetyedu/common/view/root_tab.dart';
 import 'package:safetyedu/common/view/splash_screen.dart';
 import 'package:safetyedu/quiz/view/quiz_detail_screen.dart';
@@ -26,9 +26,9 @@ List<GoRoute> _routes = [
     builder: (_, __) => const TabView(),
     routes: [
       GoRoute(
-        path: 'category/:cid',
-        name: CategoryDetailScreen.routeName,
-        builder: (_, state) => CategoryDetailScreen(
+        path: 'education/:cid',
+        name: EducationDetailScreen.routeName,
+        builder: (_, state) => EducationDetailScreen(
           cid: int.parse(
             state.pathParameters['cid']!,
           ),

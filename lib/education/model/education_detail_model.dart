@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:safetyedu/category/model/category_model.dart';
+import 'package:safetyedu/education/model/education_model.dart';
 import 'package:safetyedu/quiz/model/quiz_status_model.dart';
 
-part 'category_detail_model.g.dart';
+part 'education_detail_model.g.dart';
 
 /// ### 카테고리 상세 모델
 ///
@@ -27,10 +27,10 @@ part 'category_detail_model.g.dart';
 /// }
 /// ```
 @JsonSerializable()
-class CategoryDetailModel extends CategoryModel {
+class EducationDetailModel extends EducationModel {
   final List<QuizStatusModel> quizzes;
 
-  const CategoryDetailModel({
+  const EducationDetailModel({
     required super.id,
     required super.title,
     required super.description,
@@ -39,6 +39,6 @@ class CategoryDetailModel extends CategoryModel {
     required this.quizzes,
   });
 
-  factory CategoryDetailModel.fromJson(Map<String, dynamic> json) =>
-      _$CategoryDetailModelFromJson(json);
+  factory EducationDetailModel.fromJson(Map<String, dynamic> json) =>
+      _$EducationDetailModelFromJson(json);
 }

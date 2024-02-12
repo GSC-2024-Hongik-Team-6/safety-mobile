@@ -41,6 +41,7 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
 
     if (category == null || category is! CategoryDetailModel) {
       return const DefaultLayout(
+        title: '',
         child: Center(
           child: CircularProgressIndicator(),
         ),
@@ -176,7 +177,7 @@ class QuizListTile extends StatelessWidget {
               onTap: () => context.pushNamed(
                 QuizDetailScreen.routeName,
                 pathParameters: {
-                  'qid': quiz.id,
+                  'qid': quiz.id.toString(),
                 },
               ),
               child: QuizCard(

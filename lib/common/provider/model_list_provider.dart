@@ -10,9 +10,13 @@ class ModelListProvider<Model extends IModelWithId,
 
   ModelListProvider({
     required this.repository,
-  }) : super(ModelListLoading());
+  }) : super(ModelListLoading()) {
+    fetch();
+  }
 
   Future<void> fetch() async {
+    state = ModelListLoading();
+
     try {
       final modelList = await repository.fetch();
 

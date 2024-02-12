@@ -14,7 +14,7 @@ final categoryDetailProvider =
     return null;
   }
 
-  return state.items.firstWhereOrNull((element) => element.id == id);
+  return state.data.firstWhereOrNull((element) => element.id == id);
 });
 
 final categoryProvider =

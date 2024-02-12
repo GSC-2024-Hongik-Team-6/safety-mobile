@@ -8,21 +8,21 @@ sealed class ModelListState {}
 
 @JsonSerializable(genericArgumentFactories: true)
 class ModelList<T> extends ModelListState {
-  final List<T> items;
+  final List<T> data;
   final ModelListMeta meta;
 
   ModelList({
-    required this.items,
+    required this.data,
     required this.meta,
   });
 
   /// copyWith
   ModelList<T> copyWith({
-    List<T>? items,
+    List<T>? data,
     ModelListMeta? meta,
   }) {
     return ModelList<T>(
-      items: items ?? this.items,
+      data: data ?? this.data,
       meta: meta ?? this.meta,
     );
   }
@@ -50,7 +50,7 @@ class ModelListLoading extends ModelListState {}
 /// 이때 이미 데이터가 들어있다고 가정함
 class ModelListRefetching<T> extends ModelList<T> {
   ModelListRefetching({
-    required super.items,
+    required super.data,
     required super.meta,
   });
 }

@@ -15,8 +15,6 @@ class ModelListProvider<Model extends IModelWithId,
   }
 
   Future<void> fetch() async {
-    state = ModelListLoading();
-
     try {
       final modelList = await repository.fetch();
 

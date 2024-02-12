@@ -5,28 +5,25 @@ import 'package:safetyedu/common/model/model_list.dart';
 import 'package:safetyedu/common/model/model_list_meta.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/common/repository/model_list_repository_interface.dart';
+import 'package:safetyedu/quiz/model/quiz_status_model.dart';
 
 final categoryRepositoryProvider = Provider<CategoryRepository>(
   (ref) => CategoryRepository(),
 );
 
-class CategoryRepository implements IModelListRepository<CategoryModel> {
+class CategoryRepository implements IDetailRepository<CategoryModel> {
   final List<CategoryModel> items = [
     const CategoryModel(
       id: "1",
       title: 'Earthquake',
       description: 'What should we do when Earthquake happens?',
       imageUrl: 'images/earthquake.png',
-      solvedQuizCount: 5,
-      totalQuizCount: 20,
     ),
     const CategoryModel(
       id: "2",
       title: 'Tsunami',
       description: 'What should we do when Tsunami comes?',
       imageUrl: 'images/tsunami.png',
-      solvedQuizCount: 5,
-      totalQuizCount: 20,
     ),
   ];
 
@@ -46,7 +43,8 @@ class CategoryRepository implements IModelListRepository<CategoryModel> {
     );
   }
 
-  Future<CategoryDetailModel> getCategoryDetail({required Id id}) {
+  @override
+  Future<CategoryDetailModel> getDetail({required Id id}) async {
     final category = items.firstWhere((element) => element.id == id);
 
     return Future.delayed(
@@ -56,10 +54,17 @@ class CategoryRepository implements IModelListRepository<CategoryModel> {
         title: category.title,
         description: category.description,
         imageUrl: category.imageUrl,
-        solvedQuizCount: category.solvedQuizCount,
-        totalQuizCount: category.totalQuizCount,
         detail: 'This is detail of ${category.title}',
-        quizzes: const [],
+        quizzes: [
+          const QuizStatusModel(
+            isSolved: false,
+            id: '0',
+          ),
+          const QuizStatusModel(
+            isSolved: false,
+            id: '1',
+          ),
+        ],
       ),
     );
   }

@@ -23,7 +23,7 @@ class QuizRepository implements IDetailRepository<QuizDetailModel> {
   @override
   Future<ModelList<QuizDetailModel>> fetch() async {
     return Future.value(ModelList<QuizDetailModel>(
-      data: const [],
+      data: [],
       meta: const ModelListMeta(count: 0),
     ));
   }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 
-class QuizButton extends StatelessWidget {
+class QuizCard extends StatelessWidget {
   /// 퀴즈의 아이콘
   final IconData icon;
 
   /// 퀴즈의 ID
   final Id id;
 
-  const QuizButton({
+  const QuizCard({
     super.key,
     required this.icon,
     required this.id,
@@ -16,14 +16,9 @@ class QuizButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        print('QuizButton: $id Pressed');
-      },
-      icon: Icon(
-        icon,
-        size: 48.0,
-      ),
+    return Icon(
+      icon,
+      size: 48.0,
     );
   }
 }

@@ -17,19 +17,11 @@ class CategoryModel implements IModelWithId {
   // 카테고리 이미지
   final String imageUrl;
 
-  // 사용자가 푼 퀴즈 수
-  final int solvedQuizCount;
-
-  // 카테고리 내 전체 퀴즈 수
-  final int totalQuizCount;
-
   const CategoryModel({
     required this.id,
     required this.title,
     required this.description,
     required this.imageUrl,
-    required this.solvedQuizCount,
-    required this.totalQuizCount,
   });
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) =>

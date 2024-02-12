@@ -43,7 +43,7 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
       title: 'Quiz Detail Page ${widget.qid}',
       child: Center(
         child: Text(
-          quiz.item.description,
+          quiz.data.description,
         ),
       ),
     );

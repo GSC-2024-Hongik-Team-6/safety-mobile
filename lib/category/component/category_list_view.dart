@@ -51,15 +51,15 @@ class CategoryListView extends ConsumerWidget {
     final listState = categoryList as ModelList<CategoryModel>;
 
     return ListView.separated(
-      itemCount: listState.items.length,
+      itemCount: listState.data.length,
       itemBuilder: (context, index) {
-        final category = listState.items[index];
+        final category = listState.data[index];
 
         return GestureDetector(
           onTap: () => context.goNamed(
             CategoryDetailScreen.routeName,
             pathParameters: {
-              'cid': category.id,
+              'cid': category.id.toString(),
             },
           ),
           child: CategoryCard(

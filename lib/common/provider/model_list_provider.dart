@@ -49,12 +49,12 @@ class DetailProvider<Model extends IModelWithId,
 
     final response = await repository.getDetail(id: id);
 
-    if (modelList.items.where((element) => element.id == id).isEmpty) {
-      modelList.items.add(response);
+    if (modelList.data.where((element) => element.id == id).isEmpty) {
+      modelList.data.add(response);
     }
 
     state = modelList.copyWith(
-      items: modelList.items.map((e) => e.id == id ? response : e).toList(),
+      data: modelList.data.map((e) => e.id == id ? response : e).toList(),
     );
   }
 }

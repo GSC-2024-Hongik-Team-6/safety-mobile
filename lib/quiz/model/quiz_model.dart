@@ -57,7 +57,7 @@ class QuizDetailModel with _$QuizDetailModel implements IModelWithId {
   const factory QuizDetailModel({
     required Id id,
     required QuizType type,
-    required QuizItemModel item,
+    required QuizItemModel data,
   }) = _QuizDetailModel;
 
   factory QuizDetailModel.fromJson(Map<String, dynamic> json) =>

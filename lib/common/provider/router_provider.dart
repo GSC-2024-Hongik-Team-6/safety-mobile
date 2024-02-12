@@ -29,7 +29,9 @@ List<GoRoute> _routes = [
         path: 'category/:cid',
         name: CategoryDetailScreen.routeName,
         builder: (_, state) => CategoryDetailScreen(
-          cid: state.pathParameters['cid']!,
+          cid: int.parse(
+            state.pathParameters['cid']!,
+          ),
         ),
       )
     ],
@@ -53,7 +55,7 @@ List<GoRoute> _routes = [
     path: '/quiz/:qid',
     name: QuizDetailScreen.routeName,
     builder: (context, state) => QuizDetailScreen(
-      qid: state.pathParameters['qid']!,
+      qid: int.parse(state.pathParameters['qid']!),
     ),
   )
 ];

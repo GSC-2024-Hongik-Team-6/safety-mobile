@@ -13,7 +13,7 @@ final quizDetailProvier = Provider.family<QuizDetailModel?, Id>((ref, Id id) {
     return null;
   }
 
-  return state.items.firstWhereOrNull((element) => element.id == id);
+  return state.data.firstWhereOrNull((element) => element.id == id);
 });
 
 final quizProvider = StateNotifierProvider<QuizStateNotifier, ModelListState>(

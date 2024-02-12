@@ -28,7 +28,6 @@ part 'category_detail_model.g.dart';
 /// ```
 @JsonSerializable()
 class CategoryDetailModel extends CategoryModel {
-  final String detail;
   final List<QuizStatusModel> quizzes;
 
   const CategoryDetailModel({
@@ -36,7 +35,7 @@ class CategoryDetailModel extends CategoryModel {
     required super.title,
     required super.description,
     required super.imageUrl,
-    required this.detail,
+    required super.detail,
     required this.quizzes,
   });
 

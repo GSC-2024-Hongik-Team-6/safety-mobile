@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safetyedu/category/model/category_detail_model.dart';
 import 'package:safetyedu/category/provider/category_provider.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
@@ -8,7 +9,8 @@ import 'package:safetyedu/common/layout.dart/default_layout.dart';
 
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/quiz/component/quiz_button.dart';
-import 'package:safetyedu/quiz/model/quiz_model.dart';
+import 'package:safetyedu/quiz/model/quiz_status_model.dart';
+import 'package:safetyedu/quiz/view/quiz_detail_screen.dart';
 
 class CategoryDetailScreen extends ConsumerStatefulWidget {
   static const routeName = '/category-detail';
@@ -26,15 +28,6 @@ class CategoryDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
-  final List<IconData> quizIcons = [
-    Icons.star,
-    Icons.star,
-    Icons.star,
-    Icons.star,
-    Icons.star,
-    // Add more icons as needed
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -150,7 +143,7 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
 }
 
 class QuizListTile extends StatelessWidget {
-  final List<QuizItemModel> quizList;
+  final List<QuizStatusModel> quizList;
 
   const QuizListTile({
     super.key,
@@ -160,9 +153,9 @@ class QuizListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 25,
+      itemCount: quizList.length,
       itemBuilder: (context, index) {
-        // final quiz = quizList[index];
+        final quiz = quizList[index];
 
         final alignflag = index % 4;
 
@@ -178,10 +171,18 @@ class QuizListTile extends StatelessWidget {
 
         return Row(
           mainAxisAlignment: align,
-          children: const [
-            QuizButton(
-              icon: Icons.star,
-              id: '1',
+          children: [
+            GestureDetector(
+              onTap: () => context.pushNamed(
+                QuizDetailScreen.routeName,
+                pathParameters: {
+                  'qid': quiz.id,
+                },
+              ),
+              child: QuizCard(
+                icon: Icons.star,
+                id: quiz.id,
+              ),
             ),
           ],
         );

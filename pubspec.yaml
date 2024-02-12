@@ -43,6 +43,7 @@ dependencies:
   firebase_auth: ^4.16.0
   social_login_buttons: ^1.0.7
   collection: ^1.18.0
+  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:

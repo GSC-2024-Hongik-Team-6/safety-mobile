@@ -1,7 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:safetyedu/common/const/colors.dart';
-import 'package:safetyedu/education/model/education_model.dart';
 
 class EducationCard extends StatelessWidget {
   /// 카테고리 제목

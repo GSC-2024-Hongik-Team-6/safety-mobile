@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 /// Default Layout은 모든 Screen에 공통적으로 래핑되는 Layout입니다.

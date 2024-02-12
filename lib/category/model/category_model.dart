@@ -17,11 +17,14 @@ class CategoryModel implements IModelWithId {
   // 카테고리 이미지
   final String imageUrl;
 
+  final String detail;
+
   const CategoryModel({
     required this.id,
     required this.title,
     required this.description,
     required this.imageUrl,
+    required this.detail,
   });
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) =>

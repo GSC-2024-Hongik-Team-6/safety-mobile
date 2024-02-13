@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:safetyedu/category/component/category_list_view.dart';
+import 'package:safetyedu/education/component/education_list_view.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
 
@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
           SizedBox(height: 24),
-          Expanded(child: CategoryListView()),
+          Expanded(child: EducationListView()),
         ],
       ),
     );

@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 
-part 'category_model.g.dart';
+part 'education_model.g.dart';
 
 @JsonSerializable()
-class CategoryModel implements IModelWithId {
+class EducationModel implements IModelWithId {
   @override
   final Id id;
 
@@ -19,7 +19,7 @@ class CategoryModel implements IModelWithId {
 
   final String detail;
 
-  const CategoryModel({
+  const EducationModel({
     required this.id,
     required this.title,
     required this.description,
@@ -27,8 +27,8 @@ class CategoryModel implements IModelWithId {
     required this.detail,
   });
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) =>
-      _$CategoryModelFromJson(json);
+  factory EducationModel.fromJson(Map<String, dynamic> json) =>
+      _$EducationModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CategoryModelToJson(this);
+  Map<String, dynamic> toJson() => _$EducationModelToJson(this);
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safetyedu/category/model/category_detail_model.dart';
-import 'package:safetyedu/category/provider/category_provider.dart';
+import 'package:safetyedu/education/model/education_detail_model.dart';
+import 'package:safetyedu/education/provider/education_provider.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
@@ -12,34 +12,34 @@ import 'package:safetyedu/quiz/component/quiz_button.dart';
 import 'package:safetyedu/quiz/model/quiz_status_model.dart';
 import 'package:safetyedu/quiz/view/quiz_detail_screen.dart';
 
-class CategoryDetailScreen extends ConsumerStatefulWidget {
-  static const routeName = '/category-detail';
+class EducationDetailScreen extends ConsumerStatefulWidget {
+  static const routeName = '/education-detail';
 
   final Id cid;
 
-  const CategoryDetailScreen({
+  const EducationDetailScreen({
     super.key,
     required this.cid,
   });
 
   @override
-  ConsumerState<CategoryDetailScreen> createState() =>
-      _CategoryDetailScreenState();
+  ConsumerState<EducationDetailScreen> createState() =>
+      _EducationDetailScreenState();
 }
 
-class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
+class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
   @override
   void initState() {
     super.initState();
 
-    ref.read(categoryProvider.notifier).getDetail(id: widget.cid);
+    ref.read(educationProvider.notifier).getDetail(id: widget.cid);
   }
 
   @override
   Widget build(BuildContext context) {
-    final category = ref.watch(categoryDetailProvider(widget.cid));
+    final state = ref.watch(educationDetailProvider(widget.cid));
 
-    if (category == null || category is! CategoryDetailModel) {
+    if (state == null || state is! EducationDetailModel) {
       return const DefaultLayout(
         title: '',
         child: Center(
@@ -50,21 +50,21 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
 
     return DefaultLayout(
       title: 'Learning by Quiz',
-      appBar: _buildCategoryAppBar(context: context, category: category),
+      appBar: _buildEducationAppBar(context: context, education: state),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: QuizListTile(quizList: category.quizzes),
+        child: QuizListTile(quizList: state.quizzes),
       ),
     );
   }
 
-  AppBar _buildCategoryAppBar({
+  AppBar _buildEducationAppBar({
     required BuildContext context,
-    required CategoryDetailModel category,
+    required EducationDetailModel education,
   }) {
     return AppBar(
       title: Text(
-        category.title,
+        education.title,
         style: const CustomTextStyle(
           textFontSize: 16,
           textFontWeight: FontWeight.w500,
@@ -113,7 +113,7 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
                         color: Colors.white,
                         child: Center(
                           child: Text(
-                            category.detail,
+                            education.detail,
                           ),
                         ),
                       ));

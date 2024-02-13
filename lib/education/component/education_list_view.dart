@@ -62,13 +62,7 @@ class EducationListView extends ConsumerWidget {
               'cid': category.id.toString(),
             },
           ),
-          child: EducationCard(
-            title: category.title,
-            description: category.description,
-
-            /// TODO: Implement Image showing
-            image: const Icon(Icons.warning),
-          ),
+          child: EducationCard.fromModel(category),
         );
       },
       separatorBuilder: (_, __) => const SizedBox(

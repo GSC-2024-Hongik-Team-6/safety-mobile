@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safetyedu/common/const/colors.dart';
+import 'package:safetyedu/education/model/education_model.dart';
 
 class EducationCard extends StatelessWidget {
   /// 카테고리 제목
@@ -11,12 +12,27 @@ class EducationCard extends StatelessWidget {
   /// 이미지
   final Widget image;
 
+  /// Detail 설명
+  final String detail;
+
   const EducationCard({
     super.key,
     required this.title,
     required this.description,
     required this.image,
+    required this.detail,
   });
+
+  factory EducationCard.fromModel(EducationModel model) {
+    return EducationCard(
+      title: model.title,
+      description: model.description,
+      image: const Icon(
+        Icons.image,
+      ),
+      detail: model.detail,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +86,10 @@ class EducationCard extends StatelessWidget {
                   const SizedBox(height: 8),
                 ],
               ),
+            ),
+            const Icon(
+              Icons.note_add,
+              color: primaryColor,
             )
           ],
         ),

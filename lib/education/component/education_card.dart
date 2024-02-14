@@ -12,27 +12,32 @@ class EducationCard extends StatelessWidget {
   final String description;
 
   /// 이미지
-  final Widget image;
+  final Widget thumb;
 
   /// Detail 설명
   final String detail;
+
+  /// detail 이미지
+  final List<String>? images;
 
   const EducationCard({
     super.key,
     required this.title,
     required this.description,
-    required this.image,
+    required this.thumb,
     required this.detail,
+    required this.images,
   });
 
   factory EducationCard.fromModel(EducationModel model) {
     return EducationCard(
       title: model.title,
       description: model.description,
-      image: const Icon(
+      thumb: const Icon(
         Icons.image,
       ),
       detail: model.detail,
+      images: model.images,
     );
   }
 
@@ -56,7 +61,7 @@ class EducationCard extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: image,
+                child: thumb,
               ),
             ),
             const SizedBox(width: 20),
@@ -89,6 +94,7 @@ class EducationCard extends StatelessWidget {
                       child: EducationDetailPopUp(
                     title: title,
                     detail: detail,
+                    images: images,
                   )),
                 );
               },

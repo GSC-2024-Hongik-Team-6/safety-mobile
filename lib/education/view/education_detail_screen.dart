@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safetyedu/education/component/education_detail_popup.dart';
 import 'package:safetyedu/education/model/education_detail_model.dart';
 import 'package:safetyedu/education/provider/education_provider.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
@@ -64,60 +65,47 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
   }) {
     return AppBar(
       title: Text(
-        education.title,
-        style: const CustomTextStyle(
-          textFontSize: 16,
-          textFontWeight: FontWeight.w500,
-          textColor: Colors.white,
+        'quiz',
+        style: TextStyles.subTitleTextStyle.copyWith(
+          color: Colors.white,
         ),
       ),
+      centerTitle: true,
       backgroundColor: primaryColor,
       elevation: 0,
       bottom: PreferredSize(
-        preferredSize: const Size(double.infinity, 100),
+        preferredSize: const Size(double.infinity, 110),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Quiz',
-                    style: CustomTextStyle(
-                      textFontSize: 28,
-                      textFontWeight: FontWeight.w700,
-                      textColor: Colors.white,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      education.title,
+                      style: TextStyles.titleTextStyle.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Let’s solve alternative quizes',
-                    style: CustomTextStyle(
-                      textFontSize: 20,
-                      textFontWeight: FontWeight.w400,
-                      textColor: Colors.white,
+                    Text(
+                      education.description,
+                      style: TextStyles.descriptionTextStyle.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               IconButton(
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) {
-                      return Dialog(
-                          child: Container(
-                        height: 300,
-                        width: 300,
-                        color: Colors.white,
-                        child: Center(
-                          child: Text(
-                            education.detail,
-                          ),
-                        ),
-                      ));
-                    },
+                    builder: (context) => Dialog(
+                      child: EducationDetailPopUp.fromModel(education),
+                    ),
                   );
                 },
                 icon: Container(

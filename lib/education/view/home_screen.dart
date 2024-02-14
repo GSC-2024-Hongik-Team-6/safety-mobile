@@ -16,11 +16,7 @@ class HomeScreen extends ConsumerWidget {
         children: [
           Text(
             'Learning by Quiz',
-            style: CustomTextStyle(
-              textFontSize: 28,
-              textFontWeight: FontWeight.w700,
-              textColor: titleTextColor,
-            ),
+            style: TextStyles.titleTextStyle,
           ),
           SizedBox(height: 24),
           Expanded(child: EducationListView()),

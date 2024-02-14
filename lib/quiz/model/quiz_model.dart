@@ -157,7 +157,7 @@ class QuizItemModel with _$QuizItemModel {
 @freezed
 class QuizOption with _$QuizOption {
   const factory QuizOption({
-    required int id,
+    required int number,
     String? description,
     String? imageUrl,
   }) = _QuizOption;

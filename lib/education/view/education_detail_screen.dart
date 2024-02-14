@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safetyedu/education/component/education_detail_popup.dart';
 import 'package:safetyedu/education/model/education_detail_model.dart';
+import 'package:safetyedu/education/model/education_model.dart';
 import 'package:safetyedu/education/provider/education_provider.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
@@ -40,7 +41,7 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(educationDetailProvider(widget.cid));
 
-    if (state == null || state is! EducationDetailModel) {
+    if (state == null) {
       return const DefaultLayout(
         title: '',
         child: Center(
@@ -54,14 +55,18 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
       appBar: _buildEducationAppBar(context: context, education: state),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: QuizListTile(quizList: state.quizzes),
+        child: state is EducationDetailModel
+            ? QuizListTile(quizList: state.quizzes)
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
   }
 
   AppBar _buildEducationAppBar({
     required BuildContext context,
-    required EducationDetailModel education,
+    required EducationModel education,
   }) {
     return AppBar(
       title: Text(

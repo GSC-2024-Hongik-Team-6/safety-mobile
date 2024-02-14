@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safetyedu/education/component/education_list_view.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
-import 'package:safetyedu/common/const/colors.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});

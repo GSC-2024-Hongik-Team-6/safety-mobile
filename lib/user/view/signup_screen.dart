@@ -42,12 +42,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 60.0),
-                    const Text(
+                    Text(
                       'REGISTER',
-                      style: CustomTextStyle(
-                        textFontSize: 24,
-                        textFontWeight: FontWeight.w700,
-                        textColor: titleTextColor,
+                      style: TextStyles.titleTextStyle.copyWith(
+                        fontSize: 24,
                       ),
                     ),
                     const SizedBox(height: 20.0),
@@ -90,10 +88,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     if (currentUserState is UserError)
                       Text(
                         currentUserState.message,
-                        style: const CustomTextStyle(
-                          textFontSize: 16,
-                          textFontWeight: FontWeight.w400,
-                          textColor: Colors.red,
+                        style: TextStyles.descriptionTextStyle.copyWith(
+                          color: Colors.red,
                         ),
                       ),
                     // 회원 가입 버튼
@@ -121,10 +117,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         padding: EdgeInsets.symmetric(vertical: 10.0),
                         child: Text(
                           'REGISTER',
-                          style: CustomTextStyle(
-                            textFontSize: 16,
-                            textFontWeight: FontWeight.w700,
-                            textColor: Colors.white,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),

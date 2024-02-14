@@ -42,12 +42,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 60.0),
-                    const Text(
+                    Text(
                       'LOGIN',
-                      style: CustomTextStyle(
-                        textFontSize: 24,
-                        textFontWeight: FontWeight.w700,
-                        textColor: titleTextColor,
+                      style: TextStyles.titleTextStyle.copyWith(
+                        fontSize: 24,
                       ),
                     ),
                     const SizedBox(height: 20.0),
@@ -95,10 +93,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 currentUserState is UserLoading
                                     ? 'Wait for a second...'
                                     : 'LOGIN',
-                                style: const CustomTextStyle(
-                                  textFontWeight: FontWeight.w600,
-                                  textFontSize: 18,
-                                  textColor: Colors.white,
+                                style: TextStyles.titleTextStyle.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 18,
                                 ),
                               ),
                             ),
@@ -110,9 +107,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     if (currentUserState is UserError)
                       Text(
                         currentUserState.message,
-                        style: const CustomTextStyle(
-                          textFontSize: 16,
-                          textColor: Colors.red,
+                        style: TextStyles.descriptionTextStyle.copyWith(
+                          color: Colors.red,
                         ),
                       ),
                     const SocialLoginButtonList(),
@@ -122,10 +118,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       child: RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          style: const CustomTextStyle(
-                            textFontSize: 16,
-                            textColor: inputHintTextColor,
-                          ),
+                          style: TextStyles.hintTextStyle,
                           children: [
                             const TextSpan(
                               text: 'If not yet a member, ',

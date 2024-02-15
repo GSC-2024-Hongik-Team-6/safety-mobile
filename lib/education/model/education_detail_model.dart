@@ -34,8 +34,9 @@ class EducationDetailModel extends EducationModel {
     required super.id,
     required super.title,
     required super.description,
-    required super.imageUrl,
+    required super.thumbUrl,
     required super.detail,
+    required super.images,
     required this.quizzes,
   });
 

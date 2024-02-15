@@ -15,16 +15,20 @@ class EducationModel implements IModelWithId {
   final String description;
 
   // 카테고리 이미지
-  final String imageUrl;
+  final String thumbUrl;
 
+  // 카테고리 상세 내용
   final String detail;
+
+  final List<String> images;
 
   const EducationModel({
     required this.id,
     required this.title,
     required this.description,
-    required this.imageUrl,
+    required this.thumbUrl,
     required this.detail,
+    required this.images,
   });
 
   factory EducationModel.fromJson(Map<String, dynamic> json) =>

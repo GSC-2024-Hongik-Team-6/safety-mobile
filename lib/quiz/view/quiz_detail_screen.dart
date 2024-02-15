@@ -5,6 +5,7 @@ import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
+import 'package:safetyedu/quiz/provider/current_selection_provider.dart';
 import 'package:safetyedu/quiz/provider/quiz_provider.dart';
 import 'package:safetyedu/quiz/view/quiz_multiple_choice_view.dart';
 
@@ -33,6 +34,7 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final quiz = ref.watch(quizDetailProvier(widget.qid));
+    final currentSelection = ref.watch(currentSelectionProvider(widget.qid));
 
     if (quiz == null) {
       return const DefaultLayout(
@@ -45,7 +47,27 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
 
     return DefaultLayout(
       title: 'Quiz Detail Page ${widget.qid}',
-      child: buildQuizDetail(quiz: quiz),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          children: [
+            HtmlWidget(
+              quiz.data.description,
+              textStyle: TextStyles.titleTextStyle.copyWith(
+                fontSize: 28.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 24.0),
+            Expanded(child: buildQuizDetail(quiz: quiz)),
+            const SizedBox(height: 24.0),
+            ElevatedButton(
+              onPressed: currentSelection != null ? () {} : null,
+              child: const Text('Submit'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -55,7 +77,8 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
         return _OrderingView(quiz: quiz.data as QuizItemOrdering);
       case QuizType.multipleChoice:
         return MultipleChoiceView(
-          quiz: quiz.data as QuizItemMultipleChoice
+          quiz: quiz.data as QuizItemMultipleChoice,
+          id: quiz.id,
         );
     }
   }

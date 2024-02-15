@@ -30,14 +30,10 @@ class MultipleChoiceView extends ConsumerWidget {
 
         return GestureDetector(
           onTap: () {
-            if (isSelected) {
-              ref.read(selectionProvider.notifier).unselect(id);
-            } else {
-              ref.read(selectionProvider.notifier).select(
-                    quizId: id,
-                    number: option.number,
-                  );
-            }
+            ref.read(selectionProvider.notifier).select(
+                  quizId: id,
+                  number: option.number,
+                );
           },
           child: OptionCard(
             imageUrl: option.imageUrl,

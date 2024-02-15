@@ -29,6 +29,7 @@ class CurrentSelectionStateNotifier
     final target = state.firstWhereOrNull((e) => e.quizId == quizId);
 
     if (target == null) {
+      // 아직 선택된 것이 없을 경우, 새 선택을 추가
       state = [
         ...state,
         CurrentSelection(
@@ -40,12 +41,15 @@ class CurrentSelectionStateNotifier
       return;
     }
 
+    if (target.number == number) {
+      // 이미 선택된 것을 다시 선택할 경우, 선택 해제
+      state = state.where((e) => e.quizId != quizId).toList();
+      return;
+    }
+
+    // 선택된 것을 변경할 경우, 선택 변경
     state = state
         .map((e) => e.quizId == quizId ? e.copyWith(number: number) : e)
         .toList();
-  }
-
-  void unselect(Id quizId) {
-    state = state.where((e) => e.quizId != quizId).toList();
   }
 }

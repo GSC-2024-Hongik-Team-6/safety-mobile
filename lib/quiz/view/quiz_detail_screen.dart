@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:safetyedu/common/component/custom_elevated_button.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
@@ -50,6 +51,7 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             HtmlWidget(
               quiz.data.description,
@@ -61,9 +63,25 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
             const SizedBox(height: 24.0),
             Expanded(child: buildQuizDetail(quiz: quiz)),
             const SizedBox(height: 24.0),
-            ElevatedButton(
-              onPressed: currentSelection != null ? () {} : null,
-              child: const Text('Submit'),
+            // ElevatedButton(
+            //   onPressed: currentSelection != null ? () {} : null,
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: primaryColor,
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(12.0),
+            //     ),
+            //   ),
+            //   child: Text(
+            //     'Submit',
+            //     style: TextStyles.titleTextStyle.copyWith(
+            //       color: Colors.white,
+            //       fontSize: 18.0,
+            //     ),
+            //   ),
+            // ),
+            CustomElevatedBotton(onPressed: 
+              currentSelection != null ? () {} : null, 
+              text: 'Submit'
             ),
           ],
         ),

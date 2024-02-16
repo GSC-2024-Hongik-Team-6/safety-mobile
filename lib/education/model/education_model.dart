@@ -20,7 +20,8 @@ class EducationModel implements IModelWithId {
   // 카테고리 상세 내용
   final String detail;
 
-  final List<String> images;
+  /// detail 페이지에 표시할 이미지들(nullable)
+  final List<String>? images;
 
   const EducationModel({
     required this.id,

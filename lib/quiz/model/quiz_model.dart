@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
+import 'package:safetyedu/quiz/model/quiz_status_model.dart';
 
 part 'quiz_model.freezed.dart';
 part 'quiz_model.g.dart';
@@ -10,6 +11,19 @@ enum QuizType {
 
   @JsonValue('ORDERING')
   order,
+}
+
+extension QuizTypeExtension on String {
+  QuizType toQuizType() {
+    switch (this) {
+      case 'MULTIPLE_CHOICE':
+        return QuizType.multipleChoice;
+      case 'ORDERING':
+        return QuizType.order;
+      default:
+        throw ArgumentError.value(this, 'value', 'Invalid QuizType value');
+    }
+  }
 }
 
 /// ### 퀴즈 모델
@@ -52,16 +66,39 @@ enum QuizType {
 ///   }
 /// }
 /// ```
-@freezed
-class QuizDetailModel with _$QuizDetailModel implements IModelWithId {
-  const factory QuizDetailModel({
-    required Id id,
-    required QuizType type,
-    required QuizItemModel data,
-  }) = _QuizDetailModel;
+class QuizDetailModel extends QuizStatusModel {
+  final QuizType type;
+  final QuizItemModel data;
 
-  factory QuizDetailModel.fromJson(Map<String, dynamic> json) =>
-      _$QuizDetailModelFromJson(json);
+  QuizDetailModel({
+    required this.type,
+    required this.data,
+    required super.id,
+    required super.answerStatus,
+  });
+
+  factory QuizDetailModel.fromJson(Map<String, dynamic> json) {
+    final id = json['id'] as Id;
+    final type = (json['type'] as String).toQuizType();
+    final data = json['data'] as Map<String, dynamic>;
+    final answerStatus = (json['answerStatus'] as int).toAnswerStatus();
+
+    if (type == QuizType.multipleChoice) {
+      return QuizDetailModel(
+        id: id,
+        answerStatus: answerStatus,
+        type: QuizType.multipleChoice,
+        data: QuizItemMultipleChoice.fromJson(data),
+      );
+    } else {
+      return QuizDetailModel(
+        id: id,
+        answerStatus: answerStatus,
+        type: QuizType.order,
+        data: QuizItemOrdering.fromJson(data),
+      );
+    }
+  }
 }
 
 /// 퀴즈 아이템 모델

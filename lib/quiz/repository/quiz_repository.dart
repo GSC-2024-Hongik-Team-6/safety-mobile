@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:retrofit/retrofit.dart';
 import 'package:safetyedu/common/model/model_list.dart';
-import 'package:safetyedu/common/model/model_list_meta.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/common/provider/dio_provider.dart';
-import 'package:safetyedu/common/repository/model_list_repository_interface.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
+import 'package:safetyedu/quiz/model/quiz_status_model.dart';
+
+part 'quiz_repository.g.dart';
 
 final quizRepositoryProvider = Provider<QuizRepository>(
   (ref) {
@@ -15,41 +17,17 @@ final quizRepositoryProvider = Provider<QuizRepository>(
   },
 );
 
-class QuizRepository implements IDetailRepository<QuizDetailModel> {
-  final Dio dio;
+@RestApi()
+abstract class QuizRepository {
+  factory QuizRepository(Dio dio) = _QuizRepository;
 
-  QuizRepository(this.dio);
+  @GET('/quiz')
+  Future<ModelList<QuizStatusModel>> fetch({
+    @Query("educationId") Id? educationId,
+  });
 
-  @override
-  Future<ModelList<QuizDetailModel>> fetch() async {
-    return Future.value(ModelList<QuizDetailModel>(
-      data: [],
-      meta: const ModelListMeta(count: 0),
-    ));
-  }
-
-  @override
+  @GET('/quiz/{id}')
   Future<QuizDetailModel> getDetail({
-    required Id id,
-  }) async {
-    final response = await dio.get('/quiz/$id');
-
-    if (response.data['type'] == 'MULTIPLE_CHOICE') {
-      return QuizDetailModel(
-        id: id,
-        type: QuizType.multipleChoice,
-        data: QuizItemMultipleChoice.fromJson(
-          response.data['data'],
-        ),
-      );
-    } else {
-      return QuizDetailModel(
-        id: id,
-        type: QuizType.order,
-        data: QuizItemOrdering.fromJson(
-          response.data['data'],
-        ),
-      );
-    }
-  }
+    @Path() required Id id,
+  });
 }

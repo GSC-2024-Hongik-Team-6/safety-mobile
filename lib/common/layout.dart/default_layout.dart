@@ -41,6 +41,7 @@ class DefaultLayout extends StatelessWidget {
     return title == null
         ? null
         : AppBar(
+            centerTitle: true,
             backgroundColor: Colors.white,
             elevation: 0,
             title: Text(

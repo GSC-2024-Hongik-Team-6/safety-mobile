@@ -61,4 +61,35 @@ class QuizStateNotifier extends StateNotifier<ModelListState> {
       data: modelList.data.map((e) => e.id == id ? response : e).toList(),
     );
   }
+
+  Future<void> answer({
+    required Id id,
+    required bool isCorrect,
+  }) async {
+    if (state is! ModelList) {
+      await fetch();
+    }
+
+    if (state is! ModelList) {
+      return;
+    }
+
+    final modelList = state as ModelList<QuizStatusModel>;
+
+    final quiz = modelList.data.firstWhereOrNull((element) => element.id == id);
+
+    if (quiz == null) {
+      return;
+    }
+
+    final status = isCorrect ? AnswerStatus.correct : AnswerStatus.wrong;
+
+    final updated = quiz.copyWith(
+      answerStatus: status,
+    );
+
+    state = modelList.copyWith(
+      data: modelList.data.map((e) => e.id == id ? updated : e).toList(),
+    );
+  }
 }

@@ -6,6 +6,7 @@ import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
+import 'package:safetyedu/quiz/model/quiz_status_model.dart';
 import 'package:safetyedu/quiz/provider/current_selection_provider.dart';
 import 'package:safetyedu/quiz/provider/quiz_provider.dart';
 import 'package:safetyedu/quiz/view/quiz_multiple_choice_view.dart';
@@ -25,6 +26,8 @@ class QuizDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
+  bool _isCorrect = false;
+
   @override
   void initState() {
     super.initState();
@@ -61,35 +64,34 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
               ),
             ),
             const SizedBox(height: 24.0),
-            Expanded(child: buildQuizDetail(quiz: quiz)),
+            Expanded(
+                child: buildQuizDetail(
+                    quiz: quiz,
+                    onAnswered: (isCorrect) {
+                      setState(() {
+                        _isCorrect = isCorrect;
+                      });
+                    })),
             const SizedBox(height: 24.0),
-            // ElevatedButton(
-            //   onPressed: currentSelection != null ? () {} : null,
-            //   style: ElevatedButton.styleFrom(
-            //     backgroundColor: primaryColor,
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(12.0),
-            //     ),
-            //   ),
-            //   child: Text(
-            //     'Submit',
-            //     style: TextStyles.titleTextStyle.copyWith(
-            //       color: Colors.white,
-            //       fontSize: 18.0,
-            //     ),
-            //   ),
-            // ),
-            CustomElevatedBotton(onPressed: 
-              currentSelection != null ? () {} : null, 
-              text: 'Submit'
-            ),
+            CustomElevatedBotton(
+                onPressed: currentSelection != null
+                    ? () {
+                        ref
+                            .read(quizProvider.notifier)
+                            .answer(id: quiz.id, isCorrect: _isCorrect);
+                      }
+                    : null,
+                text: 'Submit'),
           ],
         ),
       ),
     );
   }
 
-  Widget buildQuizDetail({required QuizDetailModel quiz}) {
+  Widget buildQuizDetail({
+    required QuizDetailModel quiz,
+    required Function(bool) onAnswered,
+  }) {
     switch (quiz.type) {
       case QuizType.order:
         return _OrderingView(quiz: quiz.data as QuizItemOrdering);
@@ -97,6 +99,7 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
         return MultipleChoiceView(
           quiz: quiz.data as QuizItemMultipleChoice,
           id: quiz.id,
+          onAnswered: onAnswered,
         );
     }
   }

@@ -19,16 +19,10 @@ final educationRepositoryProvider = Provider<EducationRepository>(
 
 @RestApi(baseUrl: '/education')
 abstract class EducationRepository
-    implements IDetailRepository<EducationModel> {
+    implements IModelListRepository<EducationModel> {
   factory EducationRepository(Dio dio) = _EducationRepository;
 
   @override
   @GET('/')
   Future<ModelList<EducationModel>> fetch();
-
-  /// deleted function
-  @override
-  Future<EducationModel> getDetail({required Id id}) {
-    throw UnimplementedError();
-  }
 }

@@ -33,7 +33,7 @@ final educationProvider =
 );
 
 class EducationStateNotifier
-    extends DetailProvider<EducationModel, EducationRepository> {
+    extends ModelListProvider<EducationModel, EducationRepository> {
   final QuizRepository quizRepository;
 
   EducationStateNotifier({
@@ -41,7 +41,6 @@ class EducationStateNotifier
     required this.quizRepository,
   });
 
-  @override
   Future<void> getDetail({required Id id}) async {
     if (state is! ModelList) {
       await fetch();

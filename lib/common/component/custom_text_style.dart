@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:safetyedu/common/const/colors.dart';
 
-class CustomTextStyle extends TextStyle {
-  final Color? textColor;
-  final double? textFontSize;
-  final String? textFontFamily;
-  final FontWeight? textFontWeight;
-  final double? textHeight;
+class TextStyles {
+  /// Font size: 28, FontWeight: 600, Color: titleTextColor
+  static const titleTextStyle = TextStyle(
+    fontSize: 28,
+    fontWeight: FontWeight.w600,
+    color: titleTextColor,
+  );
 
-  const CustomTextStyle({
-    this.textColor,
-    this.textFontSize,
-    this.textFontFamily,
-    this.textFontWeight,
-    this.textHeight,
-  }) : super(
-          color: textColor ?? inputHintTextColor,
-          fontSize: textFontSize ?? 20,
-          fontFamily: textFontFamily ?? 'Cabin',
-          fontWeight: textFontWeight ?? FontWeight.w400,
-          height: textHeight,
-        );
+  /// Font size: 20, FontWeight: 500, Color: titleTextColor
+  static const subTitleTextStyle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: titleTextColor,
+  );
+
+  /// Font size: 16, FontWeight: 400, Color: inputHintTextColor
+  static const hintTextStyle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: inputHintTextColor,
+  );
+
+  /// Font size: 16, FontWeight: 400, Color: descriptionTextColor
+  static const descriptionTextStyle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: descriptionTextColor,
+  );
 }

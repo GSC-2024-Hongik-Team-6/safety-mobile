@@ -23,3 +23,9 @@ const disabledButtonBackgroundColor = Color(0xFFE5E5E5);
 
 /// title text color(검은색)
 const titleTextColor = Color(0xFF484848);
+
+/// selected option button color
+const selectedOptionButtonColor = Color(0xFFE2F2FF);
+
+/// selected option button border color
+const selectedOptionButtonBorderColor = Color(0xFF53ADF0);

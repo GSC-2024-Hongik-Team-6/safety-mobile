@@ -1,31 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/education/component/education_list_view.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
-import 'package:safetyedu/common/const/colors.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 18.0),
+  Widget build(BuildContext context) {
+    return const DefaultTabController(
+      initialIndex: 0,
+      length: 2,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Learning by Quiz',
-            style: CustomTextStyle(
-              textFontSize: 28,
-              textFontWeight: FontWeight.w700,
-              textColor: titleTextColor,
+          _TopTabBar(),
+          Expanded(
+            child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Learning by Quiz',
+                        style: TextStyles.titleTextStyle,
+                      ),
+                      SizedBox(height: 24),
+                      Expanded(child: EducationListView()),
+                    ],
+                  ),
+                ),
+                Center(
+                  child: Text('Coming Soon'),
+                )
+              ],
             ),
           ),
-          SizedBox(height: 24),
-          Expanded(child: EducationListView()),
         ],
       ),
+    );
+  }
+}
+
+class _TopTabBar extends StatelessWidget {
+  const _TopTabBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return const TabBar(
+      tabs: [
+        Tab(text: 'Quiz'),
+        Tab(text: 'Action'),
+      ],
+      labelColor: primaryColor,
+      unselectedLabelColor: inputHintTextColor,
     );
   }
 }

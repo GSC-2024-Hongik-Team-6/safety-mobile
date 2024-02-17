@@ -34,7 +34,7 @@ class CustomTextFormField extends StatelessWidget {
         contentPadding: const EdgeInsets.all(20.0),
         hintText: hintText,
         errorText: errorText,
-        hintStyle: const CustomTextStyle(),
+        hintStyle: TextStyles.hintTextStyle,
         fillColor: inputBackgroundColor,
         filled: true,
         // 모든 Input 세팅의 기본 스타일 세팅

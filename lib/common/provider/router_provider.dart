@@ -36,7 +36,7 @@ List<GoRoute> _routes = [
           routes: [
             // /education/:eid/quiz/:qid
             GoRoute(
-              path: '/quiz/:qid',
+              path: 'quiz/:qid',
               name: QuizDetailScreen.routeName,
               builder: (_, state) => QuizDetailScreen(
                 qid: int.parse(state.pathParameters['qid']!),

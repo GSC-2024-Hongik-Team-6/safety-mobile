@@ -56,7 +56,10 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: state is EducationDetailModel
-            ? QuizListTile(quizList: state.quizzes)
+            ? QuizListTile(
+                eid: widget.eid,
+                quizList: state.quizzes,
+              )
             : const Center(
                 child: CircularProgressIndicator(),
               ),
@@ -137,11 +140,13 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
 }
 
 class QuizListTile extends StatelessWidget {
+  final Id eid;
   final List<QuizStatusModel> quizList;
 
   const QuizListTile({
     super.key,
     required this.quizList,
+    required this.eid,
   });
 
   @override
@@ -170,6 +175,7 @@ class QuizListTile extends StatelessWidget {
               onTap: () => context.pushNamed(
                 QuizDetailScreen.routeName,
                 pathParameters: {
+                  'eid': eid.toString(),
                   'qid': quiz.id.toString(),
                 },
               ),

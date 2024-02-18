@@ -179,6 +179,7 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
           QuizDetailScreen.routeName,
           pathParameters: {
             'qid': nextQuizId.toString(),
+            'eid': _getCurrentEducationId().toString(),
           },
         );
       },

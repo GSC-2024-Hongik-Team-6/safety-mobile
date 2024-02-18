@@ -74,10 +74,10 @@ class QuizStateNotifier extends StateNotifier<ModelListState> {
       return;
     }
 
-    final modelList = state as ModelList;
+    final modelList = state as ModelList<QuizStatusModel>;
 
-    final QuizDetailModel? quiz =
-        modelList.data.firstWhereOrNull((element) => element.id == id);
+    final QuizDetailModel? quiz = modelList.data
+        .firstWhereOrNull((element) => element.id == id) as QuizDetailModel?;
 
     if (quiz == null) {
       return;

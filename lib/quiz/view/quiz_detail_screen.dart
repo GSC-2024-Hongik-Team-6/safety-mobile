@@ -13,6 +13,7 @@ import 'package:safetyedu/quiz/model/quiz_model.dart';
 import 'package:safetyedu/quiz/provider/current_selection_provider.dart';
 import 'package:safetyedu/quiz/provider/quiz_provider.dart';
 import 'package:safetyedu/quiz/view/quiz_multiple_choice_view.dart';
+import 'package:safetyedu/quiz/view/quiz_ordering_view.dart';
 
 class QuizDetailScreen extends ConsumerStatefulWidget {
   static const routeName = '/quiz-detail';
@@ -96,7 +97,11 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
   }) {
     switch (quiz.type) {
       case QuizType.order:
-        return _OrderingView(quiz: quiz.data as QuizItemOrdering);
+        return OrderingView(
+          quiz: quiz.data as QuizItemOrdering,
+          id: quiz.id,
+          onAnswered: onAnswered,
+        );
       case QuizType.multipleChoice:
         return MultipleChoiceView(
           quiz: quiz.data as QuizItemMultipleChoice,
@@ -227,21 +232,5 @@ class _NextQuestionButton extends StatelessWidget {
         text: 'This is the last question',
       );
     }
-  }
-}
-
-/// 순서 맞추기 퀴즈 뷰
-class _OrderingView extends StatelessWidget {
-  final QuizItemOrdering quiz;
-
-  const _OrderingView({
-    required this.quiz,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Ordering View'),
-    );
   }
 }

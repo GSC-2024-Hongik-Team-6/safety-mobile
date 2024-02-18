@@ -16,9 +16,19 @@ class OptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late final Color buttonColor;
+
+    if (isSelected) {
+      buttonColor = selectedOptionButtonColor;
+    } else if (description!.isEmpty) {
+      buttonColor = Colors.grey;
+    } else {
+      buttonColor = Colors.white;
+    }
+
     return Container(
       decoration: BoxDecoration(
-        color: isSelected ? selectedOptionButtonColor : Colors.white,
+        color: buttonColor,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: isSelected ? selectedOptionButtonBorderColor : Colors.white,

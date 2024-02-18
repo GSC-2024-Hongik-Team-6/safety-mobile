@@ -26,19 +26,19 @@ List<GoRoute> _routes = [
     builder: (_, __) => const TabView(),
     routes: [
       GoRoute(
-          path: 'education/:cid',
+          path: 'education/:eid',
           name: EducationDetailScreen.routeName,
           builder: (_, state) => EducationDetailScreen(
-                cid: int.parse(
-                  state.pathParameters['cid']!,
+                eid: int.parse(
+                  state.pathParameters['eid']!,
                 ),
               ),
           routes: [
-            // /education/:cid/quiz/:qid
+            // /education/:eid/quiz/:qid
             GoRoute(
               path: '/quiz/:qid',
               name: QuizDetailScreen.routeName,
-              builder: (context, state) => QuizDetailScreen(
+              builder: (_, state) => QuizDetailScreen(
                 qid: int.parse(state.pathParameters['qid']!),
               ),
             ),

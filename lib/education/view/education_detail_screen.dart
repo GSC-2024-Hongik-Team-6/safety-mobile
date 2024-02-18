@@ -17,11 +17,11 @@ import 'package:safetyedu/quiz/view/quiz_detail_screen.dart';
 class EducationDetailScreen extends ConsumerStatefulWidget {
   static const routeName = '/education-detail';
 
-  final Id cid;
+  final Id eid;
 
   const EducationDetailScreen({
     super.key,
-    required this.cid,
+    required this.eid,
   });
 
   @override
@@ -34,12 +34,12 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
   void initState() {
     super.initState();
 
-    ref.read(educationProvider.notifier).getDetail(id: widget.cid);
+    ref.read(educationProvider.notifier).getDetail(id: widget.eid);
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(educationDetailProvider(widget.cid));
+    final state = ref.watch(educationDetailProvider(widget.eid));
 
     if (state == null) {
       return const DefaultLayout(

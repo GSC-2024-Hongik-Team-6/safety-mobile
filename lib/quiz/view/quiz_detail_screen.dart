@@ -6,7 +6,6 @@ import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
-import 'package:safetyedu/quiz/model/quiz_status_model.dart';
 import 'package:safetyedu/quiz/provider/current_selection_provider.dart';
 import 'package:safetyedu/quiz/provider/quiz_provider.dart';
 import 'package:safetyedu/quiz/view/quiz_multiple_choice_view.dart';

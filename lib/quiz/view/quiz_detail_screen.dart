@@ -5,6 +5,10 @@ import 'package:safetyedu/common/component/custom_elevated_button.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
+import 'package:safetyedu/common/provider/router_provider.dart';
+import 'package:safetyedu/education/model/education_detail_model.dart';
+import 'package:safetyedu/education/provider/education_provider.dart';
+import 'package:safetyedu/quiz/model/current_selection.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
 import 'package:safetyedu/quiz/provider/current_selection_provider.dart';
 import 'package:safetyedu/quiz/provider/quiz_provider.dart';
@@ -25,13 +29,17 @@ class QuizDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
+  late final Id? _nextQuizId;
   bool _isCorrect = false;
+  bool _isSubmitted = false;
 
   @override
   void initState() {
     super.initState();
 
     ref.read(quizProvider.notifier).getDetail(id: widget.qid);
+
+    _nextQuizId = _getNextQuizId();
   }
 
   @override
@@ -64,7 +72,7 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
             ),
             const SizedBox(height: 24.0),
             Expanded(
-                child: buildQuizDetail(
+                child: _buildQuizDetail(
                     quiz: quiz,
                     onAnswered: (isCorrect) {
                       setState(() {
@@ -72,22 +80,17 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
                       });
                     })),
             const SizedBox(height: 24.0),
-            CustomElevatedBotton(
-                onPressed: currentSelection != null
-                    ? () {
-                        ref
-                            .read(quizProvider.notifier)
-                            .answer(id: quiz.id, isCorrect: _isCorrect);
-                      }
-                    : null,
-                text: 'Submit'),
+            _buildButton(
+              nextQuizId: _nextQuizId,
+              currentSelection: currentSelection,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget buildQuizDetail({
+  Widget _buildQuizDetail({
     required QuizDetailModel quiz,
     required Function(bool) onAnswered,
   }) {
@@ -100,6 +103,128 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
           id: quiz.id,
           onAnswered: onAnswered,
         );
+    }
+  }
+
+  Id _getCurrentEducationId() {
+    final goRouter = ref.read(routerProvider);
+    final currentLocation =
+        goRouter.routerDelegate.currentConfiguration.uri.toString();
+    // example: /education/1/quiz/1
+    final uri = Uri.parse(currentLocation);
+    final pathSegments = uri.pathSegments;
+
+    final educationId = pathSegments[1].toId();
+
+    return educationId;
+  }
+
+  Id? _getNextQuizId() {
+    final currentEducationId = _getCurrentEducationId();
+    final educationModel =
+        ref.read(educationDetailProvider(currentEducationId));
+    if (educationModel == null) {
+      return null;
+    }
+
+    final educationDetail = educationModel as EducationDetailModel;
+
+    final quizList = educationDetail.quizzes;
+
+    final currentIndex =
+        quizList.indexWhere((element) => element.id == widget.qid);
+
+    final nextIndex = currentIndex + 1;
+
+    if (nextIndex >= quizList.length) {
+      return null;
+    }
+
+    return quizList[nextIndex].id;
+  }
+
+  Widget _buildButton({
+    required Id? nextQuizId,
+    required CurrentSelection? currentSelection,
+  }) {
+    // 만약 퀴즈가 제출되기 전이라면
+    if (!_isSubmitted) {
+      final isSelected = currentSelection != null;
+      return _SubmitButton(
+        isEnabled: isSelected,
+        onPressed: () {
+          ref.read(quizProvider.notifier).answer(
+                id: widget.qid,
+                isCorrect: _isCorrect,
+              );
+          setState(() {
+            _isSubmitted = true;
+          });
+        },
+      );
+    }
+    // 퀴즈가 제출되고, 다음 퀴즈로 넘어가기 버튼
+    // 만약 지금이 마지막 퀴즈라면
+    if (nextQuizId == null) {
+      return const _NextQuestionButton(
+        isEnabled: false,
+        onPressed: null,
+      );
+    }
+    // 다음 퀴즈로 넘어가기
+    return _NextQuestionButton(
+      isEnabled: true,
+      onPressed: () {
+        ref.read(routerProvider).goNamed(
+          QuizDetailScreen.routeName,
+          pathParameters: {
+            'qid': nextQuizId.toString(),
+          },
+        );
+      },
+    );
+  }
+}
+
+class _SubmitButton extends StatelessWidget {
+  final bool isEnabled;
+  final VoidCallback? onPressed;
+
+  const _SubmitButton({
+    required this.isEnabled,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomElevatedBotton(
+      onPressed: isEnabled ? onPressed : null,
+      text: 'Submit',
+    );
+  }
+}
+
+class _NextQuestionButton extends StatelessWidget {
+  final bool isEnabled;
+  final VoidCallback? onPressed;
+
+  const _NextQuestionButton({
+    required this.isEnabled,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isEnabled) {
+      return CustomElevatedBotton(
+        onPressed: onPressed,
+        text: 'Next Question',
+      );
+    } else {
+      return const CustomElevatedBotton(
+        onPressed: null,
+        text: 'This is the last question',
+      );
     }
   }
 }

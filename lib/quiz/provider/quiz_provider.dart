@@ -74,9 +74,10 @@ class QuizStateNotifier extends StateNotifier<ModelListState> {
       return;
     }
 
-    final modelList = state as ModelList<QuizStatusModel>;
+    final modelList = state as ModelList;
 
-    final quiz = modelList.data.firstWhereOrNull((element) => element.id == id);
+    final QuizDetailModel? quiz =
+        modelList.data.firstWhereOrNull((element) => element.id == id);
 
     if (quiz == null) {
       return;
@@ -84,12 +85,22 @@ class QuizStateNotifier extends StateNotifier<ModelListState> {
 
     final status = isCorrect ? AnswerStatus.correct : AnswerStatus.wrong;
 
-    final updated = quiz.copyWith(
+    final updated = QuizDetailModel(
+      type: quiz.type,
+      data: quiz.data,
+      id: quiz.id,
       answerStatus: status,
     );
 
     state = modelList.copyWith(
       data: modelList.data.map((e) => e.id == id ? updated : e).toList(),
     );
+
+    // final userAnswer = UserAnswerModel(
+    //   isCorrect: isCorrect,
+    //   id: id,
+    // );
+
+    // await repository.submit(id: id, userAnswer: userAnswer);
   }
 }

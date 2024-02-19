@@ -10,15 +10,12 @@ class EducationDetailPopUpButton extends StatelessWidget {
   final String detail;
   final List<String>? images;
 
-  final BuildContext? highContext;
-
   const EducationDetailPopUpButton({
     super.key,
     required this.child,
     required this.title,
     required this.detail,
     this.images,
-    this.highContext,
   });
 
   @override
@@ -27,8 +24,10 @@ class EducationDetailPopUpButton extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
           backgroundColor: Colors.white,
-          context: highContext != null ? highContext! : context,
+          isScrollControlled: true,
+          context: context,
           builder: (context) => DraggableScrollableSheet(
+            expand: false,
             builder: (_, scrollController) {
               return EducationDetailPopUp(
                 scrollController: scrollController,
@@ -62,13 +61,13 @@ class EducationDetailPopUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: scrollController,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: SingleChildScrollView(
+        controller: scrollController,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(

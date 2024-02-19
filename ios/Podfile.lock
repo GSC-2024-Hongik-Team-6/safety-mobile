@@ -44,11 +44,15 @@ PODS:
   - GTMSessionFetcher/Core (3.3.1)
   - PromisesObjC (2.3.1)
   - RecaptchaInterop (100.0.0)
+  - video_player_avfoundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -69,6 +73,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
 
 SPEC CHECKSUMS:
   Firebase: 10c8cb12fb7ad2ae0c09ffc86cd9c1ab392a0031
@@ -83,6 +89,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 8a1b34ad97ebe6f909fb8b9b77fba99943007556
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
+  video_player_avfoundation: 02011213dab73ae3687df27ce441fbbcc82b5579
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 

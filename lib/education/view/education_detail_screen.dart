@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safetyedu/education/component/education_detail_popup.dart';
+import 'package:safetyedu/education/component/education_detail_popup_button.dart';
 import 'package:safetyedu/education/model/education_detail_model.dart';
 import 'package:safetyedu/education/model/education_model.dart';
 import 'package:safetyedu/education/provider/education_provider.dart';
@@ -104,16 +104,11 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => Dialog(
-                      child: EducationDetailPopUp.fromModel(education),
-                    ),
-                  );
-                },
-                icon: Container(
+              EducationDetailPopUpButton(
+                title: education.title,
+                detail: education.detail,
+                images: education.images,
+                child: Container(
                   decoration: BoxDecoration(
                     color: secondPrimaryColor,
                     borderRadius: BorderRadius.circular(6),

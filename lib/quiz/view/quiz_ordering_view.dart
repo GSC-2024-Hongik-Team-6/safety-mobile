@@ -39,10 +39,10 @@ class _OrderingViewState extends ConsumerState<OrderingView> {
     });
 
     if (_userSelections.length == widget.quiz.options.length) {
-      final isCorrect = _userSelections
-          .asMap()
-          .entries
-          .every((entry) => entry.key == entry.value.number - 1);
+      // _userSelections의 순서와 widget.quiz.options의 순서가 같은 지 비교
+      final isCorrect = _userSelections.every((element) =>
+          element.number ==
+          widget.quiz.options[_userSelections.indexOf(element)].number);
 
       widget.onAnswered(isCorrect);
       ref.read(selectionProvider.notifier).select(quizId: widget.id, number: 0);

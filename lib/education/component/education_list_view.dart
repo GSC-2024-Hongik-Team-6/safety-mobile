@@ -59,7 +59,7 @@ class EducationListView extends ConsumerWidget {
           onTap: () => context.goNamed(
             EducationDetailScreen.routeName,
             pathParameters: {
-              'cid': category.id.toString(),
+              'eid': category.id.toString(),
             },
           ),
           child: EducationCard.fromModel(category),

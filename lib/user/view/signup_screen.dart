@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safetyedu/common/component/custom_elevated_button.dart';
 import 'package:safetyedu/common/component/custom_text_form_field.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
-import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/user/model/user_model.dart';
 import 'package:safetyedu/user/provider/current_user_provider.dart';
@@ -93,7 +93,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         ),
                       ),
                     // 회원 가입 버튼
-                    ElevatedButton(
+                    CustomElevatedBotton(
+                      text: 'REGISTER',
                       onPressed: currentUserState is UserLoading
                           ? null
                           : () {
@@ -107,24 +108,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                 context.pop();
                               }
                             },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.0),
-                        child: Text(
-                          'REGISTER',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    )
+                    ),
                   ],
                 ),
               ),

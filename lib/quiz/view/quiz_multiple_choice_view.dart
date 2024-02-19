@@ -9,11 +9,13 @@ import 'package:safetyedu/quiz/provider/current_selection_provider.dart';
 class MultipleChoiceView extends ConsumerWidget {
   final QuizItemMultipleChoice quiz;
   final Id id;
+  final Function(bool) onAnswered;
 
   const MultipleChoiceView({
     super.key,
     required this.quiz,
     required this.id,
+    required this.onAnswered,
   });
 
   @override
@@ -34,6 +36,9 @@ class MultipleChoiceView extends ConsumerWidget {
                   quizId: id,
                   number: option.number,
                 );
+
+            final isCorrect = option.number == quiz.answer;
+            onAnswered(isCorrect);
           },
           child: OptionCard(
             imageUrl: option.imageUrl,

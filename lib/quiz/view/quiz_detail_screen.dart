@@ -84,6 +84,7 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
             _buildButton(
               nextQuizId: _nextQuizId,
               currentSelection: currentSelection,
+              isCorrect: _isCorrect,
             ),
           ],
         ),
@@ -151,6 +152,7 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
   Widget _buildButton({
     required Id? nextQuizId,
     required CurrentSelection? currentSelection,
+    required bool isCorrect,
   }) {
     // 만약 퀴즈가 제출되기 전이라면
     if (!_isSubmitted) {
@@ -158,13 +160,58 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
       return _SubmitButton(
         isEnabled: isSelected,
         onPressed: () {
+          setState(() {
+            _isSubmitted = true;
+          });
           ref.read(quizProvider.notifier).answer(
                 id: widget.qid,
                 isCorrect: _isCorrect,
               );
-          setState(() {
-            _isSubmitted = true;
-          });
+
+          // 틀렸을 경우 다시 풀기 로직
+          if (!isCorrect) {
+            ref
+                .read(selectionProvider.notifier)
+                .unselect(quizId: widget.qid); // 선택 해제
+            _isSubmitted = false;
+
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    topRight: Radius.circular(8.0),
+                  ),
+                ),
+                margin: const EdgeInsets.only(bottom: 24.0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 16.0),
+                      const Text(
+                        'You got it wrong. Try again!',
+                        style: TextStyles.titleTextStyle,
+                      ),
+                      const SizedBox(height: 16.0),
+                      CustomElevatedBotton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        text: 'Close',
+                        backgroundColor: Colors.red.shade900,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
         },
       );
     }

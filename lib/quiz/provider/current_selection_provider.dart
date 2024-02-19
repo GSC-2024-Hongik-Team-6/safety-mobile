@@ -52,4 +52,10 @@ class CurrentSelectionStateNotifier
         .map((e) => e.quizId == quizId ? e.copyWith(number: number) : e)
         .toList();
   }
+
+  void unselect({
+    required Id quizId,
+  }) {
+    state = state.where((e) => e.quizId != quizId).toList();
+  }
 }

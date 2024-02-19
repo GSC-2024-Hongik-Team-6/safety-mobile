@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safetyedu/common/component/custom_elevated_button.dart';
 import 'package:safetyedu/common/component/custom_text_form_field.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
@@ -68,38 +69,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             obscureText: true,
                           ),
                           const SizedBox(height: 12.0),
-                          // 로그인 버튼
-                          ElevatedButton(
-                            onPressed: currentUserState is UserLoading
-                                ? null
-                                : () {
-                                    ref
-                                        .read(currentUserProvider.notifier)
-                                        .login(
-                                          email: email,
-                                          password: password,
-                                        );
-                                  },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                            ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
-                              child: Text(
-                                currentUserState is UserLoading
-                                    ? 'Wait for a second...'
-                                    : 'LOGIN',
-                                style: TextStyles.titleTextStyle.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                          ),
+                          CustomElevatedBotton(
+                              text: currentUserState is UserLoading
+                                  ? 'Wait for a second...'
+                                  : 'LOGIN',
+                              onPressed: currentUserState is UserLoading
+                                  ? null
+                                  : () {
+                                      ref
+                                          .read(currentUserProvider.notifier)
+                                          .login(
+                                            email: email,
+                                            password: password,
+                                          );
+                                    }),
                         ],
                       ),
                     ),

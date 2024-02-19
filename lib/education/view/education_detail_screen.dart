@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safetyedu/education/component/education_detail_popup.dart';
+import 'package:safetyedu/education/component/education_detail_popup_button.dart';
 import 'package:safetyedu/education/model/education_detail_model.dart';
 import 'package:safetyedu/education/model/education_model.dart';
 import 'package:safetyedu/education/provider/education_provider.dart';
@@ -17,11 +17,11 @@ import 'package:safetyedu/quiz/view/quiz_detail_screen.dart';
 class EducationDetailScreen extends ConsumerStatefulWidget {
   static const routeName = '/education-detail';
 
-  final Id cid;
+  final Id eid;
 
   const EducationDetailScreen({
     super.key,
-    required this.cid,
+    required this.eid,
   });
 
   @override
@@ -34,12 +34,12 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
   void initState() {
     super.initState();
 
-    ref.read(educationProvider.notifier).getDetail(id: widget.cid);
+    ref.read(educationProvider.notifier).getDetail(id: widget.eid);
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(educationDetailProvider(widget.cid));
+    final state = ref.watch(educationDetailProvider(widget.eid));
 
     if (state == null) {
       return const DefaultLayout(
@@ -56,7 +56,10 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: state is EducationDetailModel
-            ? QuizListTile(quizList: state.quizzes)
+            ? QuizListTile(
+                eid: widget.eid,
+                quizList: state.quizzes,
+              )
             : const Center(
                 child: CircularProgressIndicator(),
               ),
@@ -104,16 +107,11 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => Dialog(
-                      child: EducationDetailPopUp.fromModel(education),
-                    ),
-                  );
-                },
-                icon: Container(
+              EducationDetailPopUpButton(
+                title: education.title,
+                detail: education.detail,
+                images: education.images,
+                child: Container(
                   decoration: BoxDecoration(
                     color: secondPrimaryColor,
                     borderRadius: BorderRadius.circular(6),
@@ -137,11 +135,13 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
 }
 
 class QuizListTile extends StatelessWidget {
+  final Id eid;
   final List<QuizStatusModel> quizList;
 
   const QuizListTile({
     super.key,
     required this.quizList,
+    required this.eid,
   });
 
   @override
@@ -170,6 +170,7 @@ class QuizListTile extends StatelessWidget {
               onTap: () => context.pushNamed(
                 QuizDetailScreen.routeName,
                 pathParameters: {
+                  'eid': eid.toString(),
                   'qid': quiz.id.toString(),
                 },
               ),

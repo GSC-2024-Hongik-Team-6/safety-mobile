@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'package:safetyedu/common/model/model_with_id.dart';
 
 part 'quiz_status_model.g.dart';
@@ -55,4 +56,14 @@ class QuizStatusModel implements IModelWithId {
 
   factory QuizStatusModel.fromJson(Map<String, dynamic> json) =>
       _$QuizStatusModelFromJson(json);
+
+  QuizStatusModel copyWith({
+    Id? id,
+    AnswerStatus? answerStatus,
+  }) {
+    return QuizStatusModel(
+      id: id ?? this.id,
+      answerStatus: answerStatus ?? this.answerStatus,
+    );
+  }
 }

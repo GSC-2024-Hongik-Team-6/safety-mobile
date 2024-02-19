@@ -10,27 +10,34 @@ class EducationDetailPopUpButton extends StatelessWidget {
   final String detail;
   final List<String>? images;
 
+  final BuildContext? highContext;
+
   const EducationDetailPopUpButton({
     super.key,
     required this.child,
     required this.title,
     required this.detail,
     this.images,
+    this.highContext,
   });
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        DraggableScrollableSheet(
-          builder: (context, scrollController) {
-            return EducationDetailPopUp(
-              scrollController: scrollController,
-              title: title,
-              detail: detail,
-              images: images,
-            );
-          },
+        showModalBottomSheet(
+          backgroundColor: Colors.white,
+          context: highContext != null ? highContext! : context,
+          builder: (context) => DraggableScrollableSheet(
+            builder: (_, scrollController) {
+              return EducationDetailPopUp(
+                scrollController: scrollController,
+                title: title,
+                detail: detail,
+                images: images,
+              );
+            },
+          ),
         );
       },
       icon: child,
@@ -55,31 +62,29 @@ class EducationDetailPopUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: SingleChildScrollView(
-        controller: scrollController,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text(
-                  title,
-                  style: TextStyles.titleTextStyle,
+    return SingleChildScrollView(
+      controller: scrollController,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Text(
+                title,
+                style: TextStyles.titleTextStyle,
+              ),
+              if (images != null)
+                ImageListBuilder(
+                  images: images!,
                 ),
-                if (images != null)
-                  ImageListBuilder(
-                    images: images!,
-                  ),
-                HtmlWidget(
-                  detail,
-                ),
-              ],
-            ),
+              HtmlWidget(
+                detail,
+              ),
+            ],
           ),
         ),
       ),

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/education/model/education_model.dart';
 import 'package:safetyedu/common/model/model_list.dart';
 import 'package:safetyedu/common/provider/dio_provider.dart';

@@ -114,7 +114,7 @@ packages:
     source: hosted
     version: "8.9.1"
   camera:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: camera
       sha256: "9499cbc2e51d8eb0beadc158b288380037618ce4e30c9acbc4fae1ac3ecb5797"
@@ -178,7 +178,7 @@ packages:
     source: hosted
     version: "1.1.1"
   cloud_functions:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: cloud_functions
       sha256: "60cf020fd44c7971b196b4c25b26471a0d2114dcbdf5df94d3391d502986c3d8"
@@ -346,7 +346,7 @@ packages:
     source: hosted
     version: "2.11.4"
   firebase_storage:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_storage
       sha256: a07433d3ffe948f7a10086e4b0bd3a940be4ed873cffd24746eed1896b568369
@@ -617,7 +617,7 @@ packages:
     source: hosted
     version: "2.1.0"
   path:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: path
       sha256: "087ce49c3f0dc39180befefc60fdb4acd8f8620e5682fe2476afd0b3688bb4af"
@@ -625,7 +625,7 @@ packages:
     source: hosted
     version: "1.9.0"
   path_provider:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: b27217933eeeba8ff24845c34003b003b2b22151de3c908d0e679e8fe1aa078b
@@ -894,7 +894,7 @@ packages:
     source: hosted
     version: "2.1.4"
   video_player:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: video_player
       sha256: fbf28ce8bcfe709ad91b5789166c832cb7a684d14f571a81891858fefb5bb1c2

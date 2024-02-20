@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:safetyedu/education/component/education_card.dart';
+import 'package:video_player/video_player.dart';
+
+import 'package:safetyedu/common/model/model_list.dart';
 import 'package:safetyedu/education/model/education_model.dart';
 import 'package:safetyedu/education/provider/education_provider.dart';
-import 'package:safetyedu/education/view/education_detail_screen.dart';
-import 'package:safetyedu/common/model/model_list.dart';
-import 'package:video_player/video_player.dart';
 
 /// [ActionView]의 리스트를 보여주는 ListView 위젯
 class ActionDetailView extends ConsumerWidget {
@@ -38,8 +36,8 @@ class ActionDetailView extends ConsumerWidget {
           ElevatedButton(
             onPressed: () {
               ref.read(educationProvider.notifier).fetch(
-                // forceRefetch: true, TODO: force Refetch 구현 필요
-              );
+                  // forceRefetch: true, TODO: force Refetch 구현 필요
+                  );
             },
             child: const Text(
               '재시도',
@@ -50,10 +48,11 @@ class ActionDetailView extends ConsumerWidget {
     }
 
     final listState = state as ModelList<EducationModel>;
-    
+
     late VideoPlayerController controller;
     double? aspectRatio;
-    controller = VideoPlayerController.networkUrl(Uri.parse("https://www.youtube.com/watch?v=q7J2T6MFA9g&t=84s"))
+    controller = VideoPlayerController.networkUrl(
+        Uri.parse("https://www.youtube.com/watch?v=q7J2T6MFA9g&t=84s"))
       ..initialize();
     controller.setPlaybackSpeed(1);
     controller.play();
@@ -63,13 +62,10 @@ class ActionDetailView extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AspectRatio(
-            aspectRatio: aspectRatio!, child: VideoPlayer(controller)),
+        AspectRatio(aspectRatio: aspectRatio, child: VideoPlayer(controller)),
         const SizedBox(height: 16.0),
         ElevatedButton(
-          onPressed: () {
-
-          },
+          onPressed: () {},
           child: const Text(
             '다음으로',
           ),

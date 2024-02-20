@@ -3,7 +3,7 @@ import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/education/component/education_list_view.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 
-import '../component/action_detail_view.dart';
+import '../../pose/view/action_detail_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

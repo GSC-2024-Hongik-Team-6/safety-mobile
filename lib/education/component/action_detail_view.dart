@@ -68,12 +68,10 @@ class ActionDetailView extends ConsumerWidget {
         const SizedBox(height: 16.0),
         ElevatedButton(
           onPressed: () {
-            ref.read(educationProvider.notifier).fetch(
-              // forceRefetch: true, TODO: force Refetch 구현 필요
-            );
+
           },
           child: const Text(
-            '재시도',
+            '다음으로',
           ),
         ),
       ],

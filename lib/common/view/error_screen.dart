@@ -6,6 +6,8 @@ import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/view/splash_screen.dart';
 
 class ErrorScreen extends StatelessWidget {
+  static const routeName = '/error';
+
   final String message;
 
   const ErrorScreen({
@@ -22,7 +24,6 @@ class ErrorScreen extends StatelessWidget {
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text(
                   'Dont Panic!',
@@ -38,7 +39,8 @@ class ErrorScreen extends StatelessWidget {
                 Text(
                   message,
                   style: TextStyles.descriptionTextStyle.copyWith(
-                    color: Colors.yellow[700],
+                    color: Colors.yellow[800],
+                    fontSize: 20,
                   ),
                 ),
               ],

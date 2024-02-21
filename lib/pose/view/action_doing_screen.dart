@@ -2,35 +2,21 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-void action_doing_view() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
-}
+class CameraScreen extends StatefulWidget {
+  static const routeName = '/camera';
 
-class MyApp extends StatelessWidget {
+  const CameraScreen({super.key});
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Video Recorder',
-      home: CameraPage(),
-    );
-  }
+  State<CameraScreen> createState() => _CameraScreenState();
 }
 
-class CameraPage extends StatefulWidget {
-  @override
-  _CameraPageState createState() => _CameraPageState();
-}
-
-class _CameraPageState extends State<CameraPage> {
+class _CameraScreenState extends State<CameraScreen> {
   CameraController? controller;
   List<CameraDescription>? cameras;
   String? videoPath;
@@ -41,25 +27,10 @@ class _CameraPageState extends State<CameraPage> {
     initializeCamera();
   }
 
-  Future<void> signInAnonymously() async {
-    try {
-      await FirebaseAuth.instance.signInAnonymously();
-      print('Signed in anonymously');
-    } catch (e) {
-      print(e); // Handle error
-    }
-  }
-
   Future<void> processVideoOnCall(fileName) async {
-
     print("uploading...");
 
-    if (FirebaseAuth.instance.currentUser == null) {
-      await signInAnonymously(); // Or your preferred sign-in method
-    }
-
-    final HttpsCallableResult results = await FirebaseFunctions
-        .instance
+    final HttpsCallableResult results = await FirebaseFunctions.instance
         .httpsCallable("processVideoByName")
         .call(<String, dynamic>{'fileName': fileName});
 
@@ -113,8 +84,8 @@ class _CameraPageState extends State<CameraPage> {
       // Error handling
       print(e);
     } finally {
-      print(filePath.split('/')[filePath.split('/').length-1]);
-      processVideoOnCall(filePath.split('/')[filePath.split('/').length-1]);
+      print(filePath.split('/')[filePath.split('/').length - 1]);
+      processVideoOnCall(filePath.split('/')[filePath.split('/').length - 1]);
     }
   }
 
@@ -129,21 +100,19 @@ class _CameraPageState extends State<CameraPage> {
     if (controller == null || !controller!.value.isInitialized) {
       return Container(
         alignment: Alignment.center,
-        child: CircularProgressIndicator(),
+        child: const CircularProgressIndicator(),
       );
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Record Video'),
+        title: const Text('Record Video'),
       ),
       body: Column(
         children: <Widget>[
           Expanded(
-            child: Container(
-              child: CameraPreview(controller!),
-            ),
+            child: CameraPreview(controller!),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
@@ -158,7 +127,9 @@ class _CameraPageState extends State<CameraPage> {
                   }
                 },
                 child: Icon(
-                  controller!.value.isRecordingVideo ? Icons.stop : Icons.videocam,
+                  controller!.value.isRecordingVideo
+                      ? Icons.stop
+                      : Icons.videocam,
                 ),
               )
             ],

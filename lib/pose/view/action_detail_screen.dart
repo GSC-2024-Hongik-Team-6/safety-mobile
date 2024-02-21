@@ -145,7 +145,7 @@ class _BottomExplain extends StatelessWidget {
             CustomElevatedBotton(
               text: 'Next',
               onPressed: () {
-                context.goNamed(
+                context.pushNamed(
                   ActionSubmitScreen.routeName,
                   pathParameters: {
                     'id': id.toString(),

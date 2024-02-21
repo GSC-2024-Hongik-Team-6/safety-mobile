@@ -1,18 +1,16 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
-import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:safetyedu/common/component/custom_elevated_button.dart';
+import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
+import 'package:safetyedu/common/view/error_screen.dart';
+import 'package:safetyedu/pose/provider/camera_provider.dart';
+import 'package:safetyedu/pose/provider/pose_provider.dart';
 
-final cameraControllerProvider = Provider.autoDispose((ref) {});
-
-class ActionSubmitScreen extends StatefulWidget {
+class ActionSubmitScreen extends ConsumerStatefulWidget {
   static const routeName = '/action-submit';
 
   final Id id;
@@ -23,127 +21,114 @@ class ActionSubmitScreen extends StatefulWidget {
   });
 
   @override
-  State<ActionSubmitScreen> createState() => _ActionSubmitScreenState();
+  ConsumerState<ActionSubmitScreen> createState() => _ActionSubmitScreenState();
 }
 
-class _ActionSubmitScreenState extends State<ActionSubmitScreen> {
-  CameraController? controller;
-  List<CameraDescription>? cameras;
-  String? videoPath;
+class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
+  bool _isRecording = false;
 
   @override
   void initState() {
     super.initState();
-    initializeCamera();
-  }
 
-  Future<void> processVideoOnCall(fileName) async {
-    print("uploading...");
-
-    final HttpsCallableResult results = await FirebaseFunctions.instance
-        .httpsCallable("processVideoByName")
-        .call(<String, dynamic>{'fileName': fileName});
-
-    print("uploading done");
-
-    // String message = results.data;
-    print(results.data); // This will print: "Hello, [name]!"
-  }
-
-  Future<void> initializeCamera() async {
-    cameras = await availableCameras();
-    controller = CameraController(cameras![0], ResolutionPreset.medium);
-    await controller!.initialize();
-    setState(() {});
-  }
-
-  Future<void> startVideoRecording() async {
-    print("start recording");
-    final Directory appDirectory = await getApplicationDocumentsDirectory();
-    final String videoDirectory = '${appDirectory.path}/Videos';
-    await Directory(videoDirectory).create(recursive: true);
-    final String currentTime = DateTime.now().millisecondsSinceEpoch.toString();
-    final String filePath = join(videoDirectory, '$currentTime.mp4');
-
-    try {
-      await controller!.startVideoRecording();
-      videoPath = filePath;
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> stopVideoRecording() async {
-    print("stop recording");
-    if (controller!.value.isRecordingVideo) {
-      await controller!.stopVideoRecording().then((file) {
-        file.saveTo(videoPath!);
-        uploadVideo(videoPath!);
-      });
-    }
-  }
-
-  Future<void> uploadVideo(String filePath) async {
-    File videoFile = File(filePath);
-    try {
-      await firebase_storage.FirebaseStorage.instance
-          .ref('/${basename(filePath)}') // basename used here
-          .putFile(videoFile);
-      // Success handling
-    } on firebase_storage.FirebaseException catch (e) {
-      // Error handling
-      print(e);
-    } finally {
-      print(filePath.split('/')[filePath.split('/').length - 1]);
-      processVideoOnCall(filePath.split('/')[filePath.split('/').length - 1]);
-    }
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
+    ref.read(poseProvider.notifier).getDetail(id: widget.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (controller == null || !controller!.value.isInitialized) {
-      return Container(
-        alignment: Alignment.center,
-        child: const CircularProgressIndicator(),
+    final cameraController = ref.watch(cameraControllerProvider);
+    final actionDetail = ref.watch(poseDetailProvider(widget.id));
+
+    if (actionDetail == null) {
+      return const DefaultLayout(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
       );
     }
-    return DefaultLayout(
-      title: 'Recording',
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: CameraPreview(controller!),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FloatingActionButton(
-                onPressed: () {
-                  if (!controller!.value.isRecordingVideo) {
-                    startVideoRecording();
-                  } else {
-                    stopVideoRecording();
-                  }
-                },
-                child: Icon(
-                  controller!.value.isRecordingVideo
-                      ? Icons.stop
-                      : Icons.videocam,
+
+    return cameraController.when(
+      data: (controller) {
+        if (!controller.value.isInitialized) {
+          return const DefaultLayout(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        _isRecording = controller.value.isRecordingVideo;
+
+        return DefaultLayout(
+          title: actionDetail.title,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Record your action for ${actionDetail.title}',
+                  style: TextStyles.descriptionTextStyle,
                 ),
-              )
-            ],
-          )
-        ],
-      ),
+                CameraPreview(controller),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CustomElevatedBotton(
+                      text: _isRecording ? 'Stop' : 'Record',
+                      onPressed: () {
+                        if (_isRecording) {
+                          controller.stopVideoRecording();
+                          setState(() {
+                            _isRecording = false;
+                          });
+                        } else {
+                          controller.startVideoRecording();
+                          setState(() {
+                            _isRecording = true;
+                          });
+                        }
+                      },
+                      backgroundColor: _isRecording ? Colors.red : null,
+                    ),
+                    CustomElevatedBotton(
+                      text: 'Submit',
+                      onPressed: () {},
+                    ),
+                  ],
+                )
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: <Widget>[
+                //     FloatingActionButton(
+                //       onPressed: () {
+                //         if (!controller.value.isRecordingVideo) {
+                //           startVideoRecording();
+                //         } else {
+                //           stopVideoRecording();
+                //         }
+                //       },
+                //       child: Icon(
+                //         controller.value.isRecordingVideo
+                //             ? Icons.stop
+                //             : Icons.videocam,
+                //       ),
+                //     )
+                //   ],
+                // )
+              ],
+            ),
+          ),
+        );
+      },
+      error: (error, stackTrace) => ErrorScreen(message: error.toString()),
+      loading: () => const DefaultLayout(
+          child: Center(
+        child: CircularProgressIndicator(),
+      )),
     );
   }
 }

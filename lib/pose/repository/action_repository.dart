@@ -32,5 +32,7 @@ abstract class ActionRepository implements IDetailRepository<ActionModel> {
   @override
   @GET('/{id}')
   @Headers({'accessToken': 'true'})
-  Future<ActionDetailModel> getDetail({required Id id});
+  Future<ActionDetailModel> getDetail({
+    @Path() required Id id,
+  });
 }

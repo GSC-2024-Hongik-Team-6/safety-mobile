@@ -15,7 +15,7 @@ class ActionListView extends ConsumerWidget {
       CustomListView<EducationModel>(
         provider: poseProvider,
         itemBuilder: (_, index, model) => GestureDetector(
-          onTap: () => context.goNamed(
+          onTap: () => context.pushNamed(
             ActionDetailScreen.routeName,
             pathParameters: {
               'id': model.id.toString(),

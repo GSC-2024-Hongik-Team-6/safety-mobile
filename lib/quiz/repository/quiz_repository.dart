@@ -1,9 +1,10 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:safetyedu/common/model/model_list.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/common/provider/dio_provider.dart';
+import 'package:safetyedu/common/repository/model_list_repository_interface.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
 import 'package:safetyedu/quiz/model/quiz_status_model.dart';
 import 'package:safetyedu/quiz/model/user_answer_model.dart';
@@ -19,20 +20,23 @@ final quizRepositoryProvider = Provider<QuizRepository>(
 );
 
 @RestApi(baseUrl: '/quiz')
-abstract class QuizRepository {
+abstract class QuizRepository implements IDetailRepository<QuizStatusModel> {
   factory QuizRepository(Dio dio) = _QuizRepository;
 
-  @GET('')
-  Future<ModelList<QuizStatusModel>> fetch({
-    @Query("educationId") Id? educationId,
-  });
+  @override
+  @GET('/')
+  @Headers({'accessToken': 'true'})
+  Future<ModelList<QuizStatusModel>> fetch();
 
+  @override
   @GET('/{id}')
+  @Headers({'accessToken': 'true'})
   Future<QuizDetailModel> getDetail({
     @Path() required Id id,
   });
 
   @POST('/{id}')
+  @Headers({'accessToken': 'true'})
   Future<void> submit({
     @Path() required Id id,
     @Body() required UserAnswerModel userAnswer,

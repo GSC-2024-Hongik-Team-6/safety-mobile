@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safetyedu/common/model/model_list.dart';
 import 'package:safetyedu/common/model/model_list_meta.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
+import 'package:safetyedu/common/provider/model_list_provider.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
 import 'package:safetyedu/quiz/model/quiz_status_model.dart';
 import 'package:safetyedu/quiz/repository/quiz_repository.dart';
@@ -23,43 +24,19 @@ final quizProvider = StateNotifierProvider<QuizStateNotifier, ModelListState>(
   ),
 );
 
-class QuizStateNotifier extends StateNotifier<ModelListState> {
-  final QuizRepository repository;
+class QuizStateNotifier
+    extends DetailProvider<QuizStatusModel, QuizRepository> {
+  QuizStateNotifier({required super.repository});
 
-  QuizStateNotifier({
-    required this.repository,
-  }) : super(ModelListLoading()) {
-    fetch();
-  }
-
-  Future<void> fetch() async {
-    const meta = ModelListMeta(count: 0);
-
-    state = ModelList(data: <QuizStatusModel>[], meta: meta);
-  }
-
-  Future<void> getDetail({
-    required Id id,
-  }) async {
-    if (state is! ModelList) {
-      await fetch();
-    }
-
-    if (state is! ModelList) {
+  @override
+  Future<void> fetch({bool forceRefetch = false}) async {
+    if (state is ModelList && !forceRefetch) {
       return;
     }
 
-    final modelList = state as ModelList<QuizStatusModel>;
+    const meta = ModelListMeta(count: 0);
 
-    final response = await repository.getDetail(id: id);
-
-    if (modelList.data.where((element) => element.id == id).isEmpty) {
-      modelList.data.add(response);
-    }
-
-    state = modelList.copyWith(
-      data: modelList.data.map((e) => e.id == id ? response : e).toList(),
-    );
+    state = ModelList(data: <QuizStatusModel>[], meta: meta);
   }
 
   Future<void> answer({

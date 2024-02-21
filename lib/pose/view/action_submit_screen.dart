@@ -4,9 +4,13 @@ import 'package:camera/camera.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
+
+final cameraControllerProvider = Provider.autoDispose((ref) {});
 
 class ActionSubmitScreen extends StatefulWidget {
   static const routeName = '/action-submit';
@@ -109,11 +113,9 @@ class _ActionSubmitScreenState extends State<ActionSubmitScreen> {
         child: const CircularProgressIndicator(),
       );
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Record Video'),
-      ),
-      body: Column(
+    return DefaultLayout(
+      title: 'Recording',
+      child: Column(
         children: <Widget>[
           Expanded(
             child: CameraPreview(controller!),

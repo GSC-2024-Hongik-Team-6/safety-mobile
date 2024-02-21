@@ -36,9 +36,7 @@ class EducationListView extends ConsumerWidget {
           const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
-              ref.read(educationProvider.notifier).fetch(
-                  // forceRefetch: true, TODO: force Refetch 구현 필요
-                  );
+              ref.read(educationProvider.notifier).fetch(forceRefetch: true);
             },
             child: const Text(
               '재시도',

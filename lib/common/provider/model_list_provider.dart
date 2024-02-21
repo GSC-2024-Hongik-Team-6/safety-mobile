@@ -14,8 +14,18 @@ class ModelListProvider<Model extends IModelWithId,
     fetch();
   }
 
-  Future<void> fetch() async {
+  Future<void> fetch({
+    bool forceRefetch = false,
+  }) async {
     try {
+      if (state is ModelList && !forceRefetch) {
+        return;
+      }
+
+      if (forceRefetch) {
+        state = ModelListLoading();
+      }
+
       final modelList = await repository.fetch();
 
       state = modelList;

@@ -32,7 +32,7 @@ class ActionListView extends ConsumerWidget {
           const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
-              ref.read(poseProvider.notifier).fetch();
+              ref.read(poseProvider.notifier).fetch(forceRefetch: true);
             },
             child: const Text(
               '재시도',

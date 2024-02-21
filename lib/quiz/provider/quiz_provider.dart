@@ -29,7 +29,11 @@ class QuizStateNotifier
   QuizStateNotifier({required super.repository});
 
   @override
-  Future<void> fetch() async {
+  Future<void> fetch({bool forceRefetch = false}) async {
+    if (state is ModelList && !forceRefetch) {
+      return;
+    }
+
     const meta = ModelListMeta(count: 0);
 
     state = ModelList(data: <QuizStatusModel>[], meta: meta);

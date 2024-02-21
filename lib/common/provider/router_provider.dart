@@ -68,8 +68,8 @@ List<GoRoute> _routes = [
   ),
   GoRoute(
     path: '/splash',
-    name: SplashPage.routeName,
-    builder: (_, __) => const SplashPage(),
+    name: SplashScreen.routeName,
+    builder: (_, __) => const SplashScreen(),
   ),
   GoRoute(
     path: '/login',

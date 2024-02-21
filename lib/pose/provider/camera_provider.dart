@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final camerasProvider = FutureProvider<List<CameraDescription>>((ref) async {
@@ -20,7 +21,10 @@ class CameraContollerNotifier
     if (_controller != null) inactive();
 
     final cameras = await ref.read(camerasProvider.future);
-    final camera = cameras.first;
+    // 전면 카메라를 우선시하여 찾기
+    final frontCamera = cameras.firstWhereOrNull(
+        (element) => element.lensDirection == CameraLensDirection.front);
+    final camera = frontCamera ?? cameras.first;
 
     _controller = CameraController(camera, ResolutionPreset.medium);
 

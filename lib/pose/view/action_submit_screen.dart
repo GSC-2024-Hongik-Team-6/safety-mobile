@@ -4,19 +4,29 @@ import 'package:camera/camera.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:safetyedu/common/layout.dart/default_layout.dart';
+import 'package:safetyedu/common/model/model_with_id.dart';
 
-class CameraScreen extends StatefulWidget {
-  static const routeName = '/camera';
+final cameraControllerProvider = Provider.autoDispose((ref) {});
 
-  const CameraScreen({super.key});
+class ActionSubmitScreen extends StatefulWidget {
+  static const routeName = '/action-submit';
+
+  final Id id;
+
+  const ActionSubmitScreen({
+    super.key,
+    required this.id,
+  });
 
   @override
-  State<CameraScreen> createState() => _CameraScreenState();
+  State<ActionSubmitScreen> createState() => _ActionSubmitScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _ActionSubmitScreenState extends State<ActionSubmitScreen> {
   CameraController? controller;
   List<CameraDescription>? cameras;
   String? videoPath;
@@ -103,11 +113,9 @@ class _CameraScreenState extends State<CameraScreen> {
         child: const CircularProgressIndicator(),
       );
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Record Video'),
-      ),
-      body: Column(
+    return DefaultLayout(
+      title: 'Recording',
+      child: Column(
         children: <Widget>[
           Expanded(
             child: CameraPreview(controller!),

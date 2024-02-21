@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safetyedu/common/model/model_list.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/common/provider/model_list_provider.dart';
-import 'package:safetyedu/education/model/education_model.dart';
+import 'package:safetyedu/pose/model/action_model.dart';
 import 'package:safetyedu/pose/repository/action_repository.dart';
 
-final poseDetailProvider = Provider.family<EducationModel?, Id>((ref, Id id) {
+final poseDetailProvider = Provider.family<ActionModel?, Id>((ref, Id id) {
   final state = ref.watch(poseProvider);
 
   if (state is! ModelList) {
@@ -24,7 +24,6 @@ final poseProvider = StateNotifierProvider<PoseStateNotifier, ModelListState>(
   },
 );
 
-class PoseStateNotifier
-    extends DetailProvider<EducationModel, ActionRepository> {
+class PoseStateNotifier extends DetailProvider<ActionModel, ActionRepository> {
   PoseStateNotifier({required super.repository});
 }

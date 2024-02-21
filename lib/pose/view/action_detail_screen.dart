@@ -24,6 +24,8 @@ class ActionDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
+  late YoutubePlayerController _controller;
+
   @override
   void initState() {
     super.initState();
@@ -32,15 +34,26 @@ class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    _controller.pause();
+
+    super.deactivate();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final state = ref.watch(poseDetailProvider(widget.id));
 
     if (state == null) {
-      return const DefaultLayout(
-        title: '',
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
+      return const Center(
+        child: CircularProgressIndicator(),
       );
     }
 
@@ -52,95 +65,94 @@ class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
         ),
       );
     }
+
     final videoId = YoutubePlayer.convertUrlToId(state.videoUrl);
-    return DefaultLayout(
+
+    if (videoId == null) {
+      return _BottomExplain(
+        id: state.id,
         title: state.title,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (videoId != null) _VideoPlayer(videoId: videoId),
-              const SizedBox(height: 16),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: HtmlWidget(
-                    state.detail,
-                    textStyle: TextStyles.descriptionTextStyle,
-                  ),
-                ),
-              ),
-              CustomElevatedBotton(
-                text: 'Next',
-                onPressed: () {
-                  context.goNamed(
-                    ActionSubmitScreen.routeName,
-                    pathParameters: {
-                      'id': widget.id.toString(),
-                    },
-                  );
-                },
-              )
-            ],
-          ),
-        ));
-  }
-}
-
-/// Youtube Player Widget
-class _VideoPlayer extends StatefulWidget {
-  final String videoId;
-
-  const _VideoPlayer({
-    required this.videoId,
-  });
-
-  @override
-  State<_VideoPlayer> createState() => _VideoPlayerState();
-}
-
-class _VideoPlayerState extends State<_VideoPlayer> {
-  late final YoutubePlayerController _controller;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  void deactivate() {
-    // Pauses video while navigating to next page.
-    _controller.pause();
-    super.deactivate();
-  }
-
-  @override
-  void initState() {
-    super.initState();
+        detail: state.detail,
+      );
+    }
 
     _controller = YoutubePlayerController(
-      initialVideoId: widget.videoId,
+      initialVideoId: videoId,
       flags: const YoutubePlayerFlags(
         autoPlay: true,
         loop: true,
       ),
-    )..addListener(() {
-        if (mounted) {
-          setState(() {});
-        }
-      });
+    );
+
+    return YoutubePlayerBuilder(
+        player: YoutubePlayer(
+          // When user go back and forth, it'll preventing player paused
+          key: UniqueKey(),
+          controller: _controller,
+          showVideoProgressIndicator: true,
+          progressIndicatorColor: hilightColor,
+          progressColors: ProgressBarColors(
+            playedColor: hilightColor,
+            handleColor: hilightColor.withOpacity(0.8),
+          ),
+        ),
+        builder: (context, player) {
+          return _BottomExplain(
+            title: state.title,
+            detail: state.detail,
+            player: player,
+            id: widget.id,
+          );
+        });
   }
+}
+
+class _BottomExplain extends StatelessWidget {
+  final String title;
+  final String? detail;
+  final Widget? player;
+  final Id id;
+
+  const _BottomExplain({
+    required this.title,
+    this.detail,
+    this.player,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayer(
-      controller: _controller,
-      showVideoProgressIndicator: true,
-      progressIndicatorColor: hilightColor,
-      progressColors: ProgressBarColors(
-        playedColor: hilightColor,
-        handleColor: hilightColor.withOpacity(0.8),
+    return DefaultLayout(
+      title: title,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (player != null) player!,
+            const SizedBox(height: 16),
+            if (detail != null)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: HtmlWidget(
+                    detail!,
+                    textStyle: TextStyles.descriptionTextStyle,
+                  ),
+                ),
+              ),
+            CustomElevatedBotton(
+              text: 'Next',
+              onPressed: () {
+                context.goNamed(
+                  ActionSubmitScreen.routeName,
+                  pathParameters: {
+                    'id': id.toString(),
+                  },
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
   }

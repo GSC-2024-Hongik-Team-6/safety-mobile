@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/education/view/education_detail_screen.dart';
 import 'package:safetyedu/common/view/root_tab.dart';
 import 'package:safetyedu/common/view/splash_screen.dart';
+import 'package:safetyedu/pose/view/action_detail_screen.dart';
 import 'package:safetyedu/quiz/view/quiz_detail_screen.dart';
 import 'package:safetyedu/user/provider/auth_provider.dart';
 import 'package:safetyedu/user/view/login_screen.dart';
@@ -29,9 +31,7 @@ List<GoRoute> _routes = [
           path: 'education/:eid',
           name: EducationDetailScreen.routeName,
           builder: (_, state) => EducationDetailScreen(
-                eid: int.parse(
-                  state.pathParameters['eid']!,
-                ),
+                eid: state.pathParameters['eid']!.toId(),
               ),
           routes: [
             // /education/:eid/quiz/:qid
@@ -39,11 +39,18 @@ List<GoRoute> _routes = [
               path: 'quiz/:qid',
               name: QuizDetailScreen.routeName,
               builder: (_, state) => QuizDetailScreen(
-                qid: int.parse(state.pathParameters['qid']!),
+                qid: state.pathParameters['qid']!.toId(),
               ),
             ),
           ])
     ],
+  ),
+  GoRoute(
+    path: '/action/:id',
+    name: ActionDetailScreen.routeName,
+    builder: (_, state) => ActionDetailScreen(
+      id: state.pathParameters['id']!.toId(),
+    ),
   ),
   GoRoute(
     path: '/splash',

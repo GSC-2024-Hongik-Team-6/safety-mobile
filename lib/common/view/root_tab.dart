@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safetyedu/education/view/home_screen.dart';
+import 'package:safetyedu/common/view/home_screen.dart';
 import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/user/view/profile_screen.dart';

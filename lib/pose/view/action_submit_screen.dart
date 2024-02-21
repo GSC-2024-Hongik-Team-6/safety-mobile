@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +10,7 @@ import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/common/view/error_screen.dart';
 import 'package:safetyedu/pose/provider/camera_provider.dart';
 import 'package:safetyedu/pose/provider/pose_provider.dart';
+import 'package:safetyedu/pose/repository/action_submission_repository.dart';
 
 class ActionSubmitScreen extends ConsumerStatefulWidget {
   static const routeName = '/action-submit';
@@ -49,6 +52,17 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
     });
   }
 
+  Future<void> submitVideo() async {
+    if (_videoFile == null) return;
+
+    final file = File(_videoFile!.path);
+
+    await ref.read(actionSubmissionRepositoryProvider).upload(file: file);
+    await ref
+        .read(actionSubmissionRepositoryProvider)
+        .submit(videoUrl: file.path);
+  }
+
   @override
   Widget build(BuildContext context) {
     final cameraController = ref.watch(cameraControllerProvider);
@@ -83,7 +97,7 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
               children: [
                 Text(
                   'Record your action for ${actionDetail.title}',
-                  style: TextStyles.descriptionTextStyle,
+                  style: TextStyles.subTitleTextStyle,
                 ),
                 AspectRatio(
                   aspectRatio: controller.value.aspectRatio,
@@ -119,8 +133,8 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
                       text: 'Submit',
                       onPressed: _videoFile == null
                           ? null
-                          : () {
-                              print('Submit video: ${_videoFile!.path}');
+                          : () async {
+                              await submitVideo();
                             },
                     ),
                   ],

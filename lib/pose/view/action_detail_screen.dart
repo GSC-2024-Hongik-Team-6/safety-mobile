@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
-import 'package:video_player/video_player.dart';
+import 'package:safetyedu/pose/provider/pose_provider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class ActionDetailScreen extends StatefulWidget {
+class ActionDetailScreen extends ConsumerStatefulWidget {
   static const routeName = '/action-detail';
 
   final Id id;
@@ -11,64 +14,67 @@ class ActionDetailScreen extends StatefulWidget {
   const ActionDetailScreen({super.key, required this.id});
 
   @override
-  State<ActionDetailScreen> createState() => _ActionDetailScreenState();
+  ConsumerState<ActionDetailScreen> createState() => _ActionDetailScreenState();
 }
 
-class _ActionDetailScreenState extends State<ActionDetailScreen> {
-  late final VideoPlayerController controller;
+class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
+  late final YoutubePlayerController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    controller = VideoPlayerController.networkUrl(
-      Uri.parse(
-          "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"),
+    final videoId = YoutubePlayer.convertUrlToId(
+      'https://www.youtube.com/watch?v=q7J2T6MFA9g&t=84s',
     );
 
-    controller.addListener(() {
-      setState(() {});
-    });
-    controller.setLooping(true);
-    controller.initialize().then((_) => setState(() {}));
-    controller.play();
+    _controller = YoutubePlayerController(
+      initialVideoId: videoId!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        loop: true,
+        startAt: 84,
+      ),
+    )..addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      });
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (!controller.value.isInitialized) {
-      return const DefaultLayout(
-        title: '',
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
+  void deactivate() {
+    // Pauses video while navigating to next page.
+    _controller.pause();
+    super.deactivate();
+  }
 
-    return DefaultLayout(
-      title: '',
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AspectRatio(
-            aspectRatio: controller.value.aspectRatio,
-            child: VideoPlayer(controller),
-          ),
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text(
-              '다음으로',
-            ),
-          ),
-        ],
+  @override
+  Widget build(BuildContext context) {
+    return YoutubePlayerBuilder(
+      player: YoutubePlayer(
+        controller: _controller,
+        showVideoProgressIndicator: true,
+        progressIndicatorColor: hilightColor,
+        progressColors: ProgressBarColors(
+          playedColor: hilightColor,
+          handleColor: hilightColor.withOpacity(0.8),
+        ),
+      ),
+      builder: (context, player) => DefaultLayout(
+        title: 'CPR',
+        child: Column(
+          children: [
+            player,
+            const SizedBox(height: 16.0),
+          ],
+        ),
       ),
     );
   }

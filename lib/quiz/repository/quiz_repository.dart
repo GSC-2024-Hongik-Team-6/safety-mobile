@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:safetyedu/common/model/model_list.dart';
@@ -25,15 +25,18 @@ abstract class QuizRepository implements IDetailRepository<QuizStatusModel> {
 
   @override
   @GET('/')
+  @Headers({'accessToken': 'true'})
   Future<ModelList<QuizStatusModel>> fetch();
 
   @override
   @GET('/{id}')
+  @Headers({'accessToken': 'true'})
   Future<QuizDetailModel> getDetail({
     @Path() required Id id,
   });
 
   @POST('/{id}')
+  @Headers({'accessToken': 'true'})
   Future<void> submit({
     @Path() required Id id,
     @Body() required UserAnswerModel userAnswer,

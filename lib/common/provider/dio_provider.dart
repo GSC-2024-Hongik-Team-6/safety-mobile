@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:safetyedu/common/provider/env_provider.dart';
-import 'package:safetyedu/user/provider/firebase_auth_provider.dart';
+import 'package:safetyedu/common/provider/firebase_provider.dart';
 
 final dioProvider = Provider<Dio>(
   (ref) {
@@ -44,7 +44,7 @@ class FirebaseDioInterceptor extends Interceptor {
     if (options.path.endsWith('/')) {
       options.path = options.path.substring(0, options.path.length - 1);
     }
-    
+
     if (options.headers.containsKey('accessToken')) {
       // Firebase Auth로부터 토큰 가져오기
       final token = await firebaseAuth.currentUser?.getIdToken();

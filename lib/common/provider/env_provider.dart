@@ -20,4 +20,5 @@ class Environments {
   });
 
   String get apiUrl => dotEnv.get('API_URL');
+  String get actionApiUrl => dotEnv.get('ACTION_API_URL');
 }

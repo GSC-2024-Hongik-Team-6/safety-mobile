@@ -5,6 +5,7 @@ import 'package:safetyedu/education/view/education_detail_screen.dart';
 import 'package:safetyedu/common/view/root_tab.dart';
 import 'package:safetyedu/common/view/splash_screen.dart';
 import 'package:safetyedu/pose/view/action_detail_screen.dart';
+import 'package:safetyedu/pose/view/action_submit_screen.dart';
 import 'package:safetyedu/quiz/view/quiz_detail_screen.dart';
 import 'package:safetyedu/user/provider/auth_provider.dart';
 import 'package:safetyedu/user/view/login_screen.dart';
@@ -51,6 +52,16 @@ List<GoRoute> _routes = [
     builder: (_, state) => ActionDetailScreen(
       id: state.pathParameters['id']!.toId(),
     ),
+    routes: [
+      // /action/:id/submit
+      GoRoute(
+        path: 'submit',
+        name: ActionSubmitScreen.routeName,
+        builder: (_, state) => ActionSubmitScreen(
+          id: state.pathParameters['id']!.toId(),
+        ),
+      ),
+    ],
   ),
   GoRoute(
     path: '/splash',

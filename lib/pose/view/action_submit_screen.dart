@@ -6,17 +6,23 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:safetyedu/common/model/model_with_id.dart';
 
-class CameraScreen extends StatefulWidget {
-  static const routeName = '/camera';
+class ActionSubmitScreen extends StatefulWidget {
+  static const routeName = '/action-submit';
 
-  const CameraScreen({super.key});
+  final Id id;
+
+  const ActionSubmitScreen({
+    super.key,
+    required this.id,
+  });
 
   @override
-  State<CameraScreen> createState() => _CameraScreenState();
+  State<ActionSubmitScreen> createState() => _ActionSubmitScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _ActionSubmitScreenState extends State<ActionSubmitScreen> {
   CameraController? controller;
   List<CameraDescription>? cameras;
   String? videoPath;

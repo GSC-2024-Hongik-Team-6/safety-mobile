@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:go_router/go_router.dart';
+import 'package:safetyedu/common/component/custom_elevated_button.dart';
+import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
+import 'package:safetyedu/pose/model/action_detail_model.dart';
 import 'package:safetyedu/pose/provider/pose_provider.dart';
+import 'package:safetyedu/pose/view/action_submit_screen.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ActionDetailScreen extends ConsumerStatefulWidget {
@@ -18,29 +24,83 @@ class ActionDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
-  late final YoutubePlayerController _controller;
-
   @override
   void initState() {
     super.initState();
 
-    final videoId = YoutubePlayer.convertUrlToId(
-      'https://www.youtube.com/watch?v=q7J2T6MFA9g&t=84s',
-    );
-
-    _controller = YoutubePlayerController(
-      initialVideoId: videoId!,
-      flags: const YoutubePlayerFlags(
-        autoPlay: true,
-        loop: true,
-        startAt: 84,
-      ),
-    )..addListener(() {
-        if (mounted) {
-          setState(() {});
-        }
-      });
+    ref.read(poseProvider.notifier).getDetail(id: widget.id);
   }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(poseDetailProvider(widget.id));
+
+    if (state == null) {
+      return const DefaultLayout(
+        title: '',
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (state is! ActionDetailModel) {
+      return DefaultLayout(
+        title: state.title,
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    final videoId = YoutubePlayer.convertUrlToId(state.videoUrl);
+    return DefaultLayout(
+        title: state.title,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (videoId != null) _VideoPlayer(videoId: videoId),
+              const SizedBox(height: 16),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: HtmlWidget(
+                    state.detail,
+                    textStyle: TextStyles.descriptionTextStyle,
+                  ),
+                ),
+              ),
+              CustomElevatedBotton(
+                text: 'Next',
+                onPressed: () {
+                  context.goNamed(
+                    ActionSubmitScreen.routeName,
+                    pathParameters: {
+                      'id': widget.id.toString(),
+                    },
+                  );
+                },
+              )
+            ],
+          ),
+        ));
+  }
+}
+
+/// Youtube Player Widget
+class _VideoPlayer extends StatefulWidget {
+  final String videoId;
+
+  const _VideoPlayer({
+    required this.videoId,
+  });
+
+  @override
+  State<_VideoPlayer> createState() => _VideoPlayerState();
+}
+
+class _VideoPlayerState extends State<_VideoPlayer> {
+  late final YoutubePlayerController _controller;
 
   @override
   void dispose() {
@@ -56,25 +116,31 @@ class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return YoutubePlayerBuilder(
-      player: YoutubePlayer(
-        controller: _controller,
-        showVideoProgressIndicator: true,
-        progressIndicatorColor: hilightColor,
-        progressColors: ProgressBarColors(
-          playedColor: hilightColor,
-          handleColor: hilightColor.withOpacity(0.8),
-        ),
+  void initState() {
+    super.initState();
+
+    _controller = YoutubePlayerController(
+      initialVideoId: widget.videoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        loop: true,
       ),
-      builder: (context, player) => DefaultLayout(
-        title: 'CPR',
-        child: Column(
-          children: [
-            player,
-            const SizedBox(height: 16.0),
-          ],
-        ),
+    )..addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return YoutubePlayer(
+      controller: _controller,
+      showVideoProgressIndicator: true,
+      progressIndicatorColor: hilightColor,
+      progressColors: ProgressBarColors(
+        playedColor: hilightColor,
+        handleColor: hilightColor.withOpacity(0.8),
       ),
     );
   }

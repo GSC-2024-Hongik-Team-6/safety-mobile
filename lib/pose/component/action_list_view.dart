@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safetyedu/common/component/custom_list_view.dart';
-import 'package:safetyedu/education/component/education_card.dart';
+import 'package:safetyedu/common/component/category_card.dart';
 import 'package:safetyedu/pose/model/action_model.dart';
 import 'package:safetyedu/pose/provider/pose_provider.dart';
 import 'package:safetyedu/pose/view/action_detail_screen.dart';

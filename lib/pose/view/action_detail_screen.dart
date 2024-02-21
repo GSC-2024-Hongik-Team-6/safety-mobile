@@ -12,6 +12,34 @@ import 'package:safetyedu/pose/provider/pose_provider.dart';
 import 'package:safetyedu/pose/view/action_submit_screen.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+final youtubePlayerProvider =
+    Provider.autoDispose.family<YoutubePlayer, YoutubePlayerController>(
+  (ref, controller) {
+    return YoutubePlayer(
+      key: ValueKey(controller),
+      controller: controller,
+      progressIndicatorColor: hilightColor,
+      progressColors: ProgressBarColors(
+        playedColor: hilightColor,
+        handleColor: hilightColor.withOpacity(0.8),
+      ),
+    );
+  },
+);
+
+final youtubePlayerControllerProvider =
+    Provider.autoDispose.family<YoutubePlayerController, String>(
+  (ref, videoId) {
+    return YoutubePlayerController(
+      initialVideoId: videoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        loop: true,
+      ),
+    );
+  },
+);
+
 class ActionDetailScreen extends ConsumerStatefulWidget {
   static const routeName = '/action-detail';
 
@@ -24,8 +52,6 @@ class ActionDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
-  late YoutubePlayerController _controller;
-
   @override
   void initState() {
     super.initState();
@@ -34,16 +60,7 @@ class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-
-    super.dispose();
-  }
-
-  @override
   void deactivate() {
-    _controller.pause();
-
     super.deactivate();
   }
 
@@ -76,26 +93,11 @@ class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
       );
     }
 
-    _controller = YoutubePlayerController(
-      initialVideoId: videoId,
-      flags: const YoutubePlayerFlags(
-        autoPlay: true,
-        loop: true,
-      ),
-    );
+    final controller = ref.read(youtubePlayerControllerProvider(videoId));
+    final videoPlayer = ref.read(youtubePlayerProvider(controller));
 
     return YoutubePlayerBuilder(
-        player: YoutubePlayer(
-          // When user go back and forth, it'll preventing player paused
-          key: UniqueKey(),
-          controller: _controller,
-          showVideoProgressIndicator: true,
-          progressIndicatorColor: hilightColor,
-          progressColors: ProgressBarColors(
-            playedColor: hilightColor,
-            handleColor: hilightColor.withOpacity(0.8),
-          ),
-        ),
+        player: videoPlayer,
         builder: (context, player) {
           return _BottomExplain(
             title: state.title,

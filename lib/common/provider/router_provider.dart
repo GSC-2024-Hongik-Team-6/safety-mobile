@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
+import 'package:safetyedu/common/view/error_screen.dart';
 import 'package:safetyedu/education/view/education_detail_screen.dart';
 import 'package:safetyedu/common/view/root_tab.dart';
 import 'package:safetyedu/common/view/splash_screen.dart';
@@ -19,6 +20,8 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: provider,
     redirect: provider.redirectLogic,
     debugLogDiagnostics: true,
+    errorBuilder: (context, state) =>
+        ErrorScreen(message: state.error.toString()),
   );
 });
 
@@ -65,8 +68,8 @@ List<GoRoute> _routes = [
   ),
   GoRoute(
     path: '/splash',
-    name: SplashPage.routeName,
-    builder: (_, __) => const SplashPage(),
+    name: SplashScreen.routeName,
+    builder: (_, __) => const SplashScreen(),
   ),
   GoRoute(
     path: '/login',

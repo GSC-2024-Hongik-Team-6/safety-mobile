@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safetyedu/common/component/custom_elevated_button.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
@@ -8,6 +9,7 @@ import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/pose/model/action_detail_model.dart';
 import 'package:safetyedu/pose/provider/pose_provider.dart';
+import 'package:safetyedu/pose/view/action_submit_screen.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ActionDetailScreen extends ConsumerStatefulWidget {
@@ -70,7 +72,14 @@ class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
               ),
               CustomElevatedBotton(
                 text: 'Next',
-                onPressed: () {},
+                onPressed: () {
+                  context.goNamed(
+                    ActionSubmitScreen.routeName,
+                    pathParameters: {
+                      'id': widget.id.toString(),
+                    },
+                  );
+                },
               )
             ],
           ),

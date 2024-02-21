@@ -24,7 +24,7 @@ abstract class EducationRepository
   factory EducationRepository(Dio dio) = _EducationRepository;
 
   @override
-  @GET('/')
+  @GET('')
   @Headers({'accessToken': 'true'})
   Future<ModelList<EducationModel>> fetch();
 

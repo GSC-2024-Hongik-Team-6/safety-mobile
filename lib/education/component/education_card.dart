@@ -1,10 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/education/component/education_detail_popup_button.dart';
 import 'package:safetyedu/education/model/education_model.dart';
+import 'package:safetyedu/pose/model/action_model.dart';
 
-class EducationCard extends StatelessWidget {
+class CategoryCard extends StatelessWidget {
   /// 카테고리 제목
   final String title;
 
@@ -15,22 +17,22 @@ class EducationCard extends StatelessWidget {
   final Widget thumb;
 
   /// Detail 설명
-  final String detail;
+  final String? detail;
 
   /// detail 이미지
   final List<String>? images;
 
-  const EducationCard({
+  const CategoryCard({
     super.key,
     required this.title,
     required this.description,
     required this.thumb,
-    required this.detail,
-    required this.images,
+    this.detail,
+    this.images,
   });
 
-  factory EducationCard.fromModel(EducationModel model) {
-    return EducationCard(
+  factory CategoryCard.fromEducationModel(EducationModel model) {
+    return CategoryCard(
       title: model.title,
       description: model.description,
       thumb: const Icon(
@@ -38,6 +40,16 @@ class EducationCard extends StatelessWidget {
       ),
       detail: model.detail,
       images: model.images,
+    );
+  }
+
+  factory CategoryCard.fromActionModel(ActionModel model) {
+    return CategoryCard(
+      title: model.title,
+      description: model.description,
+      thumb: const Icon(
+        Icons.image,
+      ),
     );
   }
 
@@ -86,16 +98,17 @@ class EducationCard extends StatelessWidget {
                 ],
               ),
             ),
-            EducationDetailPopUpButton(
-              title: title,
-              detail: detail,
-              images: images,
-              child: const Icon(
-                Icons.book,
-                size: 28,
-                color: primaryColor,
+            if (detail != null)
+              EducationDetailPopUpButton(
+                title: title,
+                detail: detail!,
+                images: images,
+                child: const Icon(
+                  Icons.book,
+                  size: 28,
+                  color: primaryColor,
+                ),
               ),
-            ),
           ],
         ),
       ),

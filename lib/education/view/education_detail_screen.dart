@@ -56,7 +56,7 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: state is EducationDetailModel
-            ? QuizListTile(
+            ? QuizListView(
                 eid: widget.eid,
                 quizList: state.quizzes,
               )
@@ -134,11 +134,11 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
   }
 }
 
-class QuizListTile extends StatelessWidget {
+class QuizListView extends StatelessWidget {
   final Id eid;
   final List<QuizStatusModel> quizList;
 
-  const QuizListTile({
+  const QuizListView({
     super.key,
     required this.quizList,
     required this.eid,

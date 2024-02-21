@@ -4,7 +4,6 @@ import 'package:safetyedu/education/component/education_list_view.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/pose/component/action_list_view.dart';
 
-import '../../pose/view/action_detail_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -35,20 +34,18 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 18.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          'Learning by Doing',
-                          style: TextStyles.titleTextStyle,
-                        ),
-                        SizedBox(height: 24),
-                        Expanded(child: ActionListView()),
-                      ],
-                    ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Learning by Doing',
+                        style: TextStyles.titleTextStyle,
+                      ),
+                      SizedBox(height: 24),
+                      Expanded(child: ActionListView()),
+                    ],
                   ),
                 )
               ],

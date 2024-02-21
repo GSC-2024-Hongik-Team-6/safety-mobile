@@ -6,8 +6,6 @@ import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/common/provider/router_provider.dart';
-import 'package:safetyedu/education/model/education_detail_model.dart';
-import 'package:safetyedu/education/provider/education_provider.dart';
 import 'package:safetyedu/quiz/model/current_selection.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
 import 'package:safetyedu/quiz/provider/current_selection_provider.dart';
@@ -127,15 +125,11 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
 
   Id? _getNextQuizId() {
     final currentEducationId = _getCurrentEducationId();
-    final educationModel =
-        ref.read(educationDetailProvider(currentEducationId));
-    if (educationModel == null) {
+    final quizList = ref.watch(quizListProvider(currentEducationId));
+
+    if (quizList == null) {
       return null;
     }
-
-    final educationDetail = educationModel as EducationDetailModel;
-
-    final quizList = educationDetail.quizzes;
 
     final currentIndex =
         quizList.indexWhere((element) => element.id == widget.qid);

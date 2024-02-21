@@ -93,3 +93,6 @@ android/app/google-services.json
 
 # vscode
 .vscode/
+
+# environment
+*.env

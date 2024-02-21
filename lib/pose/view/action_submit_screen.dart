@@ -24,7 +24,7 @@ class ActionSubmitScreen extends ConsumerStatefulWidget {
 }
 
 class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
-  bool _isRecording = false;
+  XFile? _videoFile;
 
   @override
   void initState() {
@@ -37,34 +37,16 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
     required CameraController controller,
     String? videoPath,
   }) async {
-    if (controller.value.isRecordingVideo) {
-      // A recording is already started
-      return;
-    }
-    try {
-      setState(() {
-        _isRecording = true;
-      });
-      await controller.startVideoRecording();
-    } on CameraException catch (e) {
-      print(e);
-    }
+    await ref.read(recordingProvider(controller).notifier).start();
   }
 
   Future<void> stopVideoRecording({
     required CameraController controller,
   }) async {
-    if (!controller.value.isRecordingVideo) {
-      return;
-    }
-    try {
-      setState(() {
-        _isRecording = false;
-      });
-      await controller.stopVideoRecording();
-    } on CameraException catch (e) {
-      print(e);
-    }
+    final file = await ref.read(recordingProvider(controller).notifier).stop();
+    setState(() {
+      _videoFile = file;
+    });
   }
 
   @override
@@ -90,6 +72,8 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
           );
         }
 
+        final recordingState = ref.watch(recordingProvider(controller));
+
         return DefaultLayout(
           title: actionDetail.title,
           child: Padding(
@@ -105,25 +89,39 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
                   aspectRatio: controller.value.aspectRatio,
                   child: CameraPreview(controller),
                 ),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CustomElevatedBotton(
-                      text: _isRecording ? 'Stop' : 'Record',
-                      onPressed: () async {
-                        if (!mounted) return;
+                      text: recordingState == RecordingState.recording
+                          ? 'Stop'
+                          : 'Record',
+                      onPressed: recordingState == RecordingState.loading
+                          ? null
+                          : () async {
+                              if (!mounted) return;
 
-                        if (_isRecording) {
-                          await stopVideoRecording(controller: controller);
-                        } else {
-                          await startVideoRecording(controller: controller);
-                        }
-                      },
-                      backgroundColor: _isRecording ? Colors.red : null,
+                              if (recordingState == RecordingState.recording) {
+                                await stopVideoRecording(
+                                    controller: controller);
+                              } else {
+                                await startVideoRecording(
+                                    controller: controller);
+                              }
+                            },
+                      backgroundColor:
+                          recordingState == RecordingState.recording
+                              ? Colors.red
+                              : null,
                     ),
                     CustomElevatedBotton(
                       text: 'Submit',
-                      onPressed: () {},
+                      onPressed: _videoFile == null
+                          ? null
+                          : () {
+                              print('Submit video: ${_videoFile!.path}');
+                            },
                     ),
                   ],
                 ),

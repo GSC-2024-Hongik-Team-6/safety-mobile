@@ -58,3 +58,50 @@ class CameraContollerNotifier
     return _initialize();
   }
 }
+
+final recordingProvider = StateNotifierProvider.family<RecordingNotifier,
+    RecordingState, CameraController>(
+  (ref, controller) {
+    return RecordingNotifier(controller: controller);
+  },
+);
+
+enum RecordingState {
+  recording,
+  paused,
+  stop,
+  loading,
+}
+
+class RecordingNotifier extends StateNotifier<RecordingState> {
+  final CameraController controller;
+
+  RecordingNotifier({
+    required this.controller,
+  }) : super(RecordingState.stop);
+
+  Future<void> start() async {
+    state = RecordingState.loading;
+    await controller.startVideoRecording();
+    state = RecordingState.recording;
+  }
+
+  Future<void> pause() async {
+    state = RecordingState.loading;
+    await controller.pauseVideoRecording();
+    state = RecordingState.paused;
+  }
+
+  Future<void> resume() async {
+    state = RecordingState.loading;
+    await controller.resumeVideoRecording();
+    state = RecordingState.recording;
+  }
+
+  Future<XFile> stop() async {
+    state = RecordingState.loading;
+    final file = await controller.stopVideoRecording();
+    state = RecordingState.stop;
+    return file;
+  }
+}

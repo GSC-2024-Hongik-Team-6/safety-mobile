@@ -1,7 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:safetyedu/common/component/custom_elevated_button.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
@@ -34,6 +33,40 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
     ref.read(poseProvider.notifier).getDetail(id: widget.id);
   }
 
+  Future<void> startVideoRecording({
+    required CameraController controller,
+    String? videoPath,
+  }) async {
+    if (controller.value.isRecordingVideo) {
+      // A recording is already started
+      return;
+    }
+    try {
+      setState(() {
+        _isRecording = true;
+      });
+      await controller.startVideoRecording();
+    } on CameraException catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> stopVideoRecording({
+    required CameraController controller,
+  }) async {
+    if (!controller.value.isRecordingVideo) {
+      return;
+    }
+    try {
+      setState(() {
+        _isRecording = false;
+      });
+      await controller.stopVideoRecording();
+    } on CameraException catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cameraController = ref.watch(cameraControllerProvider);
@@ -57,8 +90,6 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
           );
         }
 
-        _isRecording = controller.value.isRecordingVideo;
-
         return DefaultLayout(
           title: actionDetail.title,
           child: Padding(
@@ -70,26 +101,22 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
                   'Record your action for ${actionDetail.title}',
                   style: TextStyles.descriptionTextStyle,
                 ),
-                CameraPreview(controller),
-                const SizedBox(
-                  height: 20,
+                AspectRatio(
+                  aspectRatio: controller.value.aspectRatio,
+                  child: CameraPreview(controller),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CustomElevatedBotton(
                       text: _isRecording ? 'Stop' : 'Record',
-                      onPressed: () {
+                      onPressed: () async {
+                        if (!mounted) return;
+
                         if (_isRecording) {
-                          controller.stopVideoRecording();
-                          setState(() {
-                            _isRecording = false;
-                          });
+                          await stopVideoRecording(controller: controller);
                         } else {
-                          controller.startVideoRecording();
-                          setState(() {
-                            _isRecording = true;
-                          });
+                          await startVideoRecording(controller: controller);
                         }
                       },
                       backgroundColor: _isRecording ? Colors.red : null,
@@ -99,26 +126,7 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
                       onPressed: () {},
                     ),
                   ],
-                )
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: <Widget>[
-                //     FloatingActionButton(
-                //       onPressed: () {
-                //         if (!controller.value.isRecordingVideo) {
-                //           startVideoRecording();
-                //         } else {
-                //           stopVideoRecording();
-                //         }
-                //       },
-                //       child: Icon(
-                //         controller.value.isRecordingVideo
-                //             ? Icons.stop
-                //             : Icons.videocam,
-                //       ),
-                //     )
-                //   ],
-                // )
+                ),
               ],
             ),
           ),

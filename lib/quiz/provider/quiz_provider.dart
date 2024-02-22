@@ -4,6 +4,8 @@ import 'package:safetyedu/common/model/model_list.dart';
 import 'package:safetyedu/common/model/model_list_meta.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/common/provider/model_list_provider.dart';
+import 'package:safetyedu/education/model/education_detail_model.dart';
+import 'package:safetyedu/education/provider/education_provider.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
 import 'package:safetyedu/quiz/model/quiz_status_model.dart';
 import 'package:safetyedu/quiz/repository/quiz_repository.dart';
@@ -16,6 +18,15 @@ final quizDetailProvier = Provider.family<QuizDetailModel?, Id>((ref, Id id) {
   }
 
   return state.data.firstWhereOrNull((element) => element.id == id);
+});
+
+/// eid를 받고, 해당하는 EducationDetailModel의 quizzes를 반환
+final quizListProvider =
+    Provider.family<List<QuizStatusModel>?, Id>((ref, eid) {
+  final educationDetail = ref.watch(educationDetailProvider(eid));
+
+  if (educationDetail is! EducationDetailModel) return null;
+  return educationDetail.quizzes;
 });
 
 final quizProvider = StateNotifierProvider<QuizStateNotifier, ModelListState>(

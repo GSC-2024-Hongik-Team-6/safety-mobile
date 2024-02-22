@@ -35,8 +35,6 @@ class EducationModel implements IModelWithId {
   factory EducationModel.fromJson(Map<String, dynamic> json) =>
       _$EducationModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$EducationModelToJson(this);
-
   factory EducationModel.copyWith({
     required EducationModel model,
     Id? id,

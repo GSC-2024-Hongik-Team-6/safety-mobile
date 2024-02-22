@@ -3,8 +3,8 @@ import 'package:safetyedu/common/const/colors.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 
 /// SplashPage는 앱이 실행되면 가장 먼저 보이는 화면
-class SplashPage extends StatelessWidget {
-  const SplashPage({super.key});
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
 
   static String get routeName => 'splash';
 

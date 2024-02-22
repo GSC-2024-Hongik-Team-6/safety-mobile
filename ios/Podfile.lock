@@ -61,6 +61,13 @@ PODS:
     - FirebaseCoreExtension (~> 10.0)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - Flutter (1.0.0)
+  - flutter_inappwebview (0.0.1):
+    - Flutter
+    - flutter_inappwebview/Core (= 0.0.1)
+    - OrderedSet (~> 5.0)
+  - flutter_inappwebview/Core (0.0.1):
+    - Flutter
+    - OrderedSet (~> 5.0)
   - GoogleUtilities/AppDelegateSwizzler (7.12.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -77,14 +84,12 @@ PODS:
   - GoogleUtilities/Reachability (7.12.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (3.3.1)
+  - OrderedSet (5.0.0)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
   - PromisesObjC (2.3.1)
   - RecaptchaInterop (100.0.0)
-  - video_player_avfoundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
 
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
@@ -93,8 +98,8 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -111,6 +116,7 @@ SPEC REPOS:
     - FirebaseStorage
     - GoogleUtilities
     - GTMSessionFetcher
+    - OrderedSet
     - PromisesObjC
     - RecaptchaInterop
 
@@ -127,10 +133,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_inappwebview:
+    :path: ".symlinks/plugins/flutter_inappwebview/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
-  video_player_avfoundation:
-    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
 
 SPEC CHECKSUMS:
   camera_avfoundation: 759172d1a77ae7be0de08fc104cfb79738b8a59e
@@ -150,12 +156,13 @@ SPEC CHECKSUMS:
   FirebaseSharedSwift: 19b3f709993d6fa1d84941d41c01e3c4c11eab93
   FirebaseStorage: 8505bae8ac6662474b5b50e07759fb2765c15746
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_inappwebview: 3d32228f1304635e7c028b0d4252937730bbc6cf
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   GTMSessionFetcher: 8a1b34ad97ebe6f909fb8b9b77fba99943007556
+  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
-  video_player_avfoundation: 02011213dab73ae3687df27ce441fbbcc82b5579
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 

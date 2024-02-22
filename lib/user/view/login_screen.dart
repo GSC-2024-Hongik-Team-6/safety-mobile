@@ -94,7 +94,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           color: Colors.red,
                         ),
                       ),
-                    const SocialLoginButtonList(),
+                    SocialLoginButtonList(
+                      onGooglePressed: () => ref
+                          .read(currentUserProvider.notifier)
+                          .signInWithGoogle(),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30.0, vertical: 20),
@@ -135,8 +139,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 }
 
 class SocialLoginButtonList extends StatelessWidget {
+  final VoidCallback? onGooglePressed;
+
   const SocialLoginButtonList({
     super.key,
+    this.onGooglePressed,
   });
 
   @override
@@ -145,7 +152,7 @@ class SocialLoginButtonList extends StatelessWidget {
       children: [
         SocialLoginButton(
           buttonType: SocialLoginButtonType.google,
-          onPressed: () {},
+          onPressed: onGooglePressed,
           fontSize: 18,
           borderRadius: 12.0,
         ),

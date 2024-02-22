@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:safetyedu/user/model/user_model.dart';
 import 'package:safetyedu/user/repository/auth_repository.dart';
@@ -98,7 +96,8 @@ class CurrentUserStateNotifier extends StateNotifier<UserState?> {
       );
 
       if (userCredential.user == null) {
-        throw Exception('Something went wrong');
+        state = UserError(message: 'Something went wrong');
+        return Future.value(state);
       }
 
       await userCredential.user!.updateDisplayName(username);

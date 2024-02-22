@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:safetyedu/user/model/user_model.dart';
 import 'package:safetyedu/user/repository/auth_repository.dart';
@@ -58,7 +60,8 @@ class CurrentUserStateNotifier extends StateNotifier<UserState?> {
       );
 
       if (userCredential.user == null) {
-        throw Exception('Wrong email or password');
+        state = UserError(message: 'Email or Password is incorrect');
+        return Future.value(state);
       }
 
       final userResponse = UserModel.fromFirebaseUser(userCredential.user!);
@@ -109,6 +112,25 @@ class CurrentUserStateNotifier extends StateNotifier<UserState?> {
       state = UserError(message: 'Sign Up Failed: $e');
 
       return Future.value(state);
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    state = UserLoading();
+
+    try {
+      final userCredential = await authRepository.signInWithGoogle();
+
+      if (userCredential.user == null) {
+        state = UserError(message: 'Something went wrong');
+        return;
+      }
+
+      final userResponse = UserModel.fromFirebaseUser(userCredential.user!);
+
+      state = userResponse;
+    } catch (e) {
+      state = UserError(message: 'Login Failed: $e');
     }
   }
 }

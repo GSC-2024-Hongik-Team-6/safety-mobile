@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:safetyedu/common/provider/firebase_provider.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
@@ -39,5 +40,22 @@ class AuthRepository {
 
   Future<void> signOut() async {
     return firebaseAuth.signOut();
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await firebaseAuth.signInWithCredential(credential);
   }
 }

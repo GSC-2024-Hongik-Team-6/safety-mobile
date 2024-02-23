@@ -29,7 +29,7 @@ class ActionSubmissionRepository {
   Future<void> upload({
     required File file,
   }) async {
-    final ref = storege.ref('videos').child(file.path);
+    final ref = storege.ref().child(file.path.split('/')[file.path.split('/').length - 1]);
 
     try {
       await ref.putFile(file);
@@ -42,9 +42,10 @@ class ActionSubmissionRepository {
     required String videoUrl,
   }) async {
     try {
-      final callable = functions.httpsCallable('submitAction');
+      print("video submitted, waiting for the analysis");
+      final callable = functions.httpsCallable('processVideoByName');
       return await callable.call({
-        'fileName': videoUrl,
+        'fileName': videoUrl.split('/')[videoUrl.split('/').length - 1],
       });
     } catch (e) {
       rethrow;

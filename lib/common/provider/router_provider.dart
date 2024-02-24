@@ -6,6 +6,7 @@ import 'package:safetyedu/education/view/education_detail_screen.dart';
 import 'package:safetyedu/common/view/root_tab.dart';
 import 'package:safetyedu/common/view/splash_screen.dart';
 import 'package:safetyedu/pose/view/action_detail_screen.dart';
+import 'package:safetyedu/pose/view/action_score_screen.dart';
 import 'package:safetyedu/pose/view/action_submit_screen.dart';
 import 'package:safetyedu/quiz/view/quiz_detail_screen.dart';
 import 'package:safetyedu/user/provider/auth_provider.dart';
@@ -64,6 +65,13 @@ List<GoRoute> _routes = [
           id: state.pathParameters['id']!.toId(),
         ),
       ),
+      GoRoute(
+        path: 'score',
+        name: ActionScoreScreen.routeName,
+        builder: (context, state) => ActionScoreScreen(
+          id: state.pathParameters['id']!.toId(),
+        ),
+      )
     ],
   ),
   GoRoute(

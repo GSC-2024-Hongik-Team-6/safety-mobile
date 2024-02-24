@@ -52,6 +52,8 @@ class ActionDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
+  late YoutubePlayerController controller;
+
   @override
   void initState() {
     super.initState();
@@ -61,7 +63,16 @@ class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
 
   @override
   void deactivate() {
+    controller.pause();
+
     super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -93,7 +104,7 @@ class _ActionDetailScreenState extends ConsumerState<ActionDetailScreen> {
       );
     }
 
-    final controller = ref.read(youtubePlayerControllerProvider(videoId));
+    controller = ref.read(youtubePlayerControllerProvider(videoId));
     final videoPlayer = ref.read(youtubePlayerProvider(controller));
 
     return YoutubePlayerBuilder(

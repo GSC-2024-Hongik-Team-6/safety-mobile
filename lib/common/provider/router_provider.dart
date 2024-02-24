@@ -6,6 +6,7 @@ import 'package:safetyedu/education/view/education_detail_screen.dart';
 import 'package:safetyedu/common/view/root_tab.dart';
 import 'package:safetyedu/common/view/splash_screen.dart';
 import 'package:safetyedu/pose/view/action_detail_screen.dart';
+import 'package:safetyedu/pose/view/action_score_screen.dart';
 import 'package:safetyedu/pose/view/action_submit_screen.dart';
 import 'package:safetyedu/quiz/view/quiz_detail_screen.dart';
 import 'package:safetyedu/user/provider/auth_provider.dart';
@@ -27,42 +28,52 @@ final routerProvider = Provider<GoRouter>((ref) {
 
 List<GoRoute> _routes = [
   GoRoute(
-    path: '/',
+    path: '/home',
     name: TabView.routeName,
     builder: (_, __) => const TabView(),
     routes: [
       GoRoute(
-          path: 'education/:eid',
-          name: EducationDetailScreen.routeName,
-          builder: (_, state) => EducationDetailScreen(
-                eid: state.pathParameters['eid']!.toId(),
-              ),
-          routes: [
-            // /education/:eid/quiz/:qid
-            GoRoute(
-              path: 'quiz/:qid',
-              name: QuizDetailScreen.routeName,
-              builder: (_, state) => QuizDetailScreen(
-                qid: state.pathParameters['qid']!.toId(),
-              ),
+        // /home/education/:eid
+        path: 'education/:eid',
+        name: EducationDetailScreen.routeName,
+        builder: (_, state) => EducationDetailScreen(
+          eid: state.pathParameters['eid']!.toId(),
+        ),
+        routes: [
+          // /education/:eid/quiz/:qid
+          GoRoute(
+            path: 'quiz/:qid',
+            name: QuizDetailScreen.routeName,
+            builder: (_, state) => QuizDetailScreen(
+              qid: state.pathParameters['qid']!.toId(),
             ),
-          ])
-    ],
-  ),
-  GoRoute(
-    path: '/action/:id',
-    name: ActionDetailScreen.routeName,
-    builder: (_, state) => ActionDetailScreen(
-      id: state.pathParameters['id']!.toId(),
-    ),
-    routes: [
-      // /action/:id/submit
+          ),
+        ],
+      ),
       GoRoute(
-        path: 'submit',
-        name: ActionSubmitScreen.routeName,
-        builder: (_, state) => ActionSubmitScreen(
+        // /home/action/:id
+        path: 'action/:id',
+        name: ActionDetailScreen.routeName,
+        builder: (_, state) => ActionDetailScreen(
           id: state.pathParameters['id']!.toId(),
         ),
+        routes: [
+          // /action/:id/submit
+          GoRoute(
+            path: 'submit',
+            name: ActionSubmitScreen.routeName,
+            builder: (_, state) => ActionSubmitScreen(
+              id: state.pathParameters['id']!.toId(),
+            ),
+          ),
+          GoRoute(
+            path: 'score',
+            name: ActionScoreScreen.routeName,
+            builder: (context, state) => ActionScoreScreen(
+              id: state.pathParameters['id']!.toId(),
+            ),
+          )
+        ],
       ),
     ],
   ),

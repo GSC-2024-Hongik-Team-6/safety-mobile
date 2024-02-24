@@ -52,10 +52,7 @@ class QuizListView extends ConsumerWidget {
                   'qid': quiz.id.toString(),
                 },
               ),
-              child: QuizCard(
-                icon: Icons.star,
-                id: quiz.id,
-              ),
+              child: QuizCard.fromModel(quiz),
             ),
           ],
         );

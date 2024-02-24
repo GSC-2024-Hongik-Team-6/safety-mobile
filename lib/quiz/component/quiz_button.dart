@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:safetyedu/common/model/model_with_id.dart';
+import 'package:safetyedu/quiz/model/quiz_status_model.dart';
 
 class QuizCard extends StatelessWidget {
-  /// 퀴즈의 아이콘
-  final IconData icon;
-
-  /// 퀴즈의 ID
-  final Id id;
+  final AnswerStatus answerStatus;
 
   const QuizCard({
     super.key,
-    required this.icon,
-    required this.id,
+    required this.answerStatus,
   });
+
+  factory QuizCard.fromModel(QuizStatusModel model) {
+    return QuizCard(
+      answerStatus: model.answerStatus,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Icon(
-      icon,
+      Icons.star,
       size: 48.0,
+      color: _iconColor(),
     );
+  }
+
+  Color _iconColor() {
+    return switch (answerStatus) {
+      AnswerStatus.none => Colors.grey,
+      AnswerStatus.correct => Colors.green,
+      AnswerStatus.wrong => Colors.red,
+    };
   }
 }

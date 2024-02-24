@@ -12,44 +12,62 @@ final actionSubmissionRepositoryProvider = Provider<ActionSubmissionRepository>(
 
     return ActionSubmissionRepository(
       functions: functions,
-      storege: storage,
+      storage: storage,
     );
   },
 );
 
 class ActionSubmissionRepository {
   final FirebaseFunctions functions;
-  final FirebaseStorage storege;
+  final FirebaseStorage storage;
 
   ActionSubmissionRepository({
     required this.functions,
-    required this.storege,
+    required this.storage,
   });
 
   Future<void> upload({
     required File file,
+    Function(double)? onProgress,
+    Function(bool)? onComplete,
+    Function(String)? onError,
   }) async {
-    final ref = storege
+    final uploadTask = storage
         .ref()
-        .child(file.path.split('/')[file.path.split('/').length - 1]);
+        .child(file.path.split('/')[file.path.split('/').length - 1])
+        .putFile(file);
 
-    try {
-      await ref.putFile(file);
-    } catch (e) {
-      rethrow;
-    }
+    uploadTask.snapshotEvents.listen((event) {
+      switch (event.state) {
+        case TaskState.running:
+          final progress = 100.0 * event.bytesTransferred / event.totalBytes;
+          onProgress?.call(progress);
+          onComplete?.call(false);
+          break;
+        case TaskState.success:
+          onComplete?.call(true);
+          break;
+        default:
+          onError?.call('Error');
+          onComplete?.call(false);
+          break;
+      }
+    });
   }
 
-  Future<HttpsCallableResult> submit({
+  Future<double?> submit({
     required String videoUrl,
   }) async {
     try {
       final callable = functions.httpsCallable('processVideoByName');
-      return await callable.call({
+      final httpResult = await callable.call({
         'fileName': videoUrl.split('/')[videoUrl.split('/').length - 1],
       });
+      final data = httpResult.data as Map;
+      final score = double.parse(data['message'] as String);
+      return score;
     } catch (e) {
-      rethrow;
+      return null;
     }
   }
 }

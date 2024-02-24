@@ -15,14 +15,14 @@ class EducationModel implements IModelWithId {
 
   // 카테고리 설명
   @JsonKey(name: 'educationDescription')
-  final String description;
+  final String? description;
 
   // 카테고리 이미지
-  final String thumbUrl;
+  final String? thumbUrl;
 
   // 카테고리 상세 내용
   @JsonKey(name: 'educationDetail')
-  final String detail;
+  final String? detail;
 
   /// detail 페이지에 표시할 이미지들(nullable)
   final List<String>? images;

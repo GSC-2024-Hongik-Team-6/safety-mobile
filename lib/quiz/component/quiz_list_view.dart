@@ -45,7 +45,7 @@ class QuizListView extends ConsumerWidget {
           mainAxisAlignment: align,
           children: [
             GestureDetector(
-              onTap: () => context.pushNamed(
+              onTap: () => context.goNamed(
                 QuizDetailScreen.routeName,
                 pathParameters: {
                   'eid': eid.toString(),

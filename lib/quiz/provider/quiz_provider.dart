@@ -24,6 +24,7 @@ final quizDetailProvier = Provider.family<QuizDetailModel?, Id>((ref, Id id) {
 /// eid를 받고, 해당하는 EducationDetailModel의 quizzes를 반환
 final quizListProvider =
     Provider.family<List<QuizStatusModel>?, Id>((ref, eid) {
+  ref.read(educationProvider.notifier).getDetail(id: eid);
   final educationDetail = ref.watch(educationDetailProvider(eid));
 
   if (educationDetail is! EducationDetailModel) return null;
@@ -33,12 +34,18 @@ final quizListProvider =
 final quizProvider = StateNotifierProvider<QuizStateNotifier, ModelListState>(
   (ref) => QuizStateNotifier(
     repository: ref.watch(quizRepositoryProvider),
+    education: ref.watch(educationProvider.notifier),
   ),
 );
 
 class QuizStateNotifier
     extends DetailProvider<QuizStatusModel, QuizRepository> {
-  QuizStateNotifier({required super.repository});
+  final EducationStateNotifier education;
+
+  QuizStateNotifier({
+    required super.repository,
+    required this.education,
+  });
 
   @override
   Future<void> fetch({bool forceRefetch = false}) async {
@@ -65,8 +72,8 @@ class QuizStateNotifier
 
     final modelList = state as ModelList<QuizStatusModel>;
 
-    final QuizDetailModel? quiz = modelList.data
-        .firstWhereOrNull((element) => element.id == id) as QuizDetailModel?;
+    final quiz = modelList.data.firstWhereOrNull((element) => element.id == id)
+        as QuizDetailModel?;
 
     if (quiz == null) {
       return;

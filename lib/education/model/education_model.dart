@@ -12,7 +12,7 @@ class EducationModel implements IModelWithId {
   final String title;
 
   // 카테고리 설명
-  final String description;
+  final String? description;
 
   // 카테고리 이미지
   final String? thumbUrl;

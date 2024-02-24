@@ -38,17 +38,30 @@ class ActionSubmitStateNotifier extends StateNotifier<List<ActionScoreState>> {
     required Id actionId,
     required String videoUrl,
   }) async {
-    final response = await repository.submit(
-      videoUrl: videoUrl,
-    );
+    try {
+      final response = await repository.submit(
+        videoUrl: videoUrl,
+      );
 
-    if (response == null) {
+      state = state.map(
+        (e) {
+          if (e.id == actionId) {
+            return ActionScoreState.submitted(
+              id: e.id,
+              score: response,
+            );
+          }
+          return e;
+        },
+      ).toList();
+    } catch (error, stacktrace) {
       state = state.map(
         (e) {
           if (e.id == actionId) {
             return ActionScoreState.error(
               id: e.id,
-              message: 'Failed to submit',
+              message:
+                  'Submit Failed : ${error.toString()}\n${stacktrace.toString()}',
             );
           }
           return e;
@@ -57,40 +70,27 @@ class ActionSubmitStateNotifier extends StateNotifier<List<ActionScoreState>> {
 
       return;
     }
-
-    state = state.map(
-      (e) {
-        if (e.id == actionId) {
-          return ActionScoreState.submitted(
-            id: e.id,
-            score: response,
-          );
-        }
-        return e;
-      },
-    ).toList();
   }
 
   Future<void> upload({
     required Id actionId,
     required File file,
   }) async {
+    final actionModel = _getState(actionId);
+
+    if (actionModel == null) {
+      // 새로운 ActionScoreState 생성 및 추가
+      state = [
+        ...state,
+        ActionScoreState.uploading(
+          id: actionId,
+          progress: 0,
+        )
+      ];
+    }
     await repository.upload(
       file: file,
       onProgress: (progress) {
-        final actionModel = _getState(actionId);
-
-        if (actionModel == null) {
-          // 새로운 ActionScoreState 생성 및 추가
-          state = [
-            ...state,
-            ActionScoreState.uploading(
-              id: actionId,
-              progress: progress,
-            )
-          ];
-        }
-
         state = state.map((e) {
           if (e.id == actionId) {
             return ActionScoreState.uploading(

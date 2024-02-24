@@ -55,19 +55,16 @@ class ActionSubmissionRepository {
     });
   }
 
-  Future<double?> submit({
+  Future<double> submit({
     required String videoUrl,
   }) async {
-    try {
-      final callable = functions.httpsCallable('processVideoByName');
-      final httpResult = await callable.call({
-        'fileName': videoUrl.split('/')[videoUrl.split('/').length - 1],
-      });
-      final data = httpResult.data as Map;
-      final score = double.parse(data['message'] as String);
-      return score;
-    } catch (e) {
-      return null;
-    }
+    final callable = functions.httpsCallable('processVideoByName');
+    final httpResult = await callable.call({
+      'fileName': videoUrl.split('/')[videoUrl.split('/').length - 1],
+    });
+    final data = httpResult.data as Map;
+
+    final score = double.parse(data['message']);
+    return score;
   }
 }

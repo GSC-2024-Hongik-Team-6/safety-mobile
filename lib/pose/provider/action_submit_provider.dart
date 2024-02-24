@@ -34,6 +34,22 @@ class ActionSubmitStateNotifier extends StateNotifier<List<ActionScoreState>> {
     required this.repository,
   }) : super([]);
 
+  Future<void> uploadAndSubmit({
+    required Id actionId,
+    required File file,
+    required String videoUrl,
+  }) async {
+    await upload(
+      actionId: actionId,
+      file: file,
+    );
+
+    await submit(
+      actionId: actionId,
+      videoUrl: videoUrl,
+    );
+  }
+
   Future<void> submit({
     required Id actionId,
     required String videoUrl,

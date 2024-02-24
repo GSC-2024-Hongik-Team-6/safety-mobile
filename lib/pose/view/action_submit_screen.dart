@@ -59,13 +59,10 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
 
     final file = File(_videoFile!.path);
 
-    await ref.read(actionSubmitProvider.notifier).upload(
+    ref.read(actionSubmitProvider.notifier).uploadAndSubmit(
           file: file,
           actionId: widget.id,
-        );
-    await ref.read(actionSubmitProvider.notifier).submit(
-          videoUrl: file.path,
-          actionId: widget.id,
+          videoUrl: _videoFile!.path,
         );
   }
 

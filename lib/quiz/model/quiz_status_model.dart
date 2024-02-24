@@ -47,6 +47,8 @@ class QuizStatusModel implements IModelWithId {
 //
   @override
   final Id id;
+
+  @JsonKey(name: 'isSolved')
   final AnswerStatus answerStatus;
 
   QuizStatusModel({

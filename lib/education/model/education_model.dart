@@ -6,22 +6,18 @@ part 'education_model.g.dart';
 @JsonSerializable()
 class EducationModel implements IModelWithId {
   @override
-  @JsonKey(name: 'educationId')
   final Id id;
 
   // 카테고리 제목
-  @JsonKey(name: 'educationName')
   final String title;
 
   // 카테고리 설명
-  @JsonKey(name: 'educationDescription')
-  final String? description;
+  final String description;
 
   // 카테고리 이미지
   final String? thumbUrl;
 
   // 카테고리 상세 내용
-  @JsonKey(name: 'educationDetail')
   final String? detail;
 
   /// detail 페이지에 표시할 이미지들(nullable)

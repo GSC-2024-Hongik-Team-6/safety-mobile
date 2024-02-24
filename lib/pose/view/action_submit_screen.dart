@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safetyedu/common/component/custom_elevated_button.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
@@ -101,9 +102,11 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
                   'Record your action for ${actionDetail.title}',
                   style: TextStyles.subTitleTextStyle,
                 ),
-                AspectRatio(
-                  aspectRatio: controller.value.aspectRatio,
-                  child: CameraPreview(controller),
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: controller.value.aspectRatio,
+                    child: CameraPreview(controller),
+                  ),
                 ),
                 const Spacer(),
                 Row(

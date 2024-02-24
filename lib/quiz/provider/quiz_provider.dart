@@ -8,6 +8,7 @@ import 'package:safetyedu/education/model/education_detail_model.dart';
 import 'package:safetyedu/education/provider/education_provider.dart';
 import 'package:safetyedu/quiz/model/quiz_model.dart';
 import 'package:safetyedu/quiz/model/quiz_status_model.dart';
+import 'package:safetyedu/quiz/model/user_answer_model.dart';
 import 'package:safetyedu/quiz/repository/quiz_repository.dart';
 
 final quizDetailProvier = Provider.family<QuizDetailModel?, Id>((ref, Id id) {
@@ -84,11 +85,10 @@ class QuizStateNotifier
       data: modelList.data.map((e) => e.id == id ? updated : e).toList(),
     );
 
-    // final userAnswer = UserAnswerModel(
-    //   isCorrect: isCorrect,
-    //   id: id,
-    // );
+    final userAnswer = UserAnswerModel(
+      isCorrect: isCorrect,
+    );
 
-    // await repository.submit(id: id, userAnswer: userAnswer);
+    await repository.submit(id: id, userAnswer: userAnswer);
   }
 }

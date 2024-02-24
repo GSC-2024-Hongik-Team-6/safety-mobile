@@ -10,10 +10,10 @@ class CategoryCard extends StatelessWidget {
   final String title;
 
   /// 카테고리 설명
-  final String description;
+  final String? description;
 
   /// 이미지
-  final Widget thumb;
+  final String? thumbUrl;
 
   /// Detail 설명
   final String? detail;
@@ -25,7 +25,7 @@ class CategoryCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.description,
-    required this.thumb,
+    required this.thumbUrl,
     this.detail,
     this.images,
   });
@@ -34,9 +34,7 @@ class CategoryCard extends StatelessWidget {
     return CategoryCard(
       title: model.title,
       description: model.description,
-      thumb: const Icon(
-        Icons.image,
-      ),
+      thumbUrl: model.thumbUrl,
       detail: model.detail,
       images: model.images,
     );
@@ -46,9 +44,7 @@ class CategoryCard extends StatelessWidget {
     return CategoryCard(
       title: model.title,
       description: model.description,
-      thumb: const Icon(
-        Icons.image,
-      ),
+      thumbUrl: model.thumbUrl,
     );
   }
 
@@ -72,7 +68,15 @@ class CategoryCard extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: thumb,
+                child: thumbUrl != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          thumbUrl!,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : const Icon(Icons.image),
               ),
             ),
             const SizedBox(width: 20),
@@ -89,7 +93,7 @@ class CategoryCard extends StatelessWidget {
 
                   // description
                   Text(
-                    description,
+                    description ?? '',
                     style: TextStyles.descriptionTextStyle,
                   ),
 

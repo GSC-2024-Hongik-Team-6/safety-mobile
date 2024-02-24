@@ -88,7 +88,7 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
                       ),
                     ),
                     Text(
-                      education.description,
+                      education.description ?? '',
                       style: TextStyles.descriptionTextStyle.copyWith(
                         color: Colors.white,
                       ),
@@ -96,25 +96,26 @@ class _EducationDetailScreenState extends ConsumerState<EducationDetailScreen> {
                   ],
                 ),
               ),
-              EducationDetailPopUpButton(
-                title: education.title,
-                detail: education.detail,
-                images: education.images,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: secondPrimaryColor,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(13.0),
-                    child: Icon(
-                      Icons.book,
-                      size: 28,
-                      color: Colors.white,
+              if (education.detail != null)
+                EducationDetailPopUpButton(
+                  title: education.title,
+                  detail: education.detail!,
+                  images: education.images,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: secondPrimaryColor,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(13.0),
+                      child: Icon(
+                        Icons.book,
+                        size: 28,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

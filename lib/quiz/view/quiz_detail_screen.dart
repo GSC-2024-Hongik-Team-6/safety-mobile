@@ -24,10 +24,10 @@ class QuizDetailScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<QuizDetailScreen> createState() => _QuizScreenState();
+  ConsumerState<QuizDetailScreen> createState() => _QuizDetailScreenState();
 }
 
-class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
+class _QuizDetailScreenState extends ConsumerState<QuizDetailScreen> {
   late final Id? _nextQuizId;
   bool _isCorrect = false;
   bool _isSubmitted = false;
@@ -118,14 +118,14 @@ class _QuizScreenState extends ConsumerState<QuizDetailScreen> {
     final uri = Uri.parse(currentLocation);
     final pathSegments = uri.pathSegments;
 
-    final educationId = pathSegments[1].toId();
+    final educationId = pathSegments[2].toId();
 
     return educationId;
   }
 
   Id? _getNextQuizId() {
     final currentEducationId = _getCurrentEducationId();
-    final quizList = ref.watch(quizListProvider(currentEducationId));
+    final quizList = ref.read(quizListProvider(currentEducationId));
 
     if (quizList == null) {
       return null;

@@ -52,15 +52,19 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
     });
   }
 
-  Future<void> submitVideo() async {
-    if (_videoFile == null) return;
+  Future<Map> submitVideo() async {
+    if (_videoFile == null) return {};
+
+    print("submitting video");
 
     final file = File(_videoFile!.path);
 
     await ref.read(actionSubmissionRepositoryProvider).upload(file: file);
-    await ref
+    final result = await ref
         .read(actionSubmissionRepositoryProvider)
         .submit(videoUrl: file.path);
+
+    return result.data;
   }
 
   @override
@@ -131,10 +135,53 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
                     ),
                     CustomElevatedBotton(
                       text: 'Submit',
-                      onPressed: _videoFile == null
-                          ? null
-                          : () async {
-                              await submitVideo();
+                      onPressed: _videoFile == null ? null : () async {
+                        // Show loading dialog
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false, // Prevents closing the dialog by tapping outside.
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CircularProgressIndicator(),
+                                    SizedBox(width: 20),
+                                    Text("Submitting..."),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+
+                        try {
+                          var result = await submitVideo();
+                          Navigator.of(context).pop(); // Close the loading dialog
+                          // Show result dialog
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Submission Result'),
+                                content: Text(result['message']), // Assuming submitVideo returns a String message
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('OK'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } catch (e) {
+                          Navigator.of(context).pop(); // Ensure loading dialog is closed on error
+                          // Handle error, maybe show an error dialog
+                        }
                             },
                     ),
                   ],

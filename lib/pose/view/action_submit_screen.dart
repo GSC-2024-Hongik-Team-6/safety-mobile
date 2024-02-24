@@ -2,16 +2,17 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safetyedu/common/component/custom_elevated_button.dart';
 import 'package:safetyedu/common/component/custom_text_style.dart';
 import 'package:safetyedu/common/layout.dart/default_layout.dart';
 import 'package:safetyedu/common/model/model_with_id.dart';
 import 'package:safetyedu/common/view/error_screen.dart';
+import 'package:safetyedu/pose/provider/action_submit_provider.dart';
 import 'package:safetyedu/pose/provider/camera_provider.dart';
 import 'package:safetyedu/pose/provider/pose_provider.dart';
-import 'package:safetyedu/pose/repository/action_submission_repository.dart';
+import 'package:safetyedu/pose/view/action_score_screen.dart';
 
 class ActionSubmitScreen extends ConsumerStatefulWidget {
   static const routeName = '/action-submit';
@@ -53,17 +54,19 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
     });
   }
 
-  Future<Map> submitVideo() async {
-    if (_videoFile == null) return {};
+  Future<void> submitVideo() async {
+    if (_videoFile == null) return;
 
     final file = File(_videoFile!.path);
 
-    await ref.read(actionSubmissionRepositoryProvider).upload(file: file);
-    final result = await ref
-        .read(actionSubmissionRepositoryProvider)
-        .submit(videoUrl: file.path);
-
-    return result.data;
+    await ref.read(actionSubmitProvider.notifier).upload(
+          file: file,
+          actionId: widget.id,
+        );
+    await ref.read(actionSubmitProvider.notifier).submit(
+          videoUrl: file.path,
+          actionId: widget.id,
+        );
   }
 
   @override
@@ -138,57 +141,14 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
                       text: 'Submit',
                       onPressed: _videoFile == null
                           ? null
-                          : () async {
-                              // Show loading dialog
-                              showDialog(
-                                context: context,
-                                barrierDismissible:
-                                    false, // Prevents closing the dialog by tapping outside.
-                                builder: (BuildContext context) {
-                                  return const Dialog(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(20.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CircularProgressIndicator(),
-                                          SizedBox(width: 20),
-                                          Text("Submitting..."),
-                                        ],
-                                      ),
-                                    ),
-                                  );
+                          : () {
+                              submitVideo();
+                              context.goNamed(
+                                ActionScoreScreen.routeName,
+                                pathParameters: {
+                                  'id': widget.id.toString(),
                                 },
                               );
-
-                              try {
-                                var result = await submitVideo();
-                                Navigator.of(context)
-                                    .pop(); // Close the loading dialog
-                                // Show result dialog
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Submission Result'),
-                                      content: Text(result[
-                                          'message']), // Assuming submitVideo returns a String message
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('OK'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              } catch (e) {
-                                Navigator.of(context)
-                                    .pop(); // Ensure loading dialog is closed on error
-                                // Handle error, maybe show an error dialog
-                              }
                             },
                     ),
                   ],

@@ -59,7 +59,8 @@ class AuthNotifier extends ChangeNotifier {
 
       // 사용자 정보가 존재할 때, 현재 위치가 로그인 페이지 혹은 SplashPage라면 home으로 이동
       // 그 외 페이지의 경우는 그대로 둔다
-      UserModel() => (logginIn || goState.fullPath == '/splash') ? '/' : null,
+      UserModel() =>
+        (logginIn || goState.fullPath == '/splash') ? '/home' : null,
 
       // 사용자 정보를 불러오는 중이라면, 일단 그대로 두기
       UserLoading() => null,

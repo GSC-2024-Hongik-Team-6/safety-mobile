@@ -36,7 +36,10 @@ abstract class QuizRepository implements IDetailRepository<QuizStatusModel> {
   });
 
   @POST('/{id}')
-  @Headers({'accessToken': 'true'})
+  @Headers({
+    'accessToken': 'true',
+    'Content-Type': 'application/json',
+  })
   Future<void> submit({
     @Path() required Id id,
     @Body() required UserAnswerModel userAnswer,

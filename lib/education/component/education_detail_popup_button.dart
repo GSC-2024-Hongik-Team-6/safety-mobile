@@ -69,19 +69,20 @@ class EducationDetailPopUp extends StatelessWidget {
       child: SingleChildScrollView(
         controller: scrollController,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               Text(
                 title,
                 style: TextStyles.titleTextStyle,
               ),
-              if (images != null)
+              if (images != null && images!.isNotEmpty)
                 ImageListBuilder(
                   images: images!,
                 ),
               HtmlWidget(
                 detail,
+                textStyle: TextStyles.descriptionTextStyle,
               ),
             ],
           ),

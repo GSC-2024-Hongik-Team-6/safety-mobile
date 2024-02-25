@@ -17,11 +17,22 @@ class ImageListBuilder extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: images.length,
         shrinkWrap: true,
-        itemBuilder: (context, index) => SizedBox(
-          height: 50,
-          child: Image.network(
-            images[index],
-            fit: BoxFit.cover,
+        itemBuilder: (context, index) => InkWell(
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => Center(
+              child: Image.network(
+                images[index],
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          child: SizedBox(
+            height: 80,
+            child: Image.network(
+              images[index],
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),

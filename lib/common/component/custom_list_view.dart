@@ -64,15 +64,21 @@ class CustomListView<T extends IModelWithId> extends ConsumerWidget {
 
     final listState = state as ModelList<T>;
 
-    return ListView.separated(
-      itemCount: listState.data.length,
-      itemBuilder: (context, index) {
-        final model = listState.data[index];
-
-        return itemBuilder(context, index, model);
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.read(provider.notifier).fetch(forceRefetch: true);
       },
-      separatorBuilder:
-          separatorBuilder ?? (_, __) => const SizedBox(height: 16.0),
+      child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: listState.data.length,
+        itemBuilder: (context, index) {
+          final model = listState.data[index];
+
+          return itemBuilder(context, index, model);
+        },
+        separatorBuilder:
+            separatorBuilder ?? (_, __) => const SizedBox(height: 16.0),
+      ),
     );
   }
 }

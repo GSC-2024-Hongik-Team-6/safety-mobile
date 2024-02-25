@@ -44,6 +44,9 @@ class ActionSubmitStateNotifier extends StateNotifier<List<ActionScoreState>> {
       file: file,
     );
 
+    // wait for 3 seconds preventing server cannot find the uploaded file
+    await Future.delayed(const Duration(seconds: 2));
+
     await submit(
       actionId: actionId,
       videoUrl: videoUrl,
@@ -55,6 +58,14 @@ class ActionSubmitStateNotifier extends StateNotifier<List<ActionScoreState>> {
     required String videoUrl,
   }) async {
     try {
+      state = state.map(
+        (e) {
+          if (e.id == actionId) {
+            return ActionScoreState.uploaded(id: e.id);
+          }
+          return e;
+        },
+      ).toList();
       final response = await repository.submit(
         videoUrl: videoUrl,
       );

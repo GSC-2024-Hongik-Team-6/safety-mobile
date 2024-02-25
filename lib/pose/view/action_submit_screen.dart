@@ -103,12 +103,10 @@ class _ActionSubmitScreenState extends ConsumerState<ActionSubmitScreen> {
                   style: TextStyles.subTitleTextStyle,
                 ),
                 Expanded(
-                  child: AspectRatio(
-                    aspectRatio: controller.value.aspectRatio,
-                    child: CameraPreview(controller),
-                  ),
-                ),
-                const Spacer(),
+                    child: AspectRatio(
+                  aspectRatio: controller.value.aspectRatio,
+                  child: CameraPreview(controller),
+                )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

@@ -20,7 +20,7 @@ class OptionCard extends StatelessWidget {
 
     if (isSelected) {
       buttonColor = selectedOptionButtonColor;
-    } else if (description!.isEmpty) {
+    } else if (description == null || description!.isEmpty) {
       buttonColor = Colors.grey;
     } else {
       buttonColor = Colors.white;
